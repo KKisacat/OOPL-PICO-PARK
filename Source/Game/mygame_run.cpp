@@ -44,12 +44,12 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	if (_isRightRun == 1)
 	{
 		_rightTime++;
-		character.SetTopLeft(150 + (10 * _rightTime) - (10 * _leftTime), 850 - (10 * _upTime) + (10 * _downTime));
+		character.SetTopLeft(150 + (10 * _rightTime) - (10 * _leftTime), 843 - (10 * _upTime) + (10 * _downTime));
 	}
 	else if (_isLeftRun == 1)
 	{
 		_leftTime++;
-		character.SetTopLeft(150 + (10 * _rightTime) - (10 * _leftTime), 850 - (10 * _upTime) + (10 * _downTime));
+		character.SetTopLeft(150 + (10 * _rightTime) - (10 * _leftTime), 843 - (10 * _upTime) + (10 * _downTime));
 	}
 }
 
@@ -72,7 +72,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	catalog.SetTopLeft(0, 0);
 
 	character.LoadBitmapByString({ "resources/giraffe.bmp" });
-	character.SetTopLeft(150, 850);
+	character.SetTopLeft(150, 843);
 
 	chest_and_key.LoadBitmapByString({ "resources/chest.bmp", "resources/chest_ignore.bmp" }, RGB(255, 255, 255));
 	chest_and_key.SetTopLeft(150, 430);
