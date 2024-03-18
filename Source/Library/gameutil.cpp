@@ -381,6 +381,14 @@ namespace game_framework {
 		return isOverlap;
 	}
 
+	bool CMovingBitmap::IsOverlap(int x1, int y1, int h1, int w1, int x2, int y2, int h2, int w2) {
+		CRect rect;
+		CRect rect1(POINT{ x1, y1 }, POINT{ x1 + w1, y1 + h1 });
+		CRect rect2(POINT{ x2, y2 }, POINT{ x2 + w2, y2 + h2 });
+		BOOL isOverlap = rect.IntersectRect(rect1, rect2);
+		return isOverlap;
+	}
+
 	/////////////////////////////////////////////////////////////////////////////
 	// CTextDraw: The class provide the ability to draw the text.
 	// 這個 class 提供文字的呈現

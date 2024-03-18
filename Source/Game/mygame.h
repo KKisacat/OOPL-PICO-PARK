@@ -96,7 +96,9 @@ namespace game_framework {
 		int sub_phase = 1;
 		CMovingBitmap catalog; //¥Ø¿ý
 		CMovingBitmap background;
-		CMovingBitmap character;
+		CMovingBitmap player1;
+		CMovingBitmap player2;
+		CMovingBitmap brick;
 		CMovingBitmap chest_and_key;
 		CMovingBitmap bee;
 		CMovingBitmap ball;
@@ -109,6 +111,11 @@ namespace game_framework {
 		bool validate_phase_4();
 		bool validate_phase_5();
 		bool validate_phase_6();
+		bool player1RStop = false;
+		bool player1LStop = false;
+		bool isOverlap;
+		bool _rightCrash = 0; //¸I¼²
+		bool _leftCrash = 0;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
