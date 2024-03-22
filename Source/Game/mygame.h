@@ -99,10 +99,7 @@ namespace game_framework {
 		CMovingBitmap player1;
 		CMovingBitmap player2;
 		CMovingBitmap brick;
-		CMovingBitmap chest_and_key;
-		CMovingBitmap bee;
-		CMovingBitmap ball;
-		CMovingBitmap door[3];
+
 		void show_image_by_phase();
 		void show_text_by_phase();
 		bool validate_phase_1();
@@ -111,11 +108,14 @@ namespace game_framework {
 		bool validate_phase_4();
 		bool validate_phase_5();
 		bool validate_phase_6();
-		bool player1RStop = false;
-		bool player1LStop = false;
 		bool isOverlap;
 		bool _rightCrash = 0; //¸I¼²
 		bool _leftCrash = 0;
+		int _upTime = 0; //¤W¤U¥ª¥k
+		bool _isUpRun = 0;
+		bool _isRightRun = 0;
+		bool _isLeftRun = 0;
+		bool _jumpOnce = 0;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
