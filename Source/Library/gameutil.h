@@ -123,6 +123,9 @@ namespace game_framework {
 		/* Toggle function */
 		void  ToggleAnimation();
 
+		/* 新增 Stop function */
+		void StopAnimation();
+
 	protected:
 		//! 當前幀的索引值。
 		int frameIndex = 0;

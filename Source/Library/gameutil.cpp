@@ -208,6 +208,16 @@ namespace game_framework {
 		isOnce = once;
 		delayCount = delay;
 	}
+
+	//! 停止循環動畫。
+	/*!
+		停止循環動畫。
+	*/
+	void CMovingBitmap::StopAnimation() {
+		frameIndex = 0;
+		isAnimation = false;
+		isAnimationDone = true;
+	}
 	
 	//! 顯示圖片。
 	/*!
