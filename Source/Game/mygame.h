@@ -108,14 +108,21 @@ namespace game_framework {
 		bool validate_phase_4();
 		bool validate_phase_5();
 		bool validate_phase_6();
-		bool isOverlap;
-		bool _rightCrash = 0; //碰撞
-		bool _leftCrash = 0;
 		int _upTime = 0; //上下左右
 		bool _isUpRun = 0;
+		bool _jumpOnce = 0;
+
+		//行走
 		bool _isRightRun = 0;
 		bool _isLeftRun = 0;
-		bool _jumpOnce = 0;
+		bool _P2isRightRun = 0;
+		bool _P2isLeftRun = 0;
+		//重疊
+		bool isOverlap;  //P1判斷重疊物件
+		bool P2isOverlap; //P2判斷重疊物件
+		bool P1P2isOverlap; //判斷角色重疊
+
+		void CheckMovable(CMovingBitmap player1, vector<CMovingBitmap> targets, int dx, int dy); //處理玩家碰撞
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
