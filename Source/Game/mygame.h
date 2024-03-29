@@ -108,15 +108,24 @@ namespace game_framework {
 		bool validate_phase_4();
 		bool validate_phase_5();
 		bool validate_phase_6();
-		int _upTime = 0; //上下左右
-		bool _isUpRun = 0;
-		bool _jumpOnce = 0;
+
+		//跳躍
+		int _P1UpTime = 0; 
+		bool _isP1UpRun = 0;
+		bool _P1JumpOnce = 0;
+		int _P2UpTime = 0;
+		bool _isP2UpRun = 0;
+		bool _P2JumpOnce = 0;
+
+		//卷軸
+		int _mapMove = 0;
 
 		//行走
 		bool _isRightRun = 0;
 		bool _isLeftRun = 0;
 		bool _P2isRightRun = 0;
 		bool _P2isLeftRun = 0;
+
 		//重疊
 		bool isOverlap;  //P1判斷重疊物件
 		bool P2isOverlap; //P2判斷重疊物件
