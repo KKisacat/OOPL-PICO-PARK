@@ -48,13 +48,11 @@ void CGameStateRun::OnMove()
 	//player1 move
 	if (_isRightRun == 1)
 	{
-		isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth() + 1, brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth() + 1, player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth());
-		if (!isOverlap && !P1P2isOverlap) {
-			player1.SetTopLeft(player1.GetLeft() + 1, player1.GetTop());
-			//畫面移動
-			//player2.SetTopLeft(player2.GetLeft() - 1, player2.GetTop());
-			//background.SetTopLeft(background.GetLeft(), 0);
+		isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth() + 10, brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
+		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth() + 10, player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth());
+		if (!isOverlap && !P1P2isOverlap && player1.GetLeft()<1800 && player2.GetLeft() > 0)
+		{
+			player1.SetTopLeft(player1.GetLeft() + 8, player1.GetTop());
 		}
 		else
 		{
@@ -63,10 +61,10 @@ void CGameStateRun::OnMove()
 	}
 	else if (_isLeftRun == 1)
 	{
-		isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft() - 1, player1.GetTop(), player1.GetHeight(), player1.GetWidth(), brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft() - 1, player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth());
-		if (!isOverlap && !P1P2isOverlap) {
-			player1.SetTopLeft(player1.GetLeft() - 1, player1.GetTop());
+		isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft() - 10, player1.GetTop(), player1.GetHeight(), player1.GetWidth(), brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
+		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft() - 10, player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth());
+		if (!isOverlap && !P1P2isOverlap && player1.GetLeft() > 0 && player2.GetLeft() < 1800) {
+			player1.SetTopLeft(player1.GetLeft() - 8, player1.GetTop());
 		}
 		else
 		{
@@ -102,10 +100,10 @@ void CGameStateRun::OnMove()
 	//player2 move
 	if (_P2isRightRun == 1)
 	{
-		P2isOverlap = CMovingBitmap::IsOverlap(player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth() + 1, brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth() + 1);
-		if (!P2isOverlap && !P1P2isOverlap) {
-			player2.SetTopLeft(player2.GetLeft() + 1, player2.GetTop());
+		P2isOverlap = CMovingBitmap::IsOverlap(player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth() + 10, brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
+		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth() + 10);
+		if (!P2isOverlap && !P1P2isOverlap && player2.GetLeft() < 1800 && player1.GetLeft() > 0) {
+			player2.SetTopLeft(player2.GetLeft() + 8, player2.GetTop());
 		}
 		else
 		{
@@ -114,10 +112,10 @@ void CGameStateRun::OnMove()
 	}
 	else if (_P2isLeftRun == 1)
 	{
-		P2isOverlap = CMovingBitmap::IsOverlap(player2.GetLeft() - 1, player2.GetTop(), player2.GetHeight(), player2.GetWidth(), brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft() - 1, player2.GetTop(), player2.GetHeight(), player2.GetWidth());
-		if (!P2isOverlap && !P1P2isOverlap) {
-			player2.SetTopLeft(player2.GetLeft() - 1, player2.GetTop());
+		P2isOverlap = CMovingBitmap::IsOverlap(player2.GetLeft() - 10, player2.GetTop(), player2.GetHeight(), player2.GetWidth(), brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
+		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft() - 10, player2.GetTop(), player2.GetHeight(), player2.GetWidth());
+		if (!P2isOverlap && !P1P2isOverlap && player2.GetLeft() > 0 && player1.GetLeft() < 1800) {
+			player2.SetTopLeft(player2.GetLeft() - 8, player2.GetTop());
 		}
 		else
 		{
@@ -151,8 +149,20 @@ void CGameStateRun::OnMove()
 	}
 
 	//畫面移動
-	//_mapMove = -((player1.GetLeft() + player2.GetLeft()) / 2 - 460);
-	//background.SetTopLeft(9 * _mapMove, 0);
+	if (((player1.GetLeft() + player2.GetLeft()) / 2) > 1000 )
+	{
+		background.SetTopLeft(background.GetLeft() - 3, 0);
+		player1.SetTopLeft(player1.GetLeft() - 3, player1.GetTop());
+		player2.SetTopLeft(player2.GetLeft() - 3, player2.GetTop());
+	}
+	else if(((player1.GetLeft() + player2.GetLeft()) / 2) < 800)
+	{
+		background.SetTopLeft(background.GetLeft() + 3, 0);
+		player1.SetTopLeft(player1.GetLeft() + 3, player1.GetTop());
+		player2.SetTopLeft(player2.GetLeft() + 3, player2.GetTop());
+	}
+
+
 
 }
 
@@ -181,10 +191,10 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		"resources/player1RightRun3.bmp",
 		"resources/player1RightRun4.bmp"
 		}, RGB(0, 255, 0));
-	player1.SetTopLeft(960, 823);
+	player1.SetTopLeft(1020, 823);
 
 	player2.LoadBitmapByString({ "resources/giraffe.bmp" });
-	player2.SetTopLeft(600, 843);
+	player2.SetTopLeft(900, 843);
 
 	brick.LoadBitmapByString({ "resources/gray.bmp" });
 	//brick.SetTopLeft(1400, 843);
