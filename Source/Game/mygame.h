@@ -99,6 +99,7 @@ namespace game_framework {
 		CMovingBitmap player1;
 		CMovingBitmap player2;
 		CMovingBitmap brick;
+		CMovingBitmap block[1000];
 
 		void show_image_by_phase();
 		void show_text_by_phase();
@@ -131,7 +132,7 @@ namespace game_framework {
 		bool P2isOverlap; //P2判斷重疊物件
 		bool P1P2isOverlap; //判斷角色重疊
 
-		void CheckMovable(CMovingBitmap player1, vector<CMovingBitmap> targets, int dx, int dy); //處理玩家碰撞
+		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //處理玩家碰撞
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

@@ -11,19 +11,20 @@ using namespace game_framework;
 
 //還沒實際應用到角色上
 //把所有碰撞寫成fuction
-void CGameStateRun::CheckMovable(CMovingBitmap player, vector<CMovingBitmap> targets, int dx, int dy)
+void CGameStateRun::CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy)
 {
 	bool isMovable = true;
 
 	for (CMovingBitmap target : targets) //遍歷所有會碰撞到的物件
 	{
-		//可能有誤之後改，isMovable應該改成不能走
 		//如果有任何重疊就不能走，a &= b 是 a = a & b
-		isMovable &= CMovingBitmap::IsOverlap(player.GetLeft(), player.GetTop(), player.GetHeight() + dy, player.GetWidth() + dx, target.GetLeft(), target.GetTop(), target.GetHeight(), target.GetWidth());
-		if (isMovable) {
-			player.SetTopLeft(player.GetLeft() + dx, 843 + dy);
+		isMovable = !CMovingBitmap::IsOverlap(player.GetLeft() + dx, player.GetTop() + dy, player.GetHeight(), player.GetWidth(), target.GetLeft(), target.GetTop(), target.GetHeight(), target.GetWidth());
+		if (!isMovable ) {
+			return;
 		}
+		
 	}
+	player.SetTopLeft(player.GetLeft() + dx, player.GetTop() + dy);
 
 }
 
@@ -45,33 +46,45 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							
 {
+
+	std::vector<CMovingBitmap> player1_target = { player2, brick };
+	std::vector<CMovingBitmap> player2_target = { player1, brick };
+	std::vector<CMovingBitmap> player1_floor = { player2 };
+	std::vector<CMovingBitmap> player2_floor = { player1 };
+
+	for (int i = 120; i < 131; i++) {
+		player1_target.push_back(block[i]);
+		player2_target.push_back(block[i]);
+	}
+
+	for (int i = 0; i < 100; i++) {
+		player1_floor.push_back(block[i]);
+		player2_floor.push_back(block[i]);
+	}
+
 	//player1 move
+	// 左右
 	if (_isRightRun == 1)
 	{
-		isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth() + 10, brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth() + 10, player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth());
-		if (!isOverlap && !P1P2isOverlap && player1.GetLeft()<1800 && player2.GetLeft() > 0)
-		{
-			player1.SetTopLeft(player1.GetLeft() + 8, player1.GetTop());
+		if (player1.GetLeft() < 1800 && player2.GetLeft() > 0) {
+			CheckMovable(player1, player1_target, 8, 0);
 		}
-		else
-		{
+		else {
 			player1.SetTopLeft(player1.GetLeft(), player1.GetTop());
 		}
+		
 	}
 	else if (_isLeftRun == 1)
 	{
-		isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft() - 10, player1.GetTop(), player1.GetHeight(), player1.GetWidth(), brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft() - 10, player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth());
-		if (!isOverlap && !P1P2isOverlap && player1.GetLeft() > 0 && player2.GetLeft() < 1800) {
-			player1.SetTopLeft(player1.GetLeft() - 8, player1.GetTop());
+		if (player1.GetLeft() > 0 && player2.GetLeft() < 1800) {
+			CheckMovable(player1, player1_target, -8, 0);
 		}
-		else
-		{
+		else {
 			player1.SetTopLeft(player1.GetLeft(), player1.GetTop());
 		}
+	
 	}
-
+	// 跳躍
 	if (_isP1UpRun && _P1UpTime <= 13)
 	{
 		if (_P1UpTime == 13) //跳到一定高度就掉落
@@ -96,31 +109,33 @@ void CGameStateRun::OnMove()
 			_P1JumpOnce = 0;
 		}
 	}
+	// 向下墜
+	CheckMovable(player1, player1_floor, 0, 10);
+	if (player1.GetTop() > 1024) {
+		player1.SetTopLeft(player1.GetLeft() - 300, 0);
+	}
+	
 
 	//player2 move
 	if (_P2isRightRun == 1)
 	{
-		P2isOverlap = CMovingBitmap::IsOverlap(player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth() + 10, brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth() + 10);
-		if (!P2isOverlap && !P1P2isOverlap && player2.GetLeft() < 1800 && player1.GetLeft() > 0) {
-			player2.SetTopLeft(player2.GetLeft() + 8, player2.GetTop());
+		if (player2.GetLeft() < 1800 && player1.GetLeft() > 0) {
+			CheckMovable(player2, player2_target, 8, 0);
 		}
-		else
-		{
+		else {
 			player2.SetTopLeft(player2.GetLeft(), player2.GetTop());
 		}
+		
 	}
 	else if (_P2isLeftRun == 1)
 	{
-		P2isOverlap = CMovingBitmap::IsOverlap(player2.GetLeft() - 10, player2.GetTop(), player2.GetHeight(), player2.GetWidth(), brick.GetLeft(), brick.GetTop(), brick.GetHeight(), brick.GetWidth());
-		P1P2isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop(), player1.GetHeight(), player1.GetWidth(), player2.GetLeft() - 10, player2.GetTop(), player2.GetHeight(), player2.GetWidth());
-		if (!P2isOverlap && !P1P2isOverlap && player2.GetLeft() > 0 && player1.GetLeft() < 1800) {
-			player2.SetTopLeft(player2.GetLeft() - 8, player2.GetTop());
+		if (player2.GetLeft() > 0  && player1.GetLeft() < 1800) {
+			CheckMovable(player2, player2_target, -8, 0);
 		}
-		else
-		{
+		else {
 			player2.SetTopLeft(player2.GetLeft(), player2.GetTop());
 		}
+		
 	}
 
 	if (_isP2UpRun && _P2UpTime <= 13)
@@ -147,17 +162,28 @@ void CGameStateRun::OnMove()
 			_P2JumpOnce = 0;
 		}
 	}
+	//向下墜
+	CheckMovable(player2, player2_floor, 0, 10);
+	if (player2.GetTop() > 1024) {
+		player2.SetTopLeft(player2.GetLeft() - 300, 0);
+	}
 
 	//畫面移動
 	if (((player1.GetLeft() + player2.GetLeft()) / 2) > 1000 )
 	{
 		background.SetTopLeft(background.GetLeft() - 3, 0);
+		for (int i = 0; i < 131; i++) {
+			block[i].SetTopLeft(block[i].GetLeft() - 3, block[i].GetTop());
+		}
 		player1.SetTopLeft(player1.GetLeft() - 3, player1.GetTop());
 		player2.SetTopLeft(player2.GetLeft() - 3, player2.GetTop());
 	}
 	else if(((player1.GetLeft() + player2.GetLeft()) / 2) < 800)
 	{
 		background.SetTopLeft(background.GetLeft() + 3, 0);
+		for (int i = 0; i < 131; i++) {
+			block[i].SetTopLeft(block[i].GetLeft() + 3, block[i].GetTop());
+		}
 		player1.SetTopLeft(player1.GetLeft() + 3, player1.GetTop());
 		player2.SetTopLeft(player2.GetLeft() + 3, player2.GetTop());
 	}
@@ -191,13 +217,59 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		"resources/player1RightRun3.bmp",
 		"resources/player1RightRun4.bmp"
 		}, RGB(0, 255, 0));
-	player1.SetTopLeft(1020, 823);
-
+	player1.SetTopLeft(1020, 810);
+	
 	player2.LoadBitmapByString({ "resources/giraffe.bmp" });
-	player2.SetTopLeft(900, 843);
+	player2.SetTopLeft(900, 830);
 
 	brick.LoadBitmapByString({ "resources/gray.bmp" });
 	//brick.SetTopLeft(1400, 843);
+
+	//起點牆壁
+	for (int i = 120; i < 131; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(0, 900 - 90 * (i - 120));
+	}
+	//洞洞前的地板
+	for (int i = 0; i < 24; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * i, 900);
+	}
+	//洞洞後的地板
+	for (int i = 24; i < 45; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * (i + 2), 900);
+	}
+	//第一個階梯
+	for (int i = 90; i < 96; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * (41 + i - 90), (900 - 90));
+	}
+	//第二個階梯
+	for (int i = 96; i < 101; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * (42 + i - 96), (900 - 90 * 2));
+	}
+	//移動平台後的地板
+	for (int i = 45; i < 90; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * (i + 7), 900);
+	}
+	//高牆
+	for (int i = 101; i < 106; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * 78, 900 - 90 * (i - 100));
+	}
+	//終點平台
+	for (int i = 106; i < 116; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * (78 + i - 106), 900 - 90 * 6);
+	}
+	//終點牆壁
+	for (int i = 116; i < 120; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 + 90 * 87, 900 - 90 * (i - 109)); 
+	}
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -359,6 +431,9 @@ void CGameStateRun::show_image_by_phase() {
 		player1.ShowBitmap();
 		player2.ShowBitmap();
 		//brick.ShowBitmap();
+		for (int i = 0; i < 131; i++) {
+			block[i].ShowBitmap();
+		}
 	}	
 }
 
