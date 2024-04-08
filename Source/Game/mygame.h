@@ -98,8 +98,8 @@ namespace game_framework {
 		CMovingBitmap background;
 		CMovingBitmap player1;
 		CMovingBitmap player2;
-		CMovingBitmap brick;
 		CMovingBitmap block[1000];
+		CMovingBitmap button;
 
 		void show_image_by_phase();
 		void show_text_by_phase();
@@ -128,9 +128,10 @@ namespace game_framework {
 		bool _P2isLeftRun = 0;
 
 		//重疊
-		bool isOverlap;  //P1判斷重疊物件
-		bool P2isOverlap; //P2判斷重疊物件
 		bool P1P2isOverlap; //判斷角色重疊
+		bool player2isStack;
+		bool player1isStack;
+		bool buttonOverlap;
 
 		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //處理玩家碰撞
 	};
