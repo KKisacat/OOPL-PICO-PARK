@@ -1,4 +1,4 @@
-#include "stdafx.h"
+	#include "stdafx.h"
 #include "../Core/Resource.h"
 #include <mmsystem.h>
 #include <ddraw.h>
@@ -9,7 +9,6 @@
 
 using namespace game_framework;
 
-//還沒實際應用到角色上
 //把所有碰撞寫成fuction
 void CGameStateRun::CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy)
 {
@@ -22,10 +21,23 @@ void CGameStateRun::CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> &
 		if (!isMovable ) {
 			return;
 		}
-		
 	}
 	player.SetTopLeft(player.GetLeft() + dx, player.GetTop() + dy);
+}
 
+//檢查是否可以跳躍
+bool CGameStateRun::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy)
+{
+	bool isMovable;
+
+	for (CMovingBitmap target : targets) //遍歷所有會碰撞到的物件
+	{
+		isMovable = !CMovingBitmap::IsOverlap(player.GetLeft() + dx, player.GetTop() + dy, player.GetHeight(), player.GetWidth(), target.GetLeft(), target.GetTop(), target.GetHeight(), target.GetWidth());
+		if (!isMovable) { //不能走代表碰到地板 碰到地板才能跳
+			return true;
+		}
+	}
+	return false;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -46,7 +58,6 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							
 {
-
 	std::vector<CMovingBitmap> player1_target = { player2, };
 	std::vector<CMovingBitmap> player2_target = { player1, };
 	std::vector<CMovingBitmap> player1_floor = { player2 };
@@ -57,18 +68,10 @@ void CGameStateRun::OnMove()
 		player2_target.push_back(block[i]);
 	}
 
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 101; i++) {
 		player1_floor.push_back(block[i]);
 		player2_floor.push_back(block[i]);
 	}
-
-	//在角色頭上可以一起移動
-	/*P1P2isOverlap = CMovingBitmap::IsOverlap(player1, player2);
-	player2isStack = player1.GetTop() == player2.GetTop() + player2.GetHeight();
-	player1isStack = player2.GetTop() == player1.GetTop() + player1.GetHeight();
-	if (P1P2isOverlap && player2isStack) {
-
-	}*/
 
 	//player1 move
 	// 左右
@@ -101,8 +104,8 @@ void CGameStateRun::OnMove()
 		else {
 			player1.SetTopLeft(player1.GetLeft(), player1.GetTop());
 		}
-	
 	}
+
 	// 跳躍
 	if (_isP1UpRun && _P1UpTime <= 13)
 	{
@@ -113,27 +116,20 @@ void CGameStateRun::OnMove()
 		else
 		{
 			_P1UpTime++;
-			player1.SetTopLeft(player1.GetLeft(), player1.GetTop() - 10);
+			CheckMovable(player1, player1_target, 0, -10);
 		}
 	}
-	else if (!_isP1UpRun) //跳完掉落
+	else if (!_isP1UpRun) //掉落
 	{
-		if (_P1UpTime > 0)
-		{
-			player1.SetTopLeft(player1.GetLeft(), player1.GetTop() + 10);
-			_P1UpTime--;
-		}
-		if (_P1UpTime == 0)
-		{
-			_P1JumpOnce = 0;
-		}
+		_P1UpTime = 0;
+		_P1JumpOnce = !IsJumpable(player1, player1_floor, 0, 1); //不能連跳
+		CheckMovable(player1, player1_floor, 0, 10);	
 	}
-	// 向下墜
-	CheckMovable(player1, player1_floor, 0, 10);
+
+	// 死掉重生
 	if (player1.GetTop() > 1024) {
-		player1.SetTopLeft(player1.GetLeft() - 300, 0);
+		player1.SetTopLeft(player1.GetLeft() - 700, 0);
 	}
-	
 
 	//player2 move
 	if (_P2isRightRun == 1)
@@ -176,25 +172,19 @@ void CGameStateRun::OnMove()
 		else
 		{
 			_P2UpTime++;
-			player2.SetTopLeft(player2.GetLeft(), player2.GetTop() - 10);
+			CheckMovable(player2, player2_target, 0, -10);
 		}
 	}
-	else if (!_isP2UpRun) //跳完掉落
+	else if (!_isP2UpRun) //掉落
 	{
-		if (_P2UpTime > 0)
-		{
-			player2.SetTopLeft(player2.GetLeft(), player2.GetTop() + 10);
-			_P2UpTime--;
-		}
-		if (_P2UpTime == 0)
-		{
-			_P2JumpOnce = 0;
-		}
+		_P2UpTime = 0;
+		_P2JumpOnce = !IsJumpable(player2, player2_floor, 0, 1);
+		CheckMovable(player2, player2_floor, 0, 10);
 	}
-	//向下墜
-	CheckMovable(player2, player2_floor, 0, 10);
+
+	//死亡重生
 	if (player2.GetTop() > 1024) {
-		player2.SetTopLeft(player2.GetLeft() - 300, 0);
+		player2.SetTopLeft(player2.GetLeft() - 700, 0);
 	}
 
 	//按下按鈕
@@ -203,27 +193,24 @@ void CGameStateRun::OnMove()
 	//畫面移動
 	if (((player1.GetLeft() + player2.GetLeft()) / 2) > 1000 )
 	{
-		background.SetTopLeft(background.GetLeft() - 3, 0);
+		background.SetTopLeft(background.GetLeft() - 5, 0);
 		for (int i = 0; i < 131; i++) {
-			block[i].SetTopLeft(block[i].GetLeft() - 3, block[i].GetTop());
+			block[i].SetTopLeft(block[i].GetLeft() - 5, block[i].GetTop());
 		}
-		player1.SetTopLeft(player1.GetLeft() - 3, player1.GetTop());
-		player2.SetTopLeft(player2.GetLeft() - 3, player2.GetTop());
-		button.SetTopLeft(button.GetLeft() - 3, button.GetTop());
+		player1.SetTopLeft(player1.GetLeft() - 5, player1.GetTop());
+		player2.SetTopLeft(player2.GetLeft() - 5, player2.GetTop());
+		button.SetTopLeft(button.GetLeft() - 5, button.GetTop());
 	}
 	else if(((player1.GetLeft() + player2.GetLeft()) / 2) < 800)
 	{
-		background.SetTopLeft(background.GetLeft() + 3, 0);
+		background.SetTopLeft(background.GetLeft() + 5, 0);
 		for (int i = 0; i < 131; i++) {
-			block[i].SetTopLeft(block[i].GetLeft() + 3, block[i].GetTop());
+			block[i].SetTopLeft(block[i].GetLeft() + 5, block[i].GetTop());
 		}
-		player1.SetTopLeft(player1.GetLeft() + 3, player1.GetTop());
-		player2.SetTopLeft(player2.GetLeft() + 3, player2.GetTop());
-		button.SetTopLeft(button.GetLeft() + 3, button.GetTop());
+		player1.SetTopLeft(player1.GetLeft() + 5, player1.GetTop());
+		player2.SetTopLeft(player2.GetLeft() + 5, player2.GetTop());
+		button.SetTopLeft(button.GetLeft() + 5, button.GetTop());
 	}
-
-
-
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -312,7 +299,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == VK_UP) {
 		if (phase > 1 && phase <= 5) {	//關卡
-			if (_P1JumpOnce == 0) //沒跳過才能跳，不然會連跳
+			if (_P1JumpOnce == 0 ) //沒跳過才能跳，不然會連跳
 			{
 				_P1JumpOnce = 1;
 				_isP1UpRun = 1;

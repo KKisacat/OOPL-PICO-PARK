@@ -134,6 +134,7 @@ namespace game_framework {
 		bool buttonOverlap;
 
 		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //³B²zª±®a¸I¼²
+		bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
