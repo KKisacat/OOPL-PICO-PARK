@@ -100,6 +100,8 @@ namespace game_framework {
 		CMovingBitmap player2;
 		CMovingBitmap block[1000];
 		CMovingBitmap button;
+		CMovingBitmap bridge;
+		CMovingBitmap key;
 
 		void show_image_by_phase();
 		void show_text_by_phase();
@@ -132,9 +134,19 @@ namespace game_framework {
 		bool player2isStack;
 		bool player1isStack;
 		bool buttonOverlap;
-
+		bool keyP1Overlap;
+		bool keyP2Overlap;
+		bool bridgeP1Overlap;
+		bool bridgeP2Overlap;
+		
+		//Æ_°Í¸òÀH
+		int staybyPlayer1 = 0;
+		int staybyPlayer2 = 0;
+		
+		//¸I¼²
 		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //³B²zª±®a¸I¼²
 		bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
+
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
