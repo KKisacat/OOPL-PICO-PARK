@@ -102,9 +102,11 @@ namespace game_framework {
 		CMovingBitmap button;
 		CMovingBitmap bridge;
 		CMovingBitmap platform;
+		CMovingBitmap pFlag;
 		CMovingBitmap key;
 		CMovingBitmap door;
 		CMovingBitmap crown[4];
+		CMovingBitmap clear;
 
 		void show_image_by_phase();
 		void show_text_by_phase();
@@ -149,9 +151,6 @@ namespace game_framework {
 		//鑰匙跟隨
 		int staybyPlayer1 = 0;
 		int staybyPlayer2 = 0;
-
-		//平台
-		int platform_height = 0;
 
 		//進大門
 		bool player1Ignore = false;
