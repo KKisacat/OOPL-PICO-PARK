@@ -101,7 +101,9 @@ namespace game_framework {
 		CMovingBitmap block[1000];
 		CMovingBitmap button;
 		CMovingBitmap bridge;
+		CMovingBitmap platform;
 		CMovingBitmap key;
+		CMovingBitmap door;
 
 		void show_image_by_phase();
 		void show_text_by_phase();
@@ -138,10 +140,18 @@ namespace game_framework {
 		bool keyP2Overlap;
 		bool bridgeP1Overlap;
 		bool bridgeP2Overlap;
+		bool platformP1Overlap;
+		bool platformP2Overlap;
+		bool P1onP2isOverlap;
+		bool P2onP1isOverlap;
 		
 		//鑰匙跟隨
 		int staybyPlayer1 = 0;
 		int staybyPlayer2 = 0;
+
+		//平台
+		int platform_height = 0;
+
 		
 		//碰撞
 		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //處理玩家碰撞
