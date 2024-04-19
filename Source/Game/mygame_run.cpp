@@ -360,8 +360,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	pFlag.SetAnimation(1000, true);
 	pFlag.SetFrameIndexOfBitmap(2);
 
-	key.LoadBitmapByString({ "resources/key.bmp", "resources/key_ignore.bmp"}, RGB(255, 255, 255));
+	key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
 	key.SetTopLeft(90 * 71, 360);
+	key.SetAnimation(300, false);
 
 	door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
 	door.SetTopLeft(90 * 85, 226);
@@ -502,7 +503,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (doorP2isOverlap && staybyPlayer2 == 1) {
 				door.SetFrameIndexOfBitmap(1);
-				key.SetFrameIndexOfBitmap(1);
+				keyIgnore = true;
 			}
 		}
 	}
@@ -517,7 +518,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (doorP1isOverlap && staybyPlayer1 == 1) {
 				door.SetFrameIndexOfBitmap(1);
-				key.SetFrameIndexOfBitmap(1);
+				keyIgnore = true;
 			}
 		}
 		
@@ -621,7 +622,9 @@ void CGameStateRun::show_image_by_phase() {
 		}
 		bridge.ShowBitmap();
 		platform.ShowBitmap();
-		key.ShowBitmap();
+		if (!keyIgnore) {
+			key.ShowBitmap();
+		}
 		
 	}
 	if (player1Ignore && player2Ignore) {

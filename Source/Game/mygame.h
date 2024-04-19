@@ -151,6 +151,7 @@ namespace game_framework {
 		//Æ_°Í¸òÀH
 		int staybyPlayer1 = 0;
 		int staybyPlayer2 = 0;
+		bool keyIgnore = false;
 
 		//¶i¤jªù
 		bool player1Ignore = false;
