@@ -238,23 +238,35 @@ void CGameStateRun::OnMove()
 	P2onP1isOverlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop() - 10, player1.GetHeight(), player1.GetWidth(), player2.GetLeft(), player2.GetTop(), player2.GetHeight(), player2.GetWidth());
 	platformP1Overlap = CMovingBitmap::IsOverlap(player1.GetLeft(), player1.GetTop() + 10, player1.GetHeight(), player1.GetWidth(), platform.GetLeft(), platform.GetTop(), platform.GetHeight(), platform.GetWidth());
 	platformP2Overlap = CMovingBitmap::IsOverlap(player2.GetLeft(), player2.GetTop() + 10, player2.GetHeight(), player2.GetWidth(), platform.GetLeft(), platform.GetTop(), platform.GetHeight(), platform.GetWidth());
-	if ( (platformP1Overlap && platformP2Overlap) || (P2onP1isOverlap && platformP1Overlap) || (P1onP2isOverlap && platformP2Overlap)) {
+	if ((platformP1Overlap && platformP2Overlap) || (P2onP1isOverlap && platformP1Overlap) || (P1onP2isOverlap && platformP2Overlap)) {
 		//平台上升
-		if (platform.GetTop() > 400) {
+		if (platform.GetTop() > 370) {
 			platform.SetTopLeft(platform.GetLeft(), platform.GetTop() - 3);
+			pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() - 3);
 			CheckMovable(player1, player1_floor, 0, -3);
 			CheckMovable(player2, player2_floor, 0, -3);
 		}
+		pFlag.SetFrameIndexOfBitmap(0);
 	}
 	else {
 		//平台下降
 		if (platform.GetTop() < 830) {
-			
+			if (!IsJumpable(platform, platform_block, 0, 3)) {
+				//偷用別的函式，如果平台碰到障礙物不動會回傳ture，讓旗子也不動。反之持續下降會回傳false，旗子也下降。
+				pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() + 3);
+			}
 			CheckMovable(platform, platform_block, 0, 3);
 			CheckMovable(player1, player1_floor, 0, 3);
 			CheckMovable(player2, player2_floor, 0, 3);
 		}
+		if (platformP1Overlap || platformP2Overlap) {
+			pFlag.SetFrameIndexOfBitmap(1);
+		}
+		else {
+			pFlag.SetFrameIndexOfBitmap(2);
+		}
 	}
+
 
 	//大門
 	doorP1isOverlap = CMovingBitmap::IsOverlap(player1, door);
@@ -274,6 +286,7 @@ void CGameStateRun::OnMove()
 		bridge.SetTopLeft(bridge.GetLeft() - 5, bridge.GetTop());
 		key.SetTopLeft(key.GetLeft() - 5, key.GetTop());
 		platform.SetTopLeft(platform.GetLeft() - 5, platform.GetTop());
+		pFlag.SetTopLeft(pFlag.GetLeft() - 5, pFlag.GetTop());
 		door.SetTopLeft(door.GetLeft() - 5, door.GetTop());
 	}
 	else if(((player1.GetLeft() + player2.GetLeft()) / 2) < 800)
@@ -288,6 +301,7 @@ void CGameStateRun::OnMove()
 		bridge.SetTopLeft(bridge.GetLeft() + 5, bridge.GetTop());
 		key.SetTopLeft(key.GetLeft() + 5, key.GetTop());
 		platform.SetTopLeft(platform.GetLeft() + 5, platform.GetTop());
+		pFlag.SetTopLeft(pFlag.GetLeft() + 5, pFlag.GetTop());
 		door.SetTopLeft(door.GetLeft() + 5, door.GetTop());
 	}
 }
@@ -333,13 +347,22 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	button.SetAnimation(1000, true);
 
 	bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
-	bridge.SetTopLeft(90 * 53, 900);
+	bridge.SetTopLeft(90 * 54 - 30, 900);
 
-	platform.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
-	platform.SetTopLeft(90 * 73, 830);
+	platform.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
+	platform.SetTopLeft(90 * 73 + 50, 830);
+	pFlag.LoadBitmapByString({
+		"resources/pFlag0.bmp",
+		"resources/pFlag1.bmp",
+		"resources/pFlag2.bmp"
+		}, RGB(255, 255, 255));
+	pFlag.SetTopLeft(90 * 73 + 50, 688);
+	pFlag.SetAnimation(1000, true);
+	pFlag.SetFrameIndexOfBitmap(2);
 
-	key.LoadBitmapByString({ "resources/key.bmp", "resources/key_ignore.bmp"}, RGB(255, 255, 255));
+	key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
 	key.SetTopLeft(90 * 71, 360);
+	key.SetAnimation(300, false);
 
 	door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
 	door.SetTopLeft(90 * 85, 226);
@@ -394,6 +417,9 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
 		block[i].SetTopLeft(90 + 90 * 87, 900 - 90 * (i - 109)); 
 	}
+
+	clear .LoadBitmapByString({ "resources/clear.bmp" }, RGB(0, 255, 0));
+	clear.SetTopLeft(-262, 430);
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -477,7 +503,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (doorP2isOverlap && staybyPlayer2 == 1) {
 				door.SetFrameIndexOfBitmap(1);
-				key.SetFrameIndexOfBitmap(1);
+				keyIgnore = true;
 			}
 		}
 	}
@@ -492,7 +518,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 			if (doorP1isOverlap && staybyPlayer1 == 1) {
 				door.SetFrameIndexOfBitmap(1);
-				key.SetFrameIndexOfBitmap(1);
+				keyIgnore = true;
 			}
 		}
 		
@@ -585,6 +611,7 @@ void CGameStateRun::show_image_by_phase() {
 			button.SetFrameIndexOfBitmap(1);
 		}
 		button.ShowBitmap();
+		pFlag.ShowBitmap();
 		door.ShowBitmap();
 		if (!player1Ignore) 
 			player1.ShowBitmap();
@@ -595,18 +622,25 @@ void CGameStateRun::show_image_by_phase() {
 		}
 		bridge.ShowBitmap();
 		platform.ShowBitmap();
-		key.ShowBitmap();
+		if (!keyIgnore) {
+			key.ShowBitmap();
+		}
 		
 	}
 	if (player1Ignore && player2Ignore) {
-		phase = 1;
-		crown[0].ShowBitmap();
+		clear.ShowBitmap();
+		if (clear.GetLeft() < 2101) {
+			clear.SetTopLeft(clear.GetLeft() + 10, 430);
+		}
+		else if (clear.GetLeft() > 2101) {
+			phase = 1;
+			crown[0].ShowBitmap();
+		}
 	}
-
 }
 
 void CGameStateRun::show_text_by_phase() {
-	
+
 }
 
 bool CGameStateRun::validate_phase_1() {
