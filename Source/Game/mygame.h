@@ -38,6 +38,7 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 
+#include "Character.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -96,8 +97,16 @@ namespace game_framework {
 		int sub_phase = 1;
 		CMovingBitmap catalog; //¥Ø¿ý
 		CMovingBitmap background;
-		CMovingBitmap player1;
-		CMovingBitmap player2;
+		Character character1 = Character({ "resources/player1Rightstand.bmp",
+			"resources/player1RightRun1.bmp",
+			"resources/player1RightRun2.bmp",
+			"resources/player1RightRun3.bmp",
+			"resources/player1RightRun4.bmp" }, "Blue", 1020, 810);
+		Character character2 = Character({ "resources/player2Rightstand.bmp",
+			"resources/player2RightRun1.bmp",
+			"resources/player2RightRun2.bmp",
+			"resources/player2RightRun3.bmp",
+			"resources/player2RightRun4.bmp" }, "Pink", 900, 810);
 		CMovingBitmap block[1000];
 		CMovingBitmap button;
 		CMovingBitmap bridge;
