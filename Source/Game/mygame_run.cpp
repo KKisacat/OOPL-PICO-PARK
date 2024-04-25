@@ -144,7 +144,7 @@ void CGameStateRun::OnMove()
 	//橋
 	if (button.GetFrameIndexOfBitmap() == 1) {
 		if (block[45].GetLeft() - bridge.GetLeft() < 550) {
-			bridgeP1Overlap = CMovingBitmap::IsOverlap(character2.image, bridge);
+			bridgeP1Overlap = CMovingBitmap::IsOverlap(character1.image, bridge);
 			bridgeP2Overlap = CMovingBitmap::IsOverlap(character2.image, bridge);
 			if (bridgeP1Overlap) {
 				character1.image.SetTopLeft(character1.image.GetLeft() - 3, character1.image.GetTop() + 10);
@@ -167,6 +167,7 @@ void CGameStateRun::OnMove()
 	if (staybyPlayer1 == 1) {
 		key.SetTopLeft(character1.image.GetLeft() - 70, character1.image.GetTop() - 80);
 	}
+
 	if (keyP2Overlap) {
 		staybyPlayer2 = 1;
 		staybyPlayer1 = 0;
@@ -174,6 +175,7 @@ void CGameStateRun::OnMove()
 	if (staybyPlayer2 == 1) {
 		key.SetTopLeft(character2.image.GetLeft() - 70, character2.image.GetTop() - 80);
 	}
+
 
 
 	//平台
@@ -253,10 +255,10 @@ void CGameStateRun::OnMove()
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	background.LoadBitmapByString({
-		"resources/phase21_background.bmp",
-		"resources/phase31_background.bmp",
-		"resources/phase41_background.bmp",
-		"resources/phase51_background.bmp"
+		"resources/map1_background.bmp",
+		"resources/map2_background.bmp",
+		"resources/map3_background.bmp",
+		"resources/map4_background.bmp"
 		});
 	background.SetTopLeft(0, 0);
 
@@ -274,7 +276,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 	button.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
 	button.SetTopLeft(90 * 56, 859);
-	button.SetAnimation(1000, true);
+	button.SetFrameIndexOfBitmap(0);
 
 	bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
 	bridge.SetTopLeft(90 * 54 - 30, 900);
@@ -296,6 +298,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 	door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
 	door.SetTopLeft(90 * 85, 226);
+	door.SetFrameIndexOfBitmap(0);
 
 	for (int i = 0; i < 4; i++) {
 		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
@@ -429,7 +432,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
 			if (door.GetFrameIndexOfBitmap() == 1&& doorP2isOverlap) {
-				player2Ignore = true;
+				character2.characterIgnore = true;
 			}
 			if (doorP2isOverlap && staybyPlayer2 == 1) {
 				door.SetFrameIndexOfBitmap(1);
@@ -444,7 +447,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
 			if (door.GetFrameIndexOfBitmap() == 1 && doorP1isOverlap) {
-				player1Ignore = true;
+				character1.characterIgnore = true;
 			}
 			if (doorP1isOverlap && staybyPlayer1 == 1) {
 				door.SetFrameIndexOfBitmap(1);
@@ -534,7 +537,7 @@ void CGameStateRun::show_image_by_phase() {
 		catalog.SetFrameIndexOfBitmap(sub_phase - 1);
 		catalog.ShowBitmap();
 	}
-	if (phase > 1 && phase <= 5) {
+	if (phase == 2) {
 		background.SetFrameIndexOfBitmap(phase - 2);
 		background.ShowBitmap();
 		if (buttonOverlap) {
@@ -545,10 +548,8 @@ void CGameStateRun::show_image_by_phase() {
 		door.ShowBitmap();
 
 		character1.OnShow();
-		if (!player1Ignore) 
-			character1.image.ShowBitmap();
-		if (!player2Ignore)
-			character2.image.ShowBitmap();
+		character2.OnShow();
+		
 		for (int i = 0; i < 131; i++) {
 			block[i].ShowBitmap();
 		}
@@ -559,15 +560,36 @@ void CGameStateRun::show_image_by_phase() {
 		}
 		
 	}
-	if (player1Ignore && player2Ignore) {
+	if (character1.characterIgnore && character2.characterIgnore) {
 		clear.ShowBitmap();
 		if (clear.GetLeft() < 2101) {
 			clear.SetTopLeft(clear.GetLeft() + 10, 430);
 		}
 		else if (clear.GetLeft() > 2101) {
-			phase = 1;
 			crown[0].ShowBitmap();
+			phase = 1;
+			character1.characterIgnore = false;
+			character2.characterIgnore = false;
+			keyIgnore = false;
+			staybyPlayer1 = 0;
+			staybyPlayer2 = 0;
+			OnInit();
 		}
+	}
+	if (phase == 3) {
+		background.SetFrameIndexOfBitmap(phase - 2);
+		background.ShowBitmap();
+
+	}
+	if (phase == 4) {
+		background.SetFrameIndexOfBitmap(phase - 2);
+		background.ShowBitmap();
+
+	}
+	if (phase == 5) {
+		background.SetFrameIndexOfBitmap(phase - 2);
+		background.ShowBitmap();
+
 	}
 }
 

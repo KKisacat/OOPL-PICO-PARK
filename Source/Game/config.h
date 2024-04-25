@@ -2,7 +2,7 @@
 // 定義遊戲可設定的環境與條件
 /////////////////////////////////////////////////////////////////////////////
 
-#define GAME_TITLE           "Game"
+#define GAME_TITLE           "PICO PARK"
 #define SIZE_X				 1920    	// 設定遊戲畫面的解析度為640x480
 #define SIZE_Y				 1024		// 註：若不使用標準的解析度，則不能切換到全螢幕
 #define OPEN_AS_FULLSCREEN	 false		// 是否以全螢幕方式開啟遊戲

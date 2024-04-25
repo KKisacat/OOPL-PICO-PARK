@@ -14,7 +14,8 @@ void Character::OnInit() {
 }
 
 void Character::OnShow() {
-	image.ShowBitmap();
+	if (!characterIgnore)
+		image.ShowBitmap();
 }
 
 //©¹¥k¨«
