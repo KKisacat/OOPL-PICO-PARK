@@ -59,7 +59,7 @@ void CGameStateRun::OnBeginState()
 void CGameStateRun::OnMove()							
 {
 	std::vector<CMovingBitmap> player1_wall = { character2.image, bridge, platform, block[23], block[24], block[45], block[90], block[95], block[96], block[100] };
-	std::vector<CMovingBitmap> player2_wall = { character1.image, bridge, platform, block[23], block[24], block[45], block[90], block[95], block[96], block[100] };
+	std::vector<CMovingBitmap> player2_wall = { character1.image, bridge, platform, block[23], block[24], block[45], block[90], block[95], block[96], block[100] };   //block[23], block[24], block[45], block[90], block[95], block[96], block[100]
 	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform };
 	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform };
 	std::vector<CMovingBitmap> platform_block = { character1.image, character2.image };
@@ -86,7 +86,6 @@ void CGameStateRun::OnMove()
 
 	character1.SetWallAndFloor(player1_wall, player1_floor);
 	character2.SetWallAndFloor(player2_wall, player2_floor);
-
 
 	//player1 move
 	// 左右
@@ -273,82 +272,51 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	character1.OnInit();
 	character2.OnInit();
 
+	//第一關
+	if (phase <= 2)
+	{
+		button.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
+		button.SetTopLeft(90 * 56, 859);
+		button.SetFrameIndexOfBitmap(0);
 
-	button.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
-	button.SetTopLeft(90 * 56, 859);
-	button.SetFrameIndexOfBitmap(0);
+		bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
+		bridge.SetTopLeft(90 * 54 - 30, 900);
 
-	bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
-	bridge.SetTopLeft(90 * 54 - 30, 900);
+		platform.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
+		platform.SetTopLeft(90 * 73 + 50, 830);
+		pFlag.LoadBitmapByString({
+			"resources/pFlag0.bmp",
+			"resources/pFlag1.bmp",
+			"resources/pFlag2.bmp"
+			}, RGB(255, 255, 255));
+		pFlag.SetTopLeft(90 * 73 + 50, 688);
+		pFlag.SetAnimation(1000, true);
+		pFlag.SetFrameIndexOfBitmap(2);
 
-	platform.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
-	platform.SetTopLeft(90 * 73 + 50, 830);
-	pFlag.LoadBitmapByString({
-		"resources/pFlag0.bmp",
-		"resources/pFlag1.bmp",
-		"resources/pFlag2.bmp"
-		}, RGB(255, 255, 255));
-	pFlag.SetTopLeft(90 * 73 + 50, 688);
-	pFlag.SetAnimation(1000, true);
-	pFlag.SetFrameIndexOfBitmap(2);
+		key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
+		key.SetTopLeft(90 * 71, 360);
+		key.SetAnimation(300, false);
 
-	key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
-	key.SetTopLeft(90 * 71, 360);
-	key.SetAnimation(300, false);
+		door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
+		door.SetTopLeft(90 * 85, 226);
+		door.SetFrameIndexOfBitmap(0);
+		maps.SetMap1Block();
+	}
 
-	door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
-	door.SetTopLeft(90 * 85, 226);
-	door.SetFrameIndexOfBitmap(0);
+	else if (phase == 3) {
+		for (int i = 0; i < 500; ++i) {
+			block[i] = CMovingBitmap(); // 使用預設建構式
+		}
+		maps = Map(block);
+		maps.SetMap2Block();
+		door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
+		door.SetTopLeft(1120, 810);
+		door.SetFrameIndexOfBitmap(0);
+	}
 
 	for (int i = 0; i < 4; i++) {
 		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
 		crown[i].SetTopLeft(270 + i * 300, 270);
-	}
-	
-	//起點牆壁
-	for (int i = 120; i < 131; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(0, 900 - 90 * (i - 120));
-	}
-	//洞洞前的地板
-	for (int i = 0; i < 24; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * i, 900);
-	}
-	//洞洞後的地板
-	for (int i = 24; i < 45; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * (i + 2), 900);
-	}
-	//第一個階梯
-	for (int i = 90; i < 96; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * (41 + i - 90), (900 - 90));
-	}
-	//第二個階梯
-	for (int i = 96; i < 101; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * (42 + i - 96), (900 - 90 * 2));
-	}
-	//移動平台後的地板
-	for (int i = 45; i < 90; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * (i + 8), 900);
-	}
-	//高牆
-	for (int i = 101; i < 106; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * 78, 900 - 90 * (i - 100));
-	}
-	//終點平台
-	for (int i = 106; i < 116; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * (78 + i - 106), 900 - 90 * 6);
-	}
-	//終點牆壁
-	for (int i = 116; i < 120; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 + 90 * 87, 900 - 90 * (i - 109)); 
 	}
 
 	clear .LoadBitmapByString({ "resources/clear.bmp" }, RGB(0, 255, 0));
@@ -444,6 +412,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_RETURN) {
 		if (phase == 1) { // phase1為目錄
 			phase = sub_phase + 1; // 選擇關卡
+			OnInit();
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
 			if (door.GetFrameIndexOfBitmap() == 1 && doorP1isOverlap) {
@@ -454,20 +423,6 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				keyIgnore = true;
 			}
 		}
-		
-
-		/*
-		else if (phase == 2) {
-			ResetMovingTime();
-			if (sub_phase == 1) {
-				sub_phase += validate_phase_2();
-			}
-			else if (sub_phase == 2) {
-				sub_phase = 1;
-				phase += 1;
-			}
-		}
-		*/
 	}
 }
 
@@ -536,8 +491,11 @@ void CGameStateRun::show_image_by_phase() {
 	if (phase == 1) {
 		catalog.SetFrameIndexOfBitmap(sub_phase - 1);
 		catalog.ShowBitmap();
+		if (level_one_completed) {
+			crown[0].ShowBitmap();
+		}
 	}
-	if (phase == 2) {
+	else if (phase == 2) {
 		background.SetFrameIndexOfBitmap(phase - 2);
 		background.ShowBitmap();
 		if (buttonOverlap) {
@@ -560,13 +518,21 @@ void CGameStateRun::show_image_by_phase() {
 		}
 		
 	}
+	else if (phase == 3) {
+		background.SetFrameIndexOfBitmap(phase - 2);
+		background.ShowBitmap();
+		door.ShowBitmap();
+		character1.OnShow();
+		character2.OnShow();
+	}
+
 	if (character1.characterIgnore && character2.characterIgnore) {
 		clear.ShowBitmap();
 		if (clear.GetLeft() < 2101) {
 			clear.SetTopLeft(clear.GetLeft() + 10, 430);
 		}
 		else if (clear.GetLeft() > 2101) {
-			crown[0].ShowBitmap();
+			level_one_completed = true;
 			phase = 1;
 			character1.characterIgnore = false;
 			character2.characterIgnore = false;
@@ -575,11 +541,6 @@ void CGameStateRun::show_image_by_phase() {
 			staybyPlayer2 = 0;
 			OnInit();
 		}
-	}
-	if (phase == 3) {
-		background.SetFrameIndexOfBitmap(phase - 2);
-		background.ShowBitmap();
-
 	}
 	if (phase == 4) {
 		background.SetFrameIndexOfBitmap(phase - 2);
@@ -596,42 +557,3 @@ void CGameStateRun::show_image_by_phase() {
 void CGameStateRun::show_text_by_phase() {
 
 }
-
-bool CGameStateRun::validate_phase_1() {
-	return character1.image.GetImageFileName() == "resources/giraffe.bmp";
-}
-
-bool CGameStateRun::validate_phase_2() {
-	return character1.image.GetTop() > 204 && character1.image.GetTop() < 325 && character1.image.GetLeft() > 339 && character1.image.GetLeft() < 459;
-}
-
-/*
-bool CGameStateRun::validate_phase_3() {
-	
-	return (
-		
-		player1.GetTop() + player1.GetHeight() >= chest_and_key.GetTop()
-		&& player1.GetLeft() + player1.GetWidth() >= chest_and_key.GetLeft()
-		&& chest_and_key.GetFrameIndexOfBitmap() == 1
-		&& chest_and_key.GetFilterColor() == RGB(255, 255, 255)
-	);
-}
-
-bool CGameStateRun::validate_phase_4() {
-	return bee.IsAnimation() && bee.GetFrameSizeOfBitmap() == 2;
-}
-
-bool CGameStateRun::validate_phase_5() {
-	
-	bool check_all_door_is_open = true;
-	for (int i = 0; i < 3; i++) {
-		check_all_door_is_open &= (door[i].GetFrameIndexOfBitmap() == 1);
-	}
-	return check_all_door_is_open;
-	
-}
-
-bool CGameStateRun::validate_phase_6() {
-	return ball.IsAnimationDone() && !ball.IsAnimation() && ball.GetFrameIndexOfBitmap() == ball.GetFrameSizeOfBitmap() - 1;
-}
-*/

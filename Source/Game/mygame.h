@@ -39,6 +39,7 @@
 */
 
 #include "Character.h"
+#include "Map.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -107,7 +108,8 @@ namespace game_framework {
 			"resources/player2RightRun2.bmp",
 			"resources/player2RightRun3.bmp",
 			"resources/player2RightRun4.bmp" }, "Pink", 900, 810);
-		CMovingBitmap block[1000];
+		CMovingBitmap block[500];
+		Map maps = Map(block);
 		CMovingBitmap button;
 		CMovingBitmap bridge;
 		CMovingBitmap platform;
@@ -169,6 +171,10 @@ namespace game_framework {
 		//碰撞
 		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //處理玩家碰撞
 		bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
+
+		//通關
+		bool level_one_completed = 0;
+
 
 	};
 
