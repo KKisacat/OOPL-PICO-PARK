@@ -97,7 +97,6 @@ namespace game_framework {
 		int phase = 1;
 		int sub_phase = 1;
 		CMovingBitmap catalog; //目錄
-		CMovingBitmap background;
 		Character character1 = Character({ "resources/player1Rightstand.bmp",
 			"resources/player1RightRun1.bmp",
 			"resources/player1RightRun2.bmp",
@@ -108,72 +107,20 @@ namespace game_framework {
 			"resources/player2RightRun2.bmp",
 			"resources/player2RightRun3.bmp",
 			"resources/player2RightRun4.bmp" }, "Pink", 900, 810);
-		CMovingBitmap block[500];
-		Map maps = Map(block);
-		CMovingBitmap button;
-		CMovingBitmap bridge;
-		CMovingBitmap platform;
-		CMovingBitmap pFlag;
-		CMovingBitmap key;
-		CMovingBitmap door;
+		Map maps = Map();
+
 		CMovingBitmap crown[4];
-		CMovingBitmap clear;
 
 		void show_image_by_phase();
 		void show_text_by_phase();
-		bool validate_phase_1();
-		bool validate_phase_2();
-		bool validate_phase_3();
-		bool validate_phase_4();
-		bool validate_phase_5();
-		bool validate_phase_6();
-
-		//跳躍
-		int _P1UpTime = 0; 
-		bool _isP1UpRun = 0;
-		bool _P1JumpOnce = 0;
-		int _P2UpTime = 0;
-		bool _isP2UpRun = 0;
-		bool _P2JumpOnce = 0;
 
 		//卷軸
 		int _mapMove = 0;
 
-		//行走
-		bool _isRightRun = 0;
-		bool _isLeftRun = 0;
-		bool _P2isRightRun = 0;
-		bool _P2isLeftRun = 0;
-
-
-		//重疊 
-		bool buttonOverlap;
-		bool keyP1Overlap;
-		bool keyP2Overlap;
-		bool bridgeP1Overlap;
-		bool bridgeP2Overlap;
-		bool platformP1Overlap;
-		bool platformP2Overlap;
-		bool P1onP2isOverlap;
-		bool P2onP1isOverlap;
-		bool doorP1isOverlap;
-		bool doorP2isOverlap;
-		
-		//鑰匙跟隨
-		int staybyPlayer1 = 0;
-		int staybyPlayer2 = 0;
-		bool keyIgnore = false;
-
-		//進大門
-		bool player1Ignore = false;
-		bool player2Ignore = false;
 		
 		//碰撞
 		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //處理玩家碰撞
 		bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
-
-		//通關
-		bool level_one_completed = 0;
 
 
 	};

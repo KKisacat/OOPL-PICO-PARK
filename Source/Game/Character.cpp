@@ -26,10 +26,10 @@ void Character::TryMoveRight(Character &other) {
 			this->image.GetLeft(), this->image.GetTop() - 8, this->image.GetHeight(), this->image.GetWidth(), 
 			other.image.GetLeft(), other.image.GetTop(), other.image.GetHeight(), other.image.GetWidth()
 		);
-		if (characterIsOverlap && !IsJumpable(this->image, this->wall, 8, 0)) { //防止變成跑步機
-			CheckMovable(other.image, other.wall, 8, 0);
+		if (characterIsOverlap && !IsJumpable(this->image, this->blocks, 8, 0)) { //防止變成跑步機
+			CheckMovable(other.image, other.blocks, 8, 0);
 		}
-		CheckMovable(this->image, this->wall, 8, 0);
+		CheckMovable(this->image, this->blocks, 8, 0);
 	}
 }
 
@@ -40,10 +40,10 @@ void Character::TryMoveLeft(Character &other) {
 			this->image.GetLeft(), this->image.GetTop() - 8, this->image.GetHeight(), this->image.GetWidth(),
 			other.image.GetLeft(), other.image.GetTop(), other.image.GetHeight(), other.image.GetWidth()
 		);
-		if (characterIsOverlap && !IsJumpable(this->image, this->wall, -8, 0)) {
-			CheckMovable(other.image, other.wall, -8, 0);
+		if (characterIsOverlap && !IsJumpable(this->image, this->blocks, -8, 0)) {
+			CheckMovable(other.image, other.blocks, -8, 0);
 		}
-		CheckMovable(this->image, this->wall, -8, 0);
+		CheckMovable(this->image, this->blocks, -8, 0);
 	}
 }
 
@@ -56,15 +56,15 @@ void Character::TryMoveUp() {
 	else
 	{
 		this->upTime++;
-		CheckMovable(this->image, this->wall, 0, -10);
+		CheckMovable(this->image, this->blocks, 0, -10);
 	}
 }
 
 //掉落
 void Character::TryFall() {
 	this->upTime = 0;
-	this->checkJumpble = IsJumpable(this->image, this->floor, 0, 10); //不能連跳
-	CheckMovable(this->image, this->floor, 0, 10);
+	this->checkJumpble = IsJumpable(this->image, this->blocks, 0, 10); //不能連跳
+	CheckMovable(this->image, this->blocks, 0, 10);
 }
 
 //把所有碰撞寫成fuction
@@ -97,7 +97,6 @@ bool Character::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targe
 	return false;
 }
 
-void Character::SetWallAndFloor(vector<CMovingBitmap> wall, vector<CMovingBitmap> floor) {
-	this->wall = wall;
-	this->floor = floor;
+void Character::SetWallAndFloor(vector<CMovingBitmap> blocks) {
+	this->blocks = blocks;
 }
