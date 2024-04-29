@@ -19,20 +19,14 @@ public:
 	int upTime = 0;
 	bool isUpRun = 0;
 	bool checkJumpble = 1; //不能連跳
-	//重疊
-	bool buttonOverlap;
-	bool keyOverlap;
-	bool bridgeOverlap;
-	bool platformOverlap;
-	bool characterIsOverlap; // 誰在誰頭上
-	bool doorIsOverlap;
-	//鑰匙跟隨
-	int staybyCharacter = 0;
-	//進大門
+	//進大門 角色消失
 	bool characterIgnore = false;
+
+	//重疊
+	bool characterIsOverlap; // 誰在誰頭上
+	
 	//碰撞
-	std::vector<CMovingBitmap> wall;
-	std::vector<CMovingBitmap> floor;
+	std::vector<CMovingBitmap> blocks;
 
 	Character(vector<string> imgPath, string name, int x, int y);
 	void OnInit();
@@ -43,6 +37,6 @@ public:
 	void TryFall();
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
-	void SetWallAndFloor(vector<CMovingBitmap> wall, vector<CMovingBitmap> floor);
+	void SetWallAndFloor(vector<CMovingBitmap> blocks);
 };
 
