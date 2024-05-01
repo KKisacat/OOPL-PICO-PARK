@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "../Library/gameutil.h"
@@ -18,6 +19,7 @@ public:
 	CMovingBitmap key;
 	CMovingBitmap door;
 	CMovingBitmap clear;
+	CMovingBitmap crown[4];
 
 
 	//Æ_°Í
@@ -38,7 +40,7 @@ public:
 	int staybyCharacter1 = 0;
 	int staybyCharacter2 = 0;
 	
-	void OnInit();
+	void OnInit(Character &character1, Character &character2, int phase);
 	void SetMap1Block();
 	void SetMap2Block();
 	void PressButton(Character &character1, Character &character2);
@@ -50,7 +52,7 @@ public:
 
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
-
+	void RefreshWall(Character &character1, Character &character2);
 
 
 

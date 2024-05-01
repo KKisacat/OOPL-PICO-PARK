@@ -109,7 +109,6 @@ namespace game_framework {
 			"resources/player2RightRun4.bmp" }, "Pink", 900, 810);
 		Map maps = Map();
 
-		CMovingBitmap crown[4];
 
 		void show_image_by_phase();
 		void show_text_by_phase();
