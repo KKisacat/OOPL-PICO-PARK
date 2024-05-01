@@ -72,10 +72,14 @@ void Character::CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & tar
 {
 	bool isMovable = true;
 
-	for (CMovingBitmap target : targets) //遍歷所有會碰撞到的物件
+	for (int i = 0; i < (int) targets.size(); i++) //遍歷所有會碰撞到的物件
 	{
+		CMovingBitmap target = targets[i];
 		//如果有任何重疊就不能走，a &= b 是 a = a & b
 		isMovable = !CMovingBitmap::IsOverlap(player.GetLeft() + dx, player.GetTop() + dy, player.GetHeight(), player.GetWidth(), target.GetLeft(), target.GetTop(), target.GetHeight(), target.GetWidth());
+		if (i >= 120 && i < 131) {
+			TRACE("%d %d %d %d\n", i, target.GetLeft(), target.GetTop(), isMovable);
+		}
 		if (!isMovable) {
 			return;
 		}

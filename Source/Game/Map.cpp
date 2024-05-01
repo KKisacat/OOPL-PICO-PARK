@@ -6,7 +6,7 @@ Map::Map() {
 	
 }
 
-void Map::OnInit() {
+void Map::OnInit(Character &character1, Character &character2, int phase) {
 
 	background.LoadBitmapByString({
 	"resources/map1_background.bmp",
@@ -16,8 +16,52 @@ void Map::OnInit() {
 		});
 	background.SetTopLeft(0, 0);
 
+	if (phase <= 2)
+	{
+		button.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
+		button.SetTopLeft(90 * 56, 859);
+		button.SetFrameIndexOfBitmap(0);
 
+		bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
+		bridge.SetTopLeft(90 * 54 - 30, 900);
+
+		platform.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
+		platform.SetTopLeft(90 * 73 + 50, 830);
+		pFlag.LoadBitmapByString({
+			"resources/pFlag0.bmp",
+			"resources/pFlag1.bmp",
+			"resources/pFlag2.bmp"
+			}, RGB(255, 255, 255));
+		pFlag.SetTopLeft(90 * 73 + 50, 688);
+		pFlag.SetAnimation(1000, true);
+		pFlag.SetFrameIndexOfBitmap(2);
+
+		key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
+		key.SetTopLeft(90 * 71, 360);
+		key.SetAnimation(300, false);
+
+		door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
+		door.SetTopLeft(90 * 85, 226);
+		door.SetFrameIndexOfBitmap(0);
+		SetMap1Block();
+	} else if (phase == 3) {
+		SetMap2Block();
+		door.SetTopLeft(1120, 810);
+		door.SetFrameIndexOfBitmap(0);
+	}
+
+	for (int i = 0; i < 4; i++) {
+		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
+		crown[i].SetTopLeft(270 + i * 300, 270);
+	}
+
+	clear.LoadBitmapByString({ "resources/clear.bmp" }, RGB(0, 255, 0));
+	clear.SetTopLeft(-262, 430);
+
+	character1.OnInit();
+	character2.OnInit();
 }
+
 
 void Map::SetMap1Block() {
 	//°_ÂIÀð¾À
@@ -273,4 +317,17 @@ bool Map::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, in
 		}
 	}
 	return false;
+}
+
+void Map::RefreshWall(Character &character1, Character &character2) {
+	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform };
+	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform };
+
+	for (int i = 0; i < 131; i++) {
+		player1_floor.push_back(block[i]);
+		player2_floor.push_back(block[i]);
+	}
+
+	character1.SetWallAndFloor(player1_floor);
+	character2.SetWallAndFloor(player2_floor);
 }
