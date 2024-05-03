@@ -81,14 +81,8 @@ void CGameStateRun::OnMove()
 			character2.image.SetTopLeft(character2.image.GetLeft() - 700, 0);
 		}
 
-		//按按鈕橋出現
-		maps.PressButton(character1, character2);
-
 		//鑰匙跟隨
 		maps.GetKey(character1, character2);
-
-		//平台
-		maps.MovePlatform(character1, character2);
 
 		//大門
 		maps.CheckDoorOverlap(character1, character2);
@@ -97,7 +91,28 @@ void CGameStateRun::OnMove()
 		maps.RollScreen(character1, character2);
 
 		maps.RefreshWall(character1, character2);
+
+		//按按鈕橋出現
+		maps.PressButton(character1, character2);
+
+		//平台
+		maps.MovePlatform(character1, character2);
 	}
+
+	/*
+	if (phase == 2) {
+
+		//按按鈕橋出現
+		maps.PressButton(character1, character2);
+
+		//平台
+		maps.MovePlatform(character1, character2);
+	}
+
+	else if (phase == 3) {
+
+	}
+	*/
 }
 
 
@@ -188,10 +203,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_SPACE) {
 		if (phase == 1) { // phase1為目錄
 			phase = sub_phase + 1; // 選擇關卡
+			OnInit();
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
-			if (maps.door.GetFrameIndexOfBitmap() == 1&& maps.doorP2isOverlap) {
+			if (maps.door.GetFrameIndexOfBitmap() == 1 && maps.doorP2isOverlap) {
 				character2.characterIgnore = true;
+				character2.OnInit();
 			}
 			if (maps.doorP2isOverlap && maps.staybyCharacter2 == 1) {
 				maps.door.SetFrameIndexOfBitmap(1);
@@ -208,6 +225,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if (phase > 1 && phase <= 5) {	//關卡
 			if (maps.door.GetFrameIndexOfBitmap() == 1 && maps.doorP1isOverlap) {
 				character1.characterIgnore = true;
+				character1.OnInit();
 			}
 			if (maps.doorP1isOverlap && maps.staybyCharacter1 == 1) {
 				maps.door.SetFrameIndexOfBitmap(1);
@@ -318,6 +336,8 @@ void CGameStateRun::show_image_by_phase() {
 		maps.door.ShowBitmap();
 		character1.OnShow();
 		character2.OnShow();
+		maps.box1.ShowBitmap();
+		maps.box2.ShowBitmap();
 	}
 
 	if (character1.characterIgnore && character2.characterIgnore) {
@@ -328,9 +348,9 @@ void CGameStateRun::show_image_by_phase() {
 		else if (maps.clear.GetLeft() > 2101) {
 			maps.level_one_completed = true;
 			phase = 1;
+			maps.keyIgnore = false;
 			character1.characterIgnore = false;
 			character2.characterIgnore = false;
-			maps.keyIgnore = false;
 			maps.staybyCharacter1 = 0;
 			maps.staybyCharacter2 = 0;
 			OnInit();
