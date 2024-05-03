@@ -8,6 +8,51 @@ Map::Map() {
 
 void Map::OnInit(Character &character1, Character &character2, int phase) {
 
+	LoadAndResetAllBitmap();
+
+	character1.OnInit();
+	character2.OnInit();
+
+	if (phase == 2)
+	{
+		button.SetTopLeft(90 * 56, 859);
+		button.SetFrameIndexOfBitmap(0);
+
+		bridge.SetTopLeft(90 * 54 - 30, 900);
+
+		platform.SetTopLeft(90 * 73 + 50, 830);
+		
+		pFlag.SetTopLeft(90 * 73 + 50, 688);
+		pFlag.SetAnimation(1000, true);
+		pFlag.SetFrameIndexOfBitmap(2);
+
+		key.SetTopLeft(90 * 71, 360);
+		key.SetAnimation(300, false);
+
+		door.SetTopLeft(90 * 85, 226);
+		door.SetFrameIndexOfBitmap(0);
+
+		SetMap1Block();
+
+	}else if (phase == 3) {
+		SetMap2Block();
+
+		box1.SetTopLeft(400, 95);
+		box1.SetFrameIndexOfBitmap(1);
+		box2.SetTopLeft(1500, 95);
+		box2.SetFrameIndexOfBitmap(2);
+
+	}
+
+	for (int i = 0; i < 4; i++) {
+		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
+		crown[i].SetTopLeft(270 + i * 300, 270);
+	}
+
+	clear.SetTopLeft(-262, 430);
+}
+
+void  Map::LoadAndResetAllBitmap() {
 	background.LoadBitmapByString({
 	"resources/map1_background.bmp",
 	"resources/map2_background.bmp",
@@ -16,51 +61,38 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		});
 	background.SetTopLeft(0, 0);
 
-	if (phase <= 2)
-	{
-		button.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
-		button.SetTopLeft(90 * 56, 859);
-		button.SetFrameIndexOfBitmap(0);
+	clear.LoadBitmapByString({ "resources/clear.bmp" }, RGB(0, 255, 0));
 
-		bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
-		bridge.SetTopLeft(90 * 54 - 30, 900);
+	//第一關
+	button.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
+	button.SetTopLeft(-10000, -10000);
 
-		platform.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
-		platform.SetTopLeft(90 * 73 + 50, 830);
-		pFlag.LoadBitmapByString({
+	bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
+	bridge.SetTopLeft(-10000, -10000);
+
+	platform.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
+	platform.SetTopLeft(-10000, -10000);
+
+	pFlag.LoadBitmapByString({
 			"resources/pFlag0.bmp",
 			"resources/pFlag1.bmp",
 			"resources/pFlag2.bmp"
-			}, RGB(255, 255, 255));
-		pFlag.SetTopLeft(90 * 73 + 50, 688);
-		pFlag.SetAnimation(1000, true);
-		pFlag.SetFrameIndexOfBitmap(2);
+		}, RGB(255, 255, 255));
+	pFlag.SetTopLeft(-10000, -10000);
 
-		key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
-		key.SetTopLeft(90 * 71, 360);
-		key.SetAnimation(300, false);
+	key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
+	key.SetTopLeft(-10000, -10000);
 
-		door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
-		door.SetTopLeft(90 * 85, 226);
-		door.SetFrameIndexOfBitmap(0);
-		SetMap1Block();
-	} else if (phase == 3) {
-		SetMap2Block();
-		door.SetTopLeft(1120, 810);
-		door.SetFrameIndexOfBitmap(0);
-	}
+	door.LoadBitmapByString({ "resources/door.bmp", "resources/door_open.bmp" }, RGB(255, 255, 255));
+	door.SetTopLeft(-10000, -10000);
 
-	for (int i = 0; i < 4; i++) {
-		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
-		crown[i].SetTopLeft(270 + i * 300, 270);
-	}
-
-	clear.LoadBitmapByString({ "resources/clear.bmp" }, RGB(0, 255, 0));
-	clear.SetTopLeft(-262, 430);
-
-	character1.OnInit();
-	character2.OnInit();
+	//第二關
+	box1.LoadBitmapByString({ "resources/box2_0.bmp", "resources/box2_1.bmp" }, RGB(0, 255, 0));
+	box1.SetTopLeft(-10000, -10000);
+	box2.LoadBitmapByString({ "resources/box2_0.bmp", "resources/box2_1.bmp", "resources/box2_2.bmp" }, RGB(0, 255, 0));
+	box2.SetTopLeft(-10000, -10000);
 }
+
 
 
 void Map::SetMap1Block() {
@@ -269,6 +301,8 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		platform.SetTopLeft(platform.GetLeft() - 5, platform.GetTop());
 		pFlag.SetTopLeft(pFlag.GetLeft() - 5, pFlag.GetTop());
 		door.SetTopLeft(door.GetLeft() - 5, door.GetTop());
+		box1.SetTopLeft(box1.GetLeft() - 5, box1.GetTop());
+		box2.SetTopLeft(box2.GetLeft() - 5, box2.GetTop());
 	}
 	else if (((character1.image.GetLeft() + character2.image.GetLeft()) / 2) < 800)
 	{
@@ -284,6 +318,8 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		platform.SetTopLeft(platform.GetLeft() + 5, platform.GetTop());
 		pFlag.SetTopLeft(pFlag.GetLeft() + 5, pFlag.GetTop());
 		door.SetTopLeft(door.GetLeft() + 5, door.GetTop());
+		box1.SetTopLeft(box1.GetLeft() + 5, box1.GetTop());
+		box2.SetTopLeft(box2.GetLeft() + 5, box2.GetTop());
 	}
 }
 
@@ -320,8 +356,8 @@ bool Map::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, in
 }
 
 void Map::RefreshWall(Character &character1, Character &character2) {
-	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform };
-	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform };
+	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2 };
+	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2 };
 
 	for (int i = 0; i < 131; i++) {
 		player1_floor.push_back(block[i]);

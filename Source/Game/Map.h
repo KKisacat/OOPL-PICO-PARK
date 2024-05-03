@@ -20,6 +20,8 @@ public:
 	CMovingBitmap door;
 	CMovingBitmap clear;
 	CMovingBitmap crown[4];
+	CMovingBitmap box1;
+	CMovingBitmap box2;
 
 
 	//Æ_°Í
@@ -41,6 +43,7 @@ public:
 	int staybyCharacter2 = 0;
 	
 	void OnInit(Character &character1, Character &character2, int phase);
+	void LoadAndResetAllBitmap();
 	void SetMap1Block();
 	void SetMap2Block();
 	void PressButton(Character &character1, Character &character2);
