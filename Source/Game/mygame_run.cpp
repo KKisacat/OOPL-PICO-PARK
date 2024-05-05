@@ -29,8 +29,10 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							
 {
-	if (phase >= 2)
-	{
+	maps.RefreshWall(character1, character2);
+
+	if (phase > 1) {
+
 		//player1 move
 		// 左右
 		if (character1.isRightRun)
@@ -52,11 +54,6 @@ void CGameStateRun::OnMove()
 			character1.TryFall();
 		}
 
-		// 死掉重生
-		if (character1.image.GetTop() > 1024) {
-			character1.image.SetTopLeft(character1.image.GetLeft() - 700, 0);
-		}
-
 		//player2 move
 		if (character2.isRightRun)
 		{
@@ -76,21 +73,29 @@ void CGameStateRun::OnMove()
 			character2.TryFall();
 		}
 
-		//墜落向後重生
-		if (character2.image.GetTop() > 1024) {
-			character2.image.SetTopLeft(character2.image.GetLeft() - 700, 0);
-		}
-
 		//鑰匙跟隨
 		maps.GetKey(character1, character2);
-
-		//大門
-		maps.CheckDoorOverlap(character1, character2);
 
 		//畫面移動
 		maps.RollScreen(character1, character2);
 
-		maps.RefreshWall(character1, character2);
+	}
+
+	if (phase == 2)
+	{
+		
+		// 小藍死掉重生
+		if (character1.image.GetTop() > 1024) {
+			character1.image.SetTopLeft(character1.image.GetLeft() - 700, 0);
+		}
+
+		//小紅墜落向後重生
+		if (character2.image.GetTop() > 1024) {
+			character2.image.SetTopLeft(character2.image.GetLeft() - 700, 0);
+		}
+
+		//大門
+		maps.CheckDoorOverlap(character1, character2);
 
 		//按按鈕橋出現
 		maps.PressButton(character1, character2);
@@ -98,21 +103,39 @@ void CGameStateRun::OnMove()
 		//平台
 		maps.MovePlatform(character1, character2);
 	}
+	else if (phase == 3) 
+	{
+		//箱子2掉落
+		maps.TryFallBox();
 
-	/*
-	if (phase == 2) {
+		//推箱子
+		//小藍
+		if (character1.isRightRun)
+		{
+			maps.PushBox(character1, maps.box1, 8);
+			maps.PushBox(character1, maps.box2, 8);
+		}
+		else if (character1.isLeftRun)
+		{
+			maps.PushBox(character1, maps.box1, -8); //box1只放左推就好
+			maps.PushBox(character1, maps.box2, -8);
+		}
+		//小紅
+		if (character2.isRightRun)
+		{
+			maps.PushBox(character2, maps.box1, 88);
+			maps.PushBox(character2, maps.box2, 8);
+		}
+		else if (character2.isLeftRun)
+		{
+			maps.PushBox(character2, maps.box1, -8); //box1只放左推就好
+			maps.PushBox(character2, maps.box2, -8);
+		}
 
-		//按按鈕橋出現
-		maps.PressButton(character1, character2);
-
-		//平台
-		maps.MovePlatform(character1, character2);
 	}
-
-	else if (phase == 3) {
+	else {
 
 	}
-	*/
 }
 
 
@@ -338,6 +361,9 @@ void CGameStateRun::show_image_by_phase() {
 		character2.OnShow();
 		maps.box1.ShowBitmap();
 		maps.box2.ShowBitmap();
+		if (!maps.keyIgnore) {
+			maps.key.ShowBitmap();
+		}
 	}
 
 	if (character1.characterIgnore && character2.characterIgnore) {
