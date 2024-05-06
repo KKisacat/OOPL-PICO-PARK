@@ -42,6 +42,9 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		box2.SetTopLeft(1500, 95);
 		box2.SetFrameIndexOfBitmap(2);
 
+		key.SetTopLeft(300, 550);
+		key.SetAnimation(300, false);
+
 	}
 
 	for (int i = 0; i < 4; i++) {
@@ -89,7 +92,7 @@ void  Map::LoadAndResetAllBitmap() {
 	//第二關
 	box1.LoadBitmapByString({ "resources/box2_0.bmp", "resources/box2_1.bmp" }, RGB(0, 255, 0));
 	box1.SetTopLeft(-10000, -10000);
-	box2.LoadBitmapByString({ "resources/box2_0.bmp", "resources/box2_1.bmp", "resources/box2_2.bmp" }, RGB(0, 255, 0));
+	box2.LoadBitmapByString({ "resources/box2_2.bmp", "resources/box2_2.bmp", "resources/box2_2.bmp" }, RGB(0, 255, 0));
 	box2.SetTopLeft(-10000, -10000);
 }
 
@@ -278,7 +281,32 @@ void Map::MovePlatform(Character &character1, Character &character2) {
 	}
 }
 
+//箱子2掉落
+void Map::TryFallBox() {
 
+	if (box2.GetTop() <= 810) {
+		CheckMovable(box2, box_blocks, 0, 10);
+	}
+
+}
+//推箱子
+void Map::PushBox(Character &character,CMovingBitmap &box, int x) {
+
+	boxisOverlap = CMovingBitmap::IsOverlap(
+		character.image.GetLeft(), character.image.GetTop(), character.image.GetHeight(), character.image.GetWidth(),
+		box.GetLeft() - x, box.GetTop(), box.GetHeight(), box.GetWidth()
+	);
+
+	if (boxisOverlap) {
+		CheckMovable(box, box_blocks, x, 0);
+		box.SetFrameIndexOfBitmap(0);
+	}
+	if (!boxisOverlap) {
+		box.SetFrameIndexOfBitmap(1);
+	}
+}
+
+//進門
 void Map::CheckDoorOverlap(Character &character1, Character &character2) {
 	doorP1isOverlap = CMovingBitmap::IsOverlap(character1.image, door);
 	doorP2isOverlap = CMovingBitmap::IsOverlap(character2.image, door);
@@ -358,10 +386,12 @@ bool Map::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, in
 void Map::RefreshWall(Character &character1, Character &character2) {
 	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2 };
 	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2 };
+	box_blocks = { character1.image, character2.image };
 
 	for (int i = 0; i < 131; i++) {
 		player1_floor.push_back(block[i]);
 		player2_floor.push_back(block[i]);
+		box_blocks.push_back(block[i]);
 	}
 
 	character1.SetWallAndFloor(player1_floor);

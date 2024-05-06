@@ -23,6 +23,7 @@ public:
 	CMovingBitmap box1;
 	CMovingBitmap box2;
 
+	std::vector<CMovingBitmap> box_blocks;
 
 	//∆_∞Õ
 	bool keyIgnore = false;
@@ -38,6 +39,8 @@ public:
 	bool platformP2Overlap;
 	bool doorP1isOverlap;
 	bool doorP2isOverlap;
+	bool boxisOverlap;
+
 	//∆_∞Õ∏Ú¿H
 	int staybyCharacter1 = 0;
 	int staybyCharacter2 = 0;
@@ -51,6 +54,8 @@ public:
 	void MovePlatform(Character &character1, Character &character2);
 	void CheckDoorOverlap(Character &character1, Character &character2);
 	void RollScreen(Character &character1, Character &character2);
+	void TryFallBox();
+	void PushBox(Character &character1,CMovingBitmap &box, int x);
 
 
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
