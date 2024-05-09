@@ -92,7 +92,7 @@ void  Map::LoadAndResetAllBitmap() {
 	//第二關
 	box1.LoadBitmapByString({ "resources/box2_0.bmp", "resources/box2_1.bmp" }, RGB(0, 255, 0));
 	box1.SetTopLeft(-10000, -10000);
-	box2.LoadBitmapByString({ "resources/box2_2.bmp", "resources/box2_2.bmp", "resources/box2_2.bmp" }, RGB(0, 255, 0));
+	box2.LoadBitmapByString({ "resources/box2_0.bmp", "resources/box2_1.bmp", "resources/box2_2.bmp" }, RGB(0, 255, 0));
 	box2.SetTopLeft(-10000, -10000);
 }
 
@@ -289,7 +289,31 @@ void Map::TryFallBox() {
 	}
 
 }
-//推箱子
+
+//推箱子2
+void Map::PushBox2(Character &character1, Character &character2, int x) {
+
+	boxP1isOverlap = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		box2.GetLeft() - x, box2.GetTop(), box2.GetHeight(), box2.GetWidth()
+	);
+	boxP2isOverlap = CMovingBitmap::IsOverlap(
+		character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth(),
+		box2.GetLeft() - x, box2.GetTop(), box2.GetHeight(), box2.GetWidth()
+	);
+	if (boxP1isOverlap && boxP2isOverlap) {
+		CheckMovable(box2, box_blocks, x, 0);
+		box2.SetFrameIndexOfBitmap(0);
+	}
+	else if (boxP1isOverlap || boxP2isOverlap) {
+		box2.SetFrameIndexOfBitmap(1);
+	}
+	else {
+		box2.SetFrameIndexOfBitmap(2);
+	}
+}
+
+//推箱子1人
 void Map::PushBox(Character &character,CMovingBitmap &box, int x) {
 
 	boxisOverlap = CMovingBitmap::IsOverlap(
