@@ -107,6 +107,9 @@ void CGameStateRun::OnMove()
 	{
 		//箱子2掉落
 		maps.TryFallBox();
+		//確保箱子沒被推的時候保持初始
+		maps.box1.SetFrameIndexOfBitmap(1);
+		maps.box2.SetFrameIndexOfBitmap(1);
 
 		//推箱子
 		//小藍
@@ -117,20 +120,29 @@ void CGameStateRun::OnMove()
 		}
 		else if (character1.isLeftRun)
 		{
-			maps.PushBox(character1, maps.box1, -8); //box1只放左推就好
+			maps.PushBox(character1, maps.box1, -8); 
 			maps.PushBox(character1, maps.box2, -8);
 		}
 		//小紅
 		if (character2.isRightRun)
 		{
-			maps.PushBox(character2, maps.box1, 88);
+			maps.PushBox(character2, maps.box1, 8);
 			maps.PushBox(character2, maps.box2, 8);
 		}
 		else if (character2.isLeftRun)
 		{
-			maps.PushBox(character2, maps.box1, -8); //box1只放左推就好
+			maps.PushBox(character2, maps.box1, -8);
 			maps.PushBox(character2, maps.box2, -8);
 		}
+		//兩人的先忽略
+		/*
+		if (character1.isRightRun || character2.isRightRun) {
+			maps.PushBox2(character1, character2, 8);
+		}
+		if (character1.isLeftRun || character2.isLeftRun) {
+			maps.PushBox2(character1, character2, -8);
+		}
+		*/
 
 	}
 	else {

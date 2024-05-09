@@ -40,6 +40,8 @@ public:
 	bool doorP1isOverlap;
 	bool doorP2isOverlap;
 	bool boxisOverlap;
+	bool boxP1isOverlap;
+	bool boxP2isOverlap;
 
 	//∆_∞Õ∏Ú¿H
 	int staybyCharacter1 = 0;
@@ -55,7 +57,8 @@ public:
 	void CheckDoorOverlap(Character &character1, Character &character2);
 	void RollScreen(Character &character1, Character &character2);
 	void TryFallBox();
-	void PushBox(Character &character1,CMovingBitmap &box, int x);
+	void PushBox(Character &character,CMovingBitmap &box, int x);
+	void PushBox2(Character &character1, Character &character2, int x);
 
 
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
