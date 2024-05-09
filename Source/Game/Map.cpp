@@ -20,9 +20,9 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 
 		bridge.SetTopLeft(90 * 54 - 30, 900);
 
-		platform.SetTopLeft(90 * 73 + 50, 830);
+		platform.SetTopLeft(90 * 73 + 80, 830);
 		
-		pFlag.SetTopLeft(90 * 73 + 50, 688);
+		pFlag.SetTopLeft(90 * 73 + 80, 688);
 		pFlag.SetAnimation(1000, true);
 		pFlag.SetFrameIndexOfBitmap(2);
 
@@ -41,15 +41,20 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		box1.SetFrameIndexOfBitmap(1);
 		box2.SetTopLeft(1500, 95);
 		box2.SetFrameIndexOfBitmap(2);
+		box3.SetTopLeft(3000, 685);
+		box3.SetFrameIndexOfBitmap(1);
 
 		key.SetTopLeft(300, 550);
 		key.SetAnimation(300, false);
+
+		door.SetTopLeft(90 * 40, 675);
+		door.SetFrameIndexOfBitmap(0);
 
 	}
 
 	for (int i = 0; i < 4; i++) {
 		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
-		crown[i].SetTopLeft(270 + i * 300, 270);
+		crown[i].SetTopLeft(270 + i * 420, 270);
 	}
 
 	clear.SetTopLeft(-262, 430);
@@ -94,6 +99,8 @@ void  Map::LoadAndResetAllBitmap() {
 	box1.SetTopLeft(-10000, -10000);
 	box2.LoadBitmapByString({ "resources/box2_0.bmp", "resources/box2_1.bmp", "resources/box2_2.bmp" }, RGB(0, 255, 0));
 	box2.SetTopLeft(-10000, -10000);
+	box3.LoadBitmapByString({ "resources/box3_0.bmp", "resources/box3_1.bmp" }, RGB(0, 255, 0));
+	box3.SetTopLeft(-10000, -10000);
 }
 
 
@@ -355,6 +362,7 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		door.SetTopLeft(door.GetLeft() - 5, door.GetTop());
 		box1.SetTopLeft(box1.GetLeft() - 5, box1.GetTop());
 		box2.SetTopLeft(box2.GetLeft() - 5, box2.GetTop());
+		box3.SetTopLeft(box3.GetLeft() - 5, box3.GetTop());
 	}
 	else if (((character1.image.GetLeft() + character2.image.GetLeft()) / 2) < 800)
 	{
@@ -372,6 +380,7 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		door.SetTopLeft(door.GetLeft() + 5, door.GetTop());
 		box1.SetTopLeft(box1.GetLeft() + 5, box1.GetTop());
 		box2.SetTopLeft(box2.GetLeft() + 5, box2.GetTop());
+		box3.SetTopLeft(box3.GetLeft() + 5, box3.GetTop());
 	}
 }
 
@@ -408,8 +417,8 @@ bool Map::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, in
 }
 
 void Map::RefreshWall(Character &character1, Character &character2) {
-	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2 };
-	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2 };
+	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2, box3 };
+	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2, box3 };
 	box_blocks = { character1.image, character2.image };
 
 	for (int i = 0; i < 131; i++) {

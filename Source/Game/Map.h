@@ -22,6 +22,7 @@ public:
 	CMovingBitmap crown[4];
 	CMovingBitmap box1;
 	CMovingBitmap box2;
+	CMovingBitmap box3;
 
 	std::vector<CMovingBitmap> box_blocks;
 
@@ -29,6 +30,7 @@ public:
 	bool keyIgnore = false;
 	//³qÃö
 	bool level_one_completed = 0;
+	bool level_two_completed = 0;
 	//­«Å|
 	bool buttonOverlap;
 	bool keyP1Overlap;

@@ -110,6 +110,7 @@ void CGameStateRun::OnMove()
 		//確保箱子沒被推的時候保持初始
 		maps.box1.SetFrameIndexOfBitmap(1);
 		maps.box2.SetFrameIndexOfBitmap(1);
+		maps.box3.SetFrameIndexOfBitmap(1);
 
 		//推箱子
 		//小藍
@@ -117,22 +118,26 @@ void CGameStateRun::OnMove()
 		{
 			maps.PushBox(character1, maps.box1, 8);
 			maps.PushBox(character1, maps.box2, 8);
+			maps.PushBox(character1, maps.box3, 8);
 		}
 		else if (character1.isLeftRun)
 		{
 			maps.PushBox(character1, maps.box1, -8); 
 			maps.PushBox(character1, maps.box2, -8);
+			maps.PushBox(character1, maps.box3, -8);
 		}
 		//小紅
 		if (character2.isRightRun)
 		{
 			maps.PushBox(character2, maps.box1, 8);
 			maps.PushBox(character2, maps.box2, 8);
+			maps.PushBox(character2, maps.box3, 8);
 		}
 		else if (character2.isLeftRun)
 		{
 			maps.PushBox(character2, maps.box1, -8);
 			maps.PushBox(character2, maps.box2, -8);
+			maps.PushBox(character2, maps.box3, -8);
 		}
 		//兩人的先忽略
 		/*
@@ -143,6 +148,9 @@ void CGameStateRun::OnMove()
 			maps.PushBox2(character1, character2, -8);
 		}
 		*/
+
+		//大門
+		maps.CheckDoorOverlap(character1, character2);
 
 	}
 	else {
@@ -268,6 +276,16 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			}
 		}
 	}
+
+	if (nChar == VK_ESCAPE) {
+		phase = 1;
+		maps.keyIgnore = false;
+		character1.characterIgnore = false;
+		character2.characterIgnore = false;
+		maps.staybyCharacter1 = 0;
+		maps.staybyCharacter2 = 0;
+		OnInit();
+	}
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -338,6 +356,10 @@ void CGameStateRun::show_image_by_phase() {
 		if (maps.level_one_completed) {
 			maps.crown[0].ShowBitmap();
 		}
+		if (maps.level_two_completed) {
+			maps.crown[1].ShowBitmap();
+		}
+
 	}
 	else if (phase == 2) {
 		maps.background.SetFrameIndexOfBitmap(phase - 2);
@@ -360,7 +382,9 @@ void CGameStateRun::show_image_by_phase() {
 		if (!maps.keyIgnore) {
 			maps.key.ShowBitmap();
 		}
-		
+		if (character1.characterIgnore && character2.characterIgnore) {
+			maps.level_one_completed = true;
+		}
 	}
 	else if (phase == 3) {
 		maps.background.SetFrameIndexOfBitmap(phase - 2);
@@ -373,8 +397,12 @@ void CGameStateRun::show_image_by_phase() {
 		character2.OnShow();
 		maps.box1.ShowBitmap();
 		maps.box2.ShowBitmap();
+		maps.box3.ShowBitmap();
 		if (!maps.keyIgnore) {
 			maps.key.ShowBitmap();
+		}
+		if (character1.characterIgnore && character2.characterIgnore) {
+			maps.level_two_completed = true;
 		}
 	}
 
@@ -384,7 +412,6 @@ void CGameStateRun::show_image_by_phase() {
 			maps.clear.SetTopLeft(maps.clear.GetLeft() + 10, 430);
 		}
 		else if (maps.clear.GetLeft() > 2101) {
-			maps.level_one_completed = true;
 			phase = 1;
 			maps.keyIgnore = false;
 			character1.characterIgnore = false;
