@@ -308,16 +308,51 @@ void Map::PushBox2(Character &character1, Character &character2, int x) {
 		character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth(),
 		box2.GetLeft() - x, box2.GetTop(), box2.GetHeight(), box2.GetWidth()
 	);
+	P1P2isOverlap = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft() - x * 2, character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth()
+	);
+	P2P1isOverlap = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		character2.image.GetLeft() - x * 2, character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth()
+	);
 	if (boxP1isOverlap && boxP2isOverlap) {
 		CheckMovable(box2, box_blocks, x, 0);
 		box2.SetFrameIndexOfBitmap(0);
 	}
-	else if (boxP1isOverlap || boxP2isOverlap) {
+	else if (boxP1isOverlap && P1P2isOverlap) {
+		CheckMovable(box2, box_blocks, x, 0);
+		box2.SetFrameIndexOfBitmap(0);
+	}
+	else if (boxP2isOverlap && P2P1isOverlap) {
+		CheckMovable(box2, box_blocks, x, 0);
+		box2.SetFrameIndexOfBitmap(0);
+	}
+}
+
+//推箱子2人換圖
+void Map::PushBox2ChangeImage(Character &character1, Character &character2, int x) {
+
+	boxP1isOverlap = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		box2.GetLeft() - x, box2.GetTop(), box2.GetHeight(), box2.GetWidth()
+	);
+	boxP2isOverlap = CMovingBitmap::IsOverlap(
+		character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth(),
+		box2.GetLeft() - x, box2.GetTop(), box2.GetHeight(), box2.GetWidth()
+	);
+	P2P1isOverlap = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		character2.image.GetLeft() - x * 2, character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth()
+	);
+
+	if (boxP1isOverlap) {
 		box2.SetFrameIndexOfBitmap(1);
 	}
-	else {
-		box2.SetFrameIndexOfBitmap(2);
+	else if (boxP2isOverlap && P2P1isOverlap) {
+		box2.SetFrameIndexOfBitmap(1);
 	}
+
 }
 
 //推箱子1人

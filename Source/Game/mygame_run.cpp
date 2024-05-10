@@ -109,7 +109,7 @@ void CGameStateRun::OnMove()
 		maps.TryFallBox();
 		//確保箱子沒被推的時候保持初始
 		maps.box1.SetFrameIndexOfBitmap(1);
-		maps.box2.SetFrameIndexOfBitmap(1);
+		maps.box2.SetFrameIndexOfBitmap(2);
 		maps.box3.SetFrameIndexOfBitmap(1);
 
 		//推箱子
@@ -117,37 +117,35 @@ void CGameStateRun::OnMove()
 		if (character1.isRightRun)
 		{
 			maps.PushBox(character1, maps.box1, 8);
-			maps.PushBox(character1, maps.box2, 8);
 			maps.PushBox(character1, maps.box3, 8);
+			maps.PushBox2ChangeImage(character1, character2, 8); //Box2換圖片
 		}
 		else if (character1.isLeftRun)
 		{
 			maps.PushBox(character1, maps.box1, -8); 
-			maps.PushBox(character1, maps.box2, -8);
 			maps.PushBox(character1, maps.box3, -8);
+			maps.PushBox2ChangeImage(character1, character2, -8);
 		}
 		//小紅
 		if (character2.isRightRun)
 		{
 			maps.PushBox(character2, maps.box1, 8);
-			maps.PushBox(character2, maps.box2, 8);
 			maps.PushBox(character2, maps.box3, 8);
+			maps.PushBox2ChangeImage(character2, character1, 8);
 		}
 		else if (character2.isLeftRun)
 		{
 			maps.PushBox(character2, maps.box1, -8);
-			maps.PushBox(character2, maps.box2, -8);
 			maps.PushBox(character2, maps.box3, -8);
+			maps.PushBox2ChangeImage(character2, character1, -8);
 		}
-		//兩人的先忽略
-		/*
-		if (character1.isRightRun || character2.isRightRun) {
+		//兩人推箱
+		if (character1.isRightRun && character2.isRightRun) {
 			maps.PushBox2(character1, character2, 8);
 		}
-		if (character1.isLeftRun || character2.isLeftRun) {
+		if (character1.isLeftRun && character2.isLeftRun) {
 			maps.PushBox2(character1, character2, -8);
 		}
-		*/
 
 		//大門
 		maps.CheckDoorOverlap(character1, character2);
