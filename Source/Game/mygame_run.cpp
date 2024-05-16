@@ -151,8 +151,16 @@ void CGameStateRun::OnMove()
 		maps.CheckDoorOverlap(character1, character2);
 
 	}
-	else {
+	else if (phase == 4) {
+		// 小藍死掉重生
+		if (character1.image.GetTop() > 1024) {
+			character1.image.SetTopLeft(character1.image.GetLeft(), 0);
+		}
 
+		//小紅墜落向後重生
+		if (character2.image.GetTop() > 1024) {
+			character2.image.SetTopLeft(character2.image.GetLeft(), 0);
+		}
 	}
 }
 
@@ -357,6 +365,9 @@ void CGameStateRun::show_image_by_phase() {
 		if (maps.level_two_completed) {
 			maps.crown[1].ShowBitmap();
 		}
+		if (maps.level_three_completed) {
+			maps.crown[2].ShowBitmap();
+		}
 
 	}
 	else if (phase == 2) {
@@ -403,6 +414,21 @@ void CGameStateRun::show_image_by_phase() {
 			maps.level_two_completed = true;
 		}
 	}
+	else if (phase == 4) {
+		maps.background.SetFrameIndexOfBitmap(phase - 2);
+		maps.background.ShowBitmap();
+		for (int i = 0; i < 131; i++) {
+			maps.block[i].ShowBitmap();
+		}
+		character1.OnShow();
+		character2.OnShow();
+		if (!maps.keyIgnore) {
+			maps.key.ShowBitmap();
+		}
+		if (character1.characterIgnore && character2.characterIgnore) {
+			maps.level_three_completed = true;
+		}
+	}
 
 	if (character1.characterIgnore && character2.characterIgnore) {
 		maps.clear.ShowBitmap();
@@ -419,11 +445,7 @@ void CGameStateRun::show_image_by_phase() {
 			OnInit();
 		}
 	}
-	if (phase == 4) {
-		maps.background.SetFrameIndexOfBitmap(phase - 2);
-		maps.background.ShowBitmap();
-
-	}
+	
 	if (phase == 5) {
 		maps.background.SetFrameIndexOfBitmap(phase - 2);
 		maps.background.ShowBitmap();

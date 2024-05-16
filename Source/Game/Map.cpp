@@ -51,6 +51,10 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		door.SetFrameIndexOfBitmap(0);
 
 	}
+	else if (phase == 4) {
+		SetMap3Block();
+		character1.image.SetTopLeft(900, 720);
+	}
 
 	for (int i = 0; i < 4; i++) {
 		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
@@ -199,6 +203,60 @@ void Map::SetMap2Block() {
 	for (int i = 111; i < 131; i++) {
 		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
 		block[i].SetTopLeft(90 * 43, 90 * (i - 111));
+	}
+
+}
+
+void Map::SetMap3Block() {
+
+	//輔助用
+	block[130].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+	block[130].SetTopLeft(90 * 11, 900);
+	for (int i = 121; i < 130; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 109), 900);
+	}
+	
+	//起點地板
+	block[0].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+	block[0].SetTopLeft(90 * 10, 900);
+
+	//階梯
+	for (int i = 1; i < 5; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (12 + i), 720 - (90 * i));
+	}
+
+	//二樓
+	for (int i = 5; i < 28; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (12 + i), 270);
+	}
+	//一樓
+	for (int i = 28; i < 58; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 8), 900);
+	}
+	//障礙物
+	block[58].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+	block[58].SetTopLeft(90 * 27, 720);
+
+	//起點牆壁
+	for (int i = 59; i < 70; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90, 90 * (i - 59));
+	}
+	//終點牆壁
+	for (int i = 70; i < 81; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * 49, 90 * (i - 70));
+	}
+
+
+	//多餘的
+	for (int i = 81; i < 121; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(-100, -100);
 	}
 
 }
