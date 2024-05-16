@@ -31,6 +31,7 @@ public:
 	//³qÃö
 	bool level_one_completed = 0;
 	bool level_two_completed = 0;
+	bool level_three_completed = 0;
 	//­«Å|
 	bool buttonOverlap;
 	bool keyP1Overlap;
@@ -55,6 +56,7 @@ public:
 	void LoadAndResetAllBitmap();
 	void SetMap1Block();
 	void SetMap2Block();
+	void SetMap3Block();
 	void PressButton(Character &character1, Character &character2);
 	void GetKey(Character &character1, Character &character2);
 	void MovePlatform(Character &character1, Character &character2);

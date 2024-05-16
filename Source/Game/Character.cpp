@@ -67,6 +67,7 @@ void Character::TryFall() {
 	CheckMovable(this->image, this->blocks, 0, 10);
 }
 
+
 //把所有碰撞寫成fuction
 void Character::CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy)
 {
