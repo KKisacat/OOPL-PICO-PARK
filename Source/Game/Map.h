@@ -23,8 +23,18 @@ public:
 	CMovingBitmap box1;
 	CMovingBitmap box2;
 	CMovingBitmap box3;
+	std::vector<CMovingBitmap> buttons = { CMovingBitmap(), CMovingBitmap(), CMovingBitmap(), CMovingBitmap() };
+	std::vector<CMovingBitmap> rolling_walls = { CMovingBitmap(), CMovingBitmap(), CMovingBitmap(), CMovingBitmap() };
+	CMovingBitmap box3_1;
+	CMovingBitmap box3_2;
+	CMovingBitmap box3_3;
 
 	std::vector<CMovingBitmap> box_blocks;
+	std::vector<CMovingBitmap> box3_1_blocks;
+	std::vector<CMovingBitmap> box3_2_blocks;
+	std::vector<CMovingBitmap> box3_3_blocks;
+	std::vector<CMovingBitmap> button_blocks;
+
 
 	//鑰匙
 	bool keyIgnore = false;
@@ -42,11 +52,17 @@ public:
 	bool platformP2Overlap;
 	bool doorP1isOverlap;
 	bool doorP2isOverlap;
+	//第二關
 	bool boxisOverlap;
 	bool boxP1isOverlap;
 	bool boxP2isOverlap;
 	bool P1P2isOverlap;
 	bool P2P1isOverlap;
+	//第三關
+	bool box3_1isOnHead;
+	bool box12isOverlap;
+	bool box23isOverlap;
+	int numOfButtonPressed = 0;
 
 	//鑰匙跟隨
 	int staybyCharacter1 = 0;
@@ -62,10 +78,14 @@ public:
 	void MovePlatform(Character &character1, Character &character2);
 	void CheckDoorOverlap(Character &character1, Character &character2);
 	void RollScreen(Character &character1, Character &character2);
-	void TryFallBox();
+	void TryFallBox(CMovingBitmap &box, int height);
 	void PushBox(Character &character,CMovingBitmap &box, int x);
 	void PushBox2(Character &character1, Character &character2, int x);
 	void PushBox2ChangeImage(Character &character, Character &character2, int x);
+	void MoveHeadBox(Character &character, int x);
+	int CheckButtonPressed(Character &character1, Character &character2);
+	void PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int box_name);
+	void RollWall(int numOfButtonPressed);
 
 
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);

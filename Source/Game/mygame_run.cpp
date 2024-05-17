@@ -106,7 +106,7 @@ void CGameStateRun::OnMove()
 	else if (phase == 3) 
 	{
 		//箱子2掉落
-		maps.TryFallBox();
+		maps.TryFallBox(maps.box2, 810);
 		//確保箱子沒被推的時候保持初始
 		maps.box1.SetFrameIndexOfBitmap(1);
 		maps.box2.SetFrameIndexOfBitmap(2);
@@ -152,18 +152,62 @@ void CGameStateRun::OnMove()
 
 	}
 	else if (phase == 4) {
+		//箱子掉落
+		maps.TryFallBox(maps.box3_1, 1024);
+		if (maps.box3_1.GetTop() > 1024) {
+			maps.box3_1.SetTopLeft(900, 0);
+		}
 		// 小藍死掉重生
 		if (character1.image.GetTop() > 1024) {
-			character1.image.SetTopLeft(character1.image.GetLeft(), 0);
+			character1.image.SetTopLeft(900, 0);
 		}
-
 		//小紅墜落向後重生
 		if (character2.image.GetTop() > 1024) {
-			character2.image.SetTopLeft(character2.image.GetLeft(), 0);
+			character2.image.SetTopLeft(900, 0);
 		}
+		//推箱子
+		//小藍
+		maps.box3_1.SetFrameIndexOfBitmap(1);
+		maps.box3_2.SetFrameIndexOfBitmap(1);
+		maps.box3_3.SetFrameIndexOfBitmap(1);
+		if (character1.isRightRun)
+		{
+			maps.MoveHeadBox(character1, 8);
+			maps.MoveHeadBox(character2, 8);
+			maps.PushBoxLevelThree(character1, maps.box3_1, 8, 1);
+			maps.PushBoxLevelThree(character1, maps.box3_2, 8, 2);
+			maps.PushBoxLevelThree(character1, maps.box3_3, 8, 3);
+		}
+		else if (character1.isLeftRun)
+		{
+			maps.MoveHeadBox(character1, -8);
+			maps.MoveHeadBox(character2, -8);
+			maps.PushBoxLevelThree(character1, maps.box3_1, -8, 1);
+			maps.PushBoxLevelThree(character1, maps.box3_2, -8, 2);
+			maps.PushBoxLevelThree(character1, maps.box3_3, -8, 3);
+		}
+		//小紅
+		if (character2.isRightRun)
+		{
+			maps.MoveHeadBox(character1, 8);
+			maps.MoveHeadBox(character2, 8);
+			maps.PushBoxLevelThree(character2, maps.box3_1, 8, 1);
+			maps.PushBoxLevelThree(character2, maps.box3_2, 8, 2);
+			maps.PushBoxLevelThree(character2, maps.box3_3, 8, 3);
+		}
+		else if (character2.isLeftRun)
+		{
+			maps.MoveHeadBox(character1, -8);
+			maps.MoveHeadBox(character2, -8);
+			maps.PushBoxLevelThree(character2, maps.box3_1, -8, 1);
+			maps.PushBoxLevelThree(character2, maps.box3_2, -8, 2);
+			maps.PushBoxLevelThree(character2, maps.box3_3, -8, 3);
+		}
+
+		//按四個按鈕
+		maps.RollWall(maps.CheckButtonPressed(character1, character2));
 	}
 }
-
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
@@ -420,6 +464,13 @@ void CGameStateRun::show_image_by_phase() {
 		for (int i = 0; i < 131; i++) {
 			maps.block[i].ShowBitmap();
 		}
+		for (int i = 0; i < 4; i++) {
+			maps.buttons[i].ShowBitmap();
+			maps.rolling_walls[i].ShowBitmap();
+		}
+		maps.box3_1.ShowBitmap();
+		maps.box3_2.ShowBitmap();
+		maps.box3_3.ShowBitmap();
 		character1.OnShow();
 		character2.OnShow();
 		if (!maps.keyIgnore) {
