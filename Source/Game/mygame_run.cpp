@@ -155,15 +155,15 @@ void CGameStateRun::OnMove()
 		//箱子掉落
 		maps.TryFallBox(maps.box3_1, 1024);
 		if (maps.box3_1.GetTop() > 1024) {
-			maps.box3_1.SetTopLeft(900, 0);
+			maps.box3_1.SetTopLeft(maps.block[0].GetLeft(), 0);
 		}
 		// 小藍死掉重生
 		if (character1.image.GetTop() > 1024) {
-			character1.image.SetTopLeft(900, 0);
+			character1.image.SetTopLeft(maps.block[0].GetLeft(), 0);
 		}
 		//小紅墜落向後重生
 		if (character2.image.GetTop() > 1024) {
-			character2.image.SetTopLeft(900, 0);
+			character2.image.SetTopLeft(maps.block[0].GetLeft(), 0);
 		}
 		//推箱子
 		//小藍
@@ -206,6 +206,8 @@ void CGameStateRun::OnMove()
 
 		//按四個按鈕
 		maps.RollWall(maps.CheckButtonPressed(character1, character2));
+		//橋跟閘門
+		maps.PressButtonBridgeThree(character1, character2);
 	}
 }
 
@@ -301,7 +303,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if (phase > 1 && phase <= 5) {	//關卡
 			if (maps.door.GetFrameIndexOfBitmap() == 1 && maps.doorP2isOverlap) {
 				character2.characterIgnore = true;
-				character2.OnInit();
+				character2.image.SetTopLeft(900, 900);
 			}
 			if (maps.doorP2isOverlap && maps.staybyCharacter2 == 1) {
 				maps.door.SetFrameIndexOfBitmap(1);
@@ -318,7 +320,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if (phase > 1 && phase <= 5) {	//關卡
 			if (maps.door.GetFrameIndexOfBitmap() == 1 && maps.doorP1isOverlap) {
 				character1.characterIgnore = true;
-				character1.OnInit();
+				character1.image.SetTopLeft(1020, 900);
 			}
 			if (maps.doorP1isOverlap && maps.staybyCharacter1 == 1) {
 				maps.door.SetFrameIndexOfBitmap(1);
@@ -464,6 +466,7 @@ void CGameStateRun::show_image_by_phase() {
 		for (int i = 0; i < 131; i++) {
 			maps.block[i].ShowBitmap();
 		}
+		maps.door.ShowBitmap();
 		for (int i = 0; i < 4; i++) {
 			maps.buttons[i].ShowBitmap();
 			maps.rolling_walls[i].ShowBitmap();
@@ -471,8 +474,19 @@ void CGameStateRun::show_image_by_phase() {
 		maps.box3_1.ShowBitmap();
 		maps.box3_2.ShowBitmap();
 		maps.box3_3.ShowBitmap();
+		maps.bridge3.ShowBitmap();
+		maps.rolling_wall3.ShowBitmap();
+		if (maps.button3Overlap) {
+			maps.button3.SetFrameIndexOfBitmap(1);
+		}
+		maps.button3.ShowBitmap();
+		for (int i = 0; i < 2; i++) {
+			maps.wall_ignore[i].ShowBitmap();
+		}
+
 		character1.OnShow();
 		character2.OnShow();
+		
 		if (!maps.keyIgnore) {
 			maps.key.ShowBitmap();
 		}

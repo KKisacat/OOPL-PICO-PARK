@@ -15,7 +15,7 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 
 	if (phase == 2)
 	{
-		button.SetTopLeft(90 * 56, 859);
+		button.SetTopLeft(90 * 56, 867);
 		button.SetFrameIndexOfBitmap(0);
 
 		bridge.SetTopLeft(90 * 54 - 30, 900);
@@ -53,18 +53,31 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 	}
 	else if (phase == 4) {
 		SetMap3Block();
+		key.SetTopLeft(90 * 25, 40);
+		key.SetAnimation(300, false);
 		character1.image.SetTopLeft(900, 720);
 		for (int i = 0; i < 4; i++) {
 			buttons[i].SetTopLeft(90 * (35 + i) + 85 * i, 865);
 			buttons[i].SetFrameIndexOfBitmap(0);
 			rolling_walls[i].SetTopLeft(90 * (35 + i), -10);
 		}
+
 		box3_1.SetTopLeft(900, 625);
 		box3_1.SetFrameIndexOfBitmap(1);
 		box3_2.SetTopLeft(2700, 805);
 		box3_2.SetFrameIndexOfBitmap(1);
 		box3_3.SetTopLeft(3000, 805);
 		box3_3.SetFrameIndexOfBitmap(1);
+
+		bridge3.SetTopLeft(90 * 20, 900);
+		button3.SetTopLeft(90 * 22, 237);
+		button3.SetFrameIndexOfBitmap(0);
+		rolling_wall3.SetTopLeft(90 * 17 + 40, 270);
+		wall_ignore[0].SetTopLeft(90 * 17 + 40, 360);
+		wall_ignore[1].SetTopLeft(90 * 35, 360);
+
+		door.SetTopLeft(90 * 45, 764);
+		door.SetFrameIndexOfBitmap(0);
 	}
 
 	for (int i = 0; i < 4; i++) {
@@ -119,7 +132,7 @@ void  Map::LoadAndResetAllBitmap() {
 
 	//第三關
 	for (int i = 0; i < 4; i++) {
-		buttons[i].LoadBitmapByString({ "resources/button1_level3.bmp", "resources/button2_level3.bmp" }, RGB(255, 255, 255));
+		buttons[i].LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
 		buttons[i].SetTopLeft(-10000, -10000);
 		rolling_walls[i].LoadBitmapByString({ "resources/rolling_wall.bmp" }, RGB(255, 255, 255));
 		rolling_walls[i].SetTopLeft(-10000, -10000);
@@ -130,6 +143,16 @@ void  Map::LoadAndResetAllBitmap() {
 	box3_2.SetTopLeft(-10000, -10000);
 	box3_3.LoadBitmapByString({ "resources/box_level3_0.bmp", "resources/box_level3_1.bmp" }, RGB(0, 255, 0));
 	box3_3.SetTopLeft(-10000, -10000);
+	bridge3.LoadBitmapByString({ "resources/bridge3.bmp" }, RGB(255, 255, 255));
+	bridge3.SetTopLeft(-10000, -10000);
+	button3.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
+	button3.SetTopLeft(-10000, -10000);
+	rolling_wall3.LoadBitmapByString({ "resources/rolling_wall.bmp" }, RGB(255, 255, 255));
+	rolling_wall3.SetTopLeft(-10000, -10000);
+	for (int i = 0; i < 2; i++) {
+		wall_ignore[i].LoadBitmapByString({ "resources/wall_ignore.bmp" });
+		wall_ignore[i].SetTopLeft(-10000, -10000);
+	}
 }
 
 
@@ -237,10 +260,12 @@ void Map::SetMap3Block() {
 	//輔助用
 	block[130].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
 	block[130].SetTopLeft(90 * 11, 900);
+	/*
 	for (int i = 121; i < 130; i++) {
 		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
 		block[i].SetTopLeft(90 * (i - 109), 900);
 	}
+	*/
 	
 	//起點地板
 	block[0].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
@@ -279,7 +304,7 @@ void Map::SetMap3Block() {
 
 
 	//多餘的
-	for (int i = 81; i < 121; i++) {
+	for (int i = 81; i < 131; i++) {
 		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
 		block[i].SetTopLeft(-100, -100);
 	}
@@ -505,6 +530,23 @@ void Map::PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int
 	}
 }
 
+//第三關橋跟閘門
+void Map::PressButtonBridgeThree(Character &character1, Character &character2) {
+
+	//按下按鈕
+	button3Overlap = CMovingBitmap::IsOverlap(character1.image, button3) || CMovingBitmap::IsOverlap(character2.image, button3);
+
+	//橋跟閘門
+	if (button3.GetFrameIndexOfBitmap() == 1) {
+		if (bridge3.GetLeft() - block[0].GetLeft() > 0) {
+			CheckMovable(bridge3, button_blocks, -5, 0);
+		}
+		if (rolling_wall3.GetTop() > -10) {
+			CheckMovable(rolling_wall3, button_blocks, 0, -10);
+		}	 
+	}
+}
+
 int Map::CheckButtonPressed(Character &character1, Character &character2) { 
 	numOfButtonPressed = 0;
 	for (int i = 0; i < 4; i++) {
@@ -564,6 +606,11 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		box3_1.SetTopLeft(box3_1.GetLeft() - 5, box3_1.GetTop());
 		box3_2.SetTopLeft(box3_2.GetLeft() - 5, box3_2.GetTop());
 		box3_3.SetTopLeft(box3_3.GetLeft() - 5, box3_3.GetTop());
+		bridge3.SetTopLeft(bridge3.GetLeft() - 5, bridge3.GetTop());
+		button3.SetTopLeft(button3.GetLeft() - 5, button3.GetTop());
+		rolling_wall3.SetTopLeft(rolling_wall3.GetLeft() - 5, rolling_wall3.GetTop());
+		wall_ignore[0].SetTopLeft(wall_ignore[0].GetLeft() - 5, wall_ignore[0].GetTop());
+		wall_ignore[1].SetTopLeft(wall_ignore[1].GetLeft() - 5, wall_ignore[1].GetTop());
 	}
 	else if (((character1.image.GetLeft() + character2.image.GetLeft()) / 2) < 800)
 	{
@@ -589,6 +636,11 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		box3_1.SetTopLeft(box3_1.GetLeft() + 5, box3_1.GetTop());
 		box3_2.SetTopLeft(box3_2.GetLeft() + 5, box3_2.GetTop());
 		box3_3.SetTopLeft(box3_3.GetLeft() + 5, box3_3.GetTop());
+		bridge3.SetTopLeft(bridge3.GetLeft() + 5, bridge3.GetTop());
+		button3.SetTopLeft(button3.GetLeft() + 5, button3.GetTop());
+		rolling_wall3.SetTopLeft(rolling_wall3.GetLeft() + 5, rolling_wall3.GetTop());
+		wall_ignore[0].SetTopLeft(wall_ignore[0].GetLeft() + 5, wall_ignore[0].GetTop());
+		wall_ignore[1].SetTopLeft(wall_ignore[1].GetLeft() + 5, wall_ignore[1].GetTop());
 	}
 }
 
@@ -625,18 +677,25 @@ bool Map::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, in
 }
 
 void Map::RefreshWall(Character &character1, Character &character2) {
-	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3 };
-	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3 };
-	box_blocks = { character1.image, character2.image };
-	box3_1_blocks = { character1.image, character2.image, box3_2, box3_3 };
-	box3_2_blocks = { character1.image, character2.image, box3_1, box3_3 };
-	box3_3_blocks = { character1.image, character2.image, box3_1, box3_2 };
+	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3, bridge3, rolling_wall3 };
+	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3, bridge3, rolling_wall3 };
+	box_blocks = { character1.image, character2.image, bridge3 };
+	box3_1_blocks = { character1.image, character2.image, box3_2, box3_3, bridge3 };
+	box3_2_blocks = { character1.image, character2.image, box3_1, box3_3, bridge3 };
+	box3_3_blocks = { character1.image, character2.image, box3_1, box3_2, bridge3 };
 	button_blocks = { character1.image, character2.image, box3_1, box3_2, box3_3 };
 
 	for (int i = 0; i < 131; i++) {
 		player1_floor.push_back(block[i]);
 		player2_floor.push_back(block[i]);
 		box_blocks.push_back(block[i]);
+		box3_1_blocks.push_back(block[i]);
+		box3_2_blocks.push_back(block[i]);
+		box3_3_blocks.push_back(block[i]);
+	}
+	for (int i = 0; i < 4; i++) {
+		player1_floor.push_back(rolling_walls[i]);
+		player2_floor.push_back(rolling_walls[i]);
 	}
 
 	character1.SetWallAndFloor(player1_floor);

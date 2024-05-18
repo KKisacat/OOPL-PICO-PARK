@@ -28,6 +28,11 @@ public:
 	CMovingBitmap box3_1;
 	CMovingBitmap box3_2;
 	CMovingBitmap box3_3;
+	CMovingBitmap bridge3;
+	CMovingBitmap button3;
+	CMovingBitmap rolling_wall3;
+	CMovingBitmap wall_ignore[2];
+	
 
 	std::vector<CMovingBitmap> box_blocks;
 	std::vector<CMovingBitmap> box3_1_blocks;
@@ -63,6 +68,7 @@ public:
 	bool box12isOverlap;
 	bool box23isOverlap;
 	int numOfButtonPressed = 0;
+	bool button3Overlap;
 
 	//∆_∞Õ∏Ú¿H
 	int staybyCharacter1 = 0;
@@ -86,6 +92,7 @@ public:
 	int CheckButtonPressed(Character &character1, Character &character2);
 	void PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int box_name);
 	void RollWall(int numOfButtonPressed);
+	void PressButtonBridgeThree(Character &character1, Character &character2);
 
 
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
