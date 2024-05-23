@@ -80,6 +80,7 @@ public:
 	void SetMap1Block();
 	void SetMap2Block();
 	void SetMap3Block();
+	void SetMap4Block();
 	void PressButton(Character &character1, Character &character2);
 	void GetKey(Character &character1, Character &character2);
 	void MovePlatform(Character &character1, Character &character2);
