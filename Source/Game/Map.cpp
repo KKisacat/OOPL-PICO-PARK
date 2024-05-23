@@ -62,11 +62,11 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 			rolling_walls[i].SetTopLeft(90 * (35 + i), -10);
 		}
 
-		box3_1.SetTopLeft(900, 625);
+		box3_1.SetTopLeft(900, 630);
 		box3_1.SetFrameIndexOfBitmap(1);
-		box3_2.SetTopLeft(2700, 805);
+		box3_2.SetTopLeft(2700, 810);
 		box3_2.SetFrameIndexOfBitmap(1);
-		box3_3.SetTopLeft(3000, 805);
+		box3_3.SetTopLeft(3000, 810);
 		box3_3.SetFrameIndexOfBitmap(1);
 
 		bridge3.SetTopLeft(90 * 20, 900);
@@ -403,13 +403,25 @@ void Map::TryFallBox(CMovingBitmap &box, int height) {
 	}
 }
 
-void Map::MoveHeadBox(Character &character, int x) {
+void Map::MoveHeadBox(Character &character, int x, Character &character2) {
 	box3_1isOnHead = CMovingBitmap::IsOverlap(
 		character.image.GetLeft(), character.image.GetTop() - 8, character.image.GetHeight(), character.image.GetWidth(),
 		box3_1.GetLeft(), box3_1.GetTop(), box3_1.GetHeight(), box3_1.GetWidth()
 	);
+
+	playerIsOnBox = CMovingBitmap::IsOverlap(
+		box3_1.GetLeft(), box3_1.GetTop() - 8, box3_1.GetHeight(), box3_1.GetWidth(),
+		character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth()
+	);
+
 	if (box3_1isOnHead && !IsJumpable(character.image, character.blocks, x, 0)) { //防止變成跑步機
 		CheckMovable(box3_1, box3_1_blocks, x, 0);
+		if (playerIsOnBox && !IsJumpable(box3_1, box3_1_blocks, x, 0)) {
+			CheckMovable(character2.image, character2.blocks, x, 0);
+		}
+	}
+	if (character.characterIsOverlap) {
+		MoveHeadBox(character2, x, character);
 	}
 }
 
