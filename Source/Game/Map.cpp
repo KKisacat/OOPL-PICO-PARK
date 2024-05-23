@@ -79,6 +79,9 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		door.SetTopLeft(90 * 45, 764);
 		door.SetFrameIndexOfBitmap(0);
 	}
+	else if (phase == 5) {
+		SetMap4Block();
+	}
 
 	for (int i = 0; i < 4; i++) {
 		crown[i].LoadBitmapByString({ "resources/crown.bmp" });
@@ -204,6 +207,12 @@ void Map::SetMap1Block() {
 		block[i].SetTopLeft(90 + 90 * 87, 900 - 90 * (i - 109));
 	}
 
+	//多餘的
+	for (int i = 131; i < 181; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(-100, -100);
+	}
+
 
 }
 
@@ -253,6 +262,11 @@ void Map::SetMap2Block() {
 		block[i].SetTopLeft(90 * 43, 90 * (i - 111));
 	}
 
+	//多餘的
+	for (int i = 131; i < 181; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(-100, -100);
+	}
 }
 
 void Map::SetMap3Block() {
@@ -304,9 +318,67 @@ void Map::SetMap3Block() {
 
 
 	//多餘的
-	for (int i = 81; i < 131; i++) {
+	for (int i = 81; i < 181; i++) {
 		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
 		block[i].SetTopLeft(-100, -100);
+	}
+
+}
+
+void Map::SetMap4Block() {
+
+	//起點牆壁
+	for (int i = 0; i < 11; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90, 90 * i);
+	}
+
+	//地板
+	for (int i = 11; i < 71; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 11), 900);
+	}
+
+	//天花板
+	for (int i = 71; i < 141; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 70), 0);
+	}
+
+	//平台一
+	for (int i = 141; i < 146; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 122), 450);
+	}
+
+	//平台二
+	for (int i = 146; i < 156; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 117), 450);
+	}
+
+	//障礙牆
+	for (int i = 156; i < 160; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * 38, 540 + 90 * (i - 156));
+	}
+
+	//階梯
+	for (int i = 160; i < 165; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 121), 450 + 90 * (i - 160));
+	}
+
+	//終點平台
+	for (int i = 165; i < 170; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * (i - 111), 450);
+	}
+
+	//終點牆壁
+	for (int i = 170; i < 181; i++) {
+		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
+		block[i].SetTopLeft(90 * 59, 90 * (i - 170));
 	}
 
 }
@@ -597,7 +669,7 @@ void Map::RollScreen(Character &character1, Character &character2) {
 	if (((character1.image.GetLeft() + character2.image.GetLeft()) / 2) > 1000)
 	{
 		background.SetTopLeft(background.GetLeft() - 5, 0);
-		for (int i = 0; i < 131; i++) {
+		for (int i = 0; i < 181; i++) {
 			block[i].SetTopLeft(block[i].GetLeft() - 5, block[i].GetTop());
 		}
 		character1.image.SetTopLeft(character1.image.GetLeft() - 5, character1.image.GetTop());
@@ -627,7 +699,7 @@ void Map::RollScreen(Character &character1, Character &character2) {
 	else if (((character1.image.GetLeft() + character2.image.GetLeft()) / 2) < 800)
 	{
 		background.SetTopLeft(background.GetLeft() + 5, 0);
-		for (int i = 0; i < 131; i++) {
+		for (int i = 0; i < 181; i++) {
 			block[i].SetTopLeft(block[i].GetLeft() + 5, block[i].GetTop());
 		}
 		character1.image.SetTopLeft(character1.image.GetLeft() + 5, character1.image.GetTop());
@@ -697,7 +769,7 @@ void Map::RefreshWall(Character &character1, Character &character2) {
 	box3_3_blocks = { character1.image, character2.image, box3_1, box3_2, bridge3 };
 	button_blocks = { character1.image, character2.image, box3_1, box3_2, box3_3 };
 
-	for (int i = 0; i < 131; i++) {
+	for (int i = 0; i < 181; i++) {
 		player1_floor.push_back(block[i]);
 		player2_floor.push_back(block[i]);
 		box_blocks.push_back(block[i]);

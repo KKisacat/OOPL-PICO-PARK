@@ -493,6 +493,22 @@ void CGameStateRun::show_image_by_phase() {
 			maps.level_three_completed = true;
 		}
 	}
+	else if (phase == 5) {
+		maps.background.SetFrameIndexOfBitmap(phase - 2);
+		maps.background.ShowBitmap();
+		for (int i = 0; i < 181; i++) {
+			maps.block[i].ShowBitmap();
+		}
+		character1.OnShow();
+		character2.OnShow();
+
+		if (!maps.keyIgnore) {
+			maps.key.ShowBitmap();
+		}
+		if (character1.characterIgnore && character2.characterIgnore) {
+			maps.level_three_completed = true;
+		}
+	}
 
 	if (character1.characterIgnore && character2.characterIgnore) {
 		maps.clear.ShowBitmap();
@@ -509,12 +525,7 @@ void CGameStateRun::show_image_by_phase() {
 			OnInit();
 		}
 	}
-	
-	if (phase == 5) {
-		maps.background.SetFrameIndexOfBitmap(phase - 2);
-		maps.background.ShowBitmap();
 
-	}
 }
 
 void CGameStateRun::show_text_by_phase() {
