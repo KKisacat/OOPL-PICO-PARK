@@ -67,6 +67,7 @@ public:
 	bool box3_1isOnHead;
 	bool box12isOverlap;
 	bool box23isOverlap;
+	bool playerIsOnBox;
 	int numOfButtonPressed = 0;
 	bool button3Overlap;
 
@@ -88,7 +89,7 @@ public:
 	void PushBox(Character &character,CMovingBitmap &box, int x);
 	void PushBox2(Character &character1, Character &character2, int x);
 	void PushBox2ChangeImage(Character &character, Character &character2, int x);
-	void MoveHeadBox(Character &character, int x);
+	void MoveHeadBox(Character &character, int x, Character &character2);
 	int CheckButtonPressed(Character &character1, Character &character2);
 	void PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int box_name);
 	void RollWall(int numOfButtonPressed);

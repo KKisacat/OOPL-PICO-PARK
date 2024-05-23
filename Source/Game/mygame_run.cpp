@@ -172,16 +172,14 @@ void CGameStateRun::OnMove()
 		maps.box3_3.SetFrameIndexOfBitmap(1);
 		if (character1.isRightRun)
 		{
-			maps.MoveHeadBox(character1, 8);
-			maps.MoveHeadBox(character2, 8);
+			maps.MoveHeadBox(character1, 8, character2);
 			maps.PushBoxLevelThree(character1, maps.box3_1, 8, 1);
 			maps.PushBoxLevelThree(character1, maps.box3_2, 8, 2);
 			maps.PushBoxLevelThree(character1, maps.box3_3, 8, 3);
 		}
 		else if (character1.isLeftRun)
 		{
-			maps.MoveHeadBox(character1, -8);
-			maps.MoveHeadBox(character2, -8);
+			maps.MoveHeadBox(character1, -8, character2);
 			maps.PushBoxLevelThree(character1, maps.box3_1, -8, 1);
 			maps.PushBoxLevelThree(character1, maps.box3_2, -8, 2);
 			maps.PushBoxLevelThree(character1, maps.box3_3, -8, 3);
@@ -189,16 +187,14 @@ void CGameStateRun::OnMove()
 		//小紅
 		if (character2.isRightRun)
 		{
-			maps.MoveHeadBox(character1, 8);
-			maps.MoveHeadBox(character2, 8);
+			maps.MoveHeadBox(character2, 8, character1);
 			maps.PushBoxLevelThree(character2, maps.box3_1, 8, 1);
 			maps.PushBoxLevelThree(character2, maps.box3_2, 8, 2);
 			maps.PushBoxLevelThree(character2, maps.box3_3, 8, 3);
 		}
 		else if (character2.isLeftRun)
 		{
-			maps.MoveHeadBox(character1, -8);
-			maps.MoveHeadBox(character2, -8);
+			maps.MoveHeadBox(character2, -8, character1);
 			maps.PushBoxLevelThree(character2, maps.box3_1, -8, 1);
 			maps.PushBoxLevelThree(character2, maps.box3_2, -8, 2);
 			maps.PushBoxLevelThree(character2, maps.box3_3, -8, 3);
@@ -208,6 +204,9 @@ void CGameStateRun::OnMove()
 		maps.RollWall(maps.CheckButtonPressed(character1, character2));
 		//橋跟閘門
 		maps.PressButtonBridgeThree(character1, character2);
+
+		//大門
+		maps.CheckDoorOverlap(character1, character2);
 	}
 }
 
