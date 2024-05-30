@@ -101,7 +101,7 @@ void CGameStateRun::OnMove()
 		maps.PressButton(character1, character2);
 
 		//平台
-		maps.MovePlatform(character1, character2);
+		maps.MovePlatform(maps.platform, maps.pFlag, character1, character2, 370, 830, true);
 	}
 	else if (phase == 3) 
 	{
@@ -206,6 +206,13 @@ void CGameStateRun::OnMove()
 		maps.PressButtonBridgeThree(character1, character2);
 
 		//大門
+		maps.CheckDoorOverlap(character1, character2);
+	}
+	else if (phase == 5) {
+		maps.MoveAutoFloor(character1, character2);
+		maps.MoveAutoWall(character1, character2);
+		maps.MovePlatform(maps.platform, maps.pFlag, character1, character2, 450, 800, false);
+		maps.MovePlatform(maps.platform2, maps.pFlag2, character1, character2, 450, 800, true);
 		maps.CheckDoorOverlap(character1, character2);
 	}
 }
@@ -413,6 +420,9 @@ void CGameStateRun::show_image_by_phase() {
 		if (maps.level_three_completed) {
 			maps.crown[2].ShowBitmap();
 		}
+		if (maps.level_four_completed) {
+			maps.crown[3].ShowBitmap();
+		}
 
 	}
 	else if (phase == 2) {
@@ -422,17 +432,18 @@ void CGameStateRun::show_image_by_phase() {
 			maps.button.SetFrameIndexOfBitmap(1);
 		}
 		maps.button.ShowBitmap();
+		maps.platform.ShowBitmap();
 		maps.pFlag.ShowBitmap();
+		for (int i = 0; i < 131; i++) {
+			maps.block[i].ShowBitmap();
+		}
 		maps.door.ShowBitmap();
 
 		character1.OnShow();
 		character2.OnShow();
 		
-		for (int i = 0; i < 131; i++) {
-			maps.block[i].ShowBitmap();
-		}
 		maps.bridge.ShowBitmap();
-		maps.platform.ShowBitmap();
+		
 		if (!maps.keyIgnore) {
 			maps.key.ShowBitmap();
 		}
@@ -499,14 +510,21 @@ void CGameStateRun::show_image_by_phase() {
 		for (int i = 0; i < 181; i++) {
 			maps.block[i].ShowBitmap();
 		}
+		maps.door.ShowBitmap();
+		maps.platform.ShowBitmap();
+		maps.pFlag.ShowBitmap();
+		maps.platform2.ShowBitmap();
+		maps.pFlag2.ShowBitmap();
 		character1.OnShow();
 		character2.OnShow();
+		maps.auto_floor.ShowBitmap();
+		maps.auto_wall.ShowBitmap();
 
 		if (!maps.keyIgnore) {
 			maps.key.ShowBitmap();
 		}
 		if (character1.characterIgnore && character2.characterIgnore) {
-			maps.level_three_completed = true;
+			maps.level_four_completed = true;
 		}
 	}
 
