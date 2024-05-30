@@ -244,26 +244,26 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 
 	if (nChar == VK_RIGHT) {
-
 		if (phase == 1) {	//目錄 phase = 1 
 			if (sub_phase < 4)
 				sub_phase = sub_phase + 1;
 		}
 		if (phase > 1 && phase <= 5) {	//關卡 phase = 2~5
 			character1.isRightRun = 1;
+			character1.isCharacterLeftAnimation = false;
 			character1.image.SetAnimation(125, false);
 		}
 	}
 
 	if (nChar == VK_LEFT) {
-
 		if (phase == 1) {	//目錄
 			if(sub_phase > 1)
 				sub_phase = sub_phase - 1;
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
 			character1.isLeftRun = 1;
-			character1.image.SetAnimation(125, false);
+			character1.isCharacterLeftAnimation = true;
+			character1.image2.SetAnimation(125, false);
 		}
 	}
 
@@ -285,6 +285,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 		if (phase > 1 && phase <= 5) {	//關卡 phase = 2~5
 			character2.isRightRun = 1;
+			character2.isCharacterLeftAnimation = false;
 			character2.image.SetAnimation(125, false);
 		}
 	}
@@ -297,7 +298,8 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
 			character2.isLeftRun = 1;
-			character2.image.SetAnimation(125, false);
+			character2.isCharacterLeftAnimation = true;
+			character2.image2.SetAnimation(125, false);
 		}
 	}
 
@@ -358,7 +360,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_LEFT) {
 		if (phase > 1 && phase <= 5) {	//關卡
 			character1.isLeftRun = 0;
-			character1.image.StopAnimation();
+			character1.image2.StopAnimation();
 		}
 	}
 
@@ -373,7 +375,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == 0x41) { //P2左
 		character2.isLeftRun = 0;
-		character2.image.StopAnimation();
+		character2.image2.StopAnimation();
 	}
 
 	if (nChar == 0x57) {  //player2 上鍵 W

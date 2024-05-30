@@ -8,8 +8,10 @@ class Character
 {
 public:
 	CMovingBitmap image;
+	CMovingBitmap image2;
 	string name;
 	vector<string> imgPaths;
+	vector<string> imgPaths2;
 	int x;
 	int y;
 	//左右
@@ -21,6 +23,8 @@ public:
 	bool checkJumpble = 1; //不能連跳
 	//進大門 角色消失
 	bool characterIgnore = false;
+	//左邊動畫
+	bool isCharacterLeftAnimation = false;
 
 	//重疊
 	bool characterIsOverlap; // 誰在誰頭上
@@ -28,7 +32,7 @@ public:
 	//碰撞
 	std::vector<CMovingBitmap> blocks;
 
-	Character(vector<string> imgPath, string name, int x, int y);
+	Character(vector<string> imgPath, vector<string> imgPaths2, string name, int x, int y);
 	void OnInit();
 	void OnShow();
 	void TryMoveRight(Character &other);

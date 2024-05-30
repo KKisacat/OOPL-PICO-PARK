@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "Character.h"
 
-Character::Character(vector<string> imgPaths, string name, int x, int y) {
+Character::Character(vector<string> imgPaths, vector<string> imgPaths2, string name, int x, int y) {
 	this->name = name;
 	this->imgPaths = imgPaths;
+	this->imgPaths2 = imgPaths2;
 	this->x = x;
 	this->y = y;
 }
@@ -11,10 +12,17 @@ Character::Character(vector<string> imgPaths, string name, int x, int y) {
 void Character::OnInit() {
 	image.LoadBitmapByString(imgPaths, RGB(0, 255, 0));
 	image.SetTopLeft(x, y);
+	image2.LoadBitmapByString(imgPaths2, RGB(0, 255, 0));
+	image.SetTopLeft(x, y);
+	isCharacterLeftAnimation = false;
 }
 
 void Character::OnShow() {
-	if (!characterIgnore)
+	image2.SetTopLeft(image.GetLeft(), image.GetTop());
+	if (!characterIgnore && isCharacterLeftAnimation) {
+		image2.ShowBitmap();
+	}
+	if (!characterIgnore && !isCharacterLeftAnimation)
 		image.ShowBitmap();
 }
 

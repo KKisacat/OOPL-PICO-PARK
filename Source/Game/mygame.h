@@ -101,12 +101,22 @@ namespace game_framework {
 			"resources/player1RightRun1.bmp",
 			"resources/player1RightRun2.bmp",
 			"resources/player1RightRun3.bmp",
-			"resources/player1RightRun4.bmp" }, "Blue", 1020, 810);
+			"resources/player1RightRun4.bmp" },
+			{ "resources/player1Leftstand.bmp",
+			"resources/player1LeftRun1.bmp",
+			"resources/player1LeftRun2.bmp",
+			"resources/player1LeftRun3.bmp",
+			"resources/player1LeftRun4.bmp" }, "Blue", 1020, 810);
 		Character character2 = Character({ "resources/player2Rightstand.bmp",
 			"resources/player2RightRun1.bmp",
 			"resources/player2RightRun2.bmp",
 			"resources/player2RightRun3.bmp",
-			"resources/player2RightRun4.bmp" }, "Pink", 900, 810);
+			"resources/player2RightRun4.bmp" },
+			{ "resources/player2Leftstand.bmp",
+			"resources/player2LeftRun1.bmp",
+			"resources/player2LeftRun2.bmp",
+			"resources/player2LeftRun3.bmp",
+			"resources/player2LeftRun4.bmp" }, "Pink", 900, 810);
 		Map maps = Map();
 
 
