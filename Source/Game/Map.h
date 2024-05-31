@@ -15,7 +15,9 @@ public:
 	CMovingBitmap button;
 	CMovingBitmap bridge;
 	CMovingBitmap platform;
+	CMovingBitmap platform2;
 	CMovingBitmap pFlag;
+	CMovingBitmap pFlag2;
 	CMovingBitmap key;
 	CMovingBitmap door;
 	CMovingBitmap clear;
@@ -32,6 +34,8 @@ public:
 	CMovingBitmap button3;
 	CMovingBitmap rolling_wall3;
 	CMovingBitmap wall_ignore[2];
+	CMovingBitmap auto_floor;
+	CMovingBitmap auto_wall;
 	
 
 	std::vector<CMovingBitmap> box_blocks;
@@ -47,6 +51,7 @@ public:
 	bool level_one_completed = 0;
 	bool level_two_completed = 0;
 	bool level_three_completed = 0;
+	bool level_four_completed = 0;
 	//重疊
 	bool buttonOverlap;
 	bool keyP1Overlap;
@@ -70,10 +75,21 @@ public:
 	bool playerIsOnBox;
 	int numOfButtonPressed = 0;
 	bool button3Overlap;
+	//第四關
+	bool autoFloorP1isOverlap;
+	bool autoFloorP2isOverlap;
+	bool autoWallP1isOverlapLeft;
+	bool autoWallP2isOverlapLeft;
+	bool autoWallP1isOverlapRight;
+	bool autoWallP2isOverlapRight;
 
 	//鑰匙跟隨
 	int staybyCharacter1 = 0;
 	int staybyCharacter2 = 0;
+
+	//第四關自走牆
+	bool isAutoFloorMoveUp = true;
+	bool isAutoWallMoveLeft = true;
 	
 	void OnInit(Character &character1, Character &character2, int phase);
 	void LoadAndResetAllBitmap();
@@ -83,7 +99,7 @@ public:
 	void SetMap4Block();
 	void PressButton(Character &character1, Character &character2);
 	void GetKey(Character &character1, Character &character2);
-	void MovePlatform(Character &character1, Character &character2);
+	void MovePlatform(CMovingBitmap &platform, CMovingBitmap &pFlag, Character &character1, Character &character2, int highest, int lowest, bool isPlatformUp);
 	void CheckDoorOverlap(Character &character1, Character &character2);
 	void RollScreen(Character &character1, Character &character2);
 	void TryFallBox(CMovingBitmap &box, int height);
@@ -95,6 +111,8 @@ public:
 	void PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int box_name);
 	void RollWall(int numOfButtonPressed);
 	void PressButtonBridgeThree(Character &character1, Character &character2);
+	void MoveAutoFloor(Character &character1, Character &character2);
+	void MoveAutoWall(Character &character1, Character &character2);
 
 
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);

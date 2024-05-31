@@ -21,7 +21,6 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		bridge.SetTopLeft(90 * 54 - 30, 900);
 
 		platform.SetTopLeft(90 * 73 + 80, 830);
-		
 		pFlag.SetTopLeft(90 * 73 + 80, 688);
 		pFlag.SetAnimation(1000, true);
 		pFlag.SetFrameIndexOfBitmap(2);
@@ -81,6 +80,16 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 	}
 	else if (phase == 5) {
 		SetMap4Block();
+		key.SetTopLeft(90 * 35, 700);
+		key.SetAnimation(300, false);
+		auto_floor.SetTopLeft(90 * 14 , 700);
+		auto_wall.SetTopLeft(90 * 25, 90);
+		platform.SetTopLeft(90 * 24 + 15, 450);
+		pFlag.SetTopLeft(90 * 24 + 15, 308);
+		platform2.SetTopLeft(90 * 48, 800);
+		pFlag2.SetTopLeft(90 * 48, 658);
+		door.SetTopLeft(90 * 56, 317);
+		door.SetFrameIndexOfBitmap(0);
 	}
 
 	for (int i = 0; i < 4; i++) {
@@ -111,13 +120,21 @@ void  Map::LoadAndResetAllBitmap() {
 
 	platform.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
 	platform.SetTopLeft(-10000, -10000);
-
 	pFlag.LoadBitmapByString({
 			"resources/pFlag0.bmp",
 			"resources/pFlag1.bmp",
 			"resources/pFlag2.bmp"
 		}, RGB(255, 255, 255));
 	pFlag.SetTopLeft(-10000, -10000);
+
+	platform2.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
+	platform2.SetTopLeft(-10000, -10000);
+	pFlag2.LoadBitmapByString({
+			"resources/pFlag0.bmp",
+			"resources/pFlag1.bmp",
+			"resources/pFlag2.bmp"
+		}, RGB(255, 255, 255));
+	pFlag2.SetTopLeft(-10000, -10000);
 
 	key.LoadBitmapByString({ "resources/key.bmp", "resources/key2.bmp", "resources/key3.bmp" , "resources/key4.bmp" }, RGB(255, 255, 255));
 	key.SetTopLeft(-10000, -10000);
@@ -156,6 +173,10 @@ void  Map::LoadAndResetAllBitmap() {
 		wall_ignore[i].LoadBitmapByString({ "resources/wall_ignore.bmp" });
 		wall_ignore[i].SetTopLeft(-10000, -10000);
 	}
+	auto_floor.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
+	auto_floor.SetTopLeft(-10000, -10000);
+	auto_wall.LoadBitmapByString({ "resources/auto_wall.bmp" }, RGB(255, 255, 255));
+	auto_wall.SetTopLeft(-10000, -10000);
 }
 
 
@@ -429,36 +450,63 @@ void Map::GetKey(Character &character1, Character &character2) {
 	}
 }
 
-void Map::MovePlatform(Character &character1, Character &character2) {
-
-	std::vector<CMovingBitmap> platform_block = { character1.image, character2.image };
-
+void Map::MovePlatform(CMovingBitmap &platform, CMovingBitmap &pFlag, Character &character1, Character &character2, int highest, int lowest, bool isPlatformUp ) { // isPlatformU在看平台是踩著往上or踩著往下
 	//平台
 	character2.characterIsOverlap = CMovingBitmap::IsOverlap(character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(), character2.image.GetLeft(), character2.image.GetTop() - 10, character2.image.GetHeight(), character2.image.GetWidth());
 	character1.characterIsOverlap = CMovingBitmap::IsOverlap(character1.image.GetLeft(), character1.image.GetTop() - 10, character1.image.GetHeight(), character1.image.GetWidth(), character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth());
 	platformP1Overlap = CMovingBitmap::IsOverlap(character1.image.GetLeft(), character1.image.GetTop() + 10, character1.image.GetHeight(), character1.image.GetWidth(), platform.GetLeft(), platform.GetTop(), platform.GetHeight(), platform.GetWidth());
 	platformP2Overlap = CMovingBitmap::IsOverlap(character2.image.GetLeft(), character2.image.GetTop() + 10, character2.image.GetHeight(), character2.image.GetWidth(), platform.GetLeft(), platform.GetTop(), platform.GetHeight(), platform.GetWidth());
-	if ((platformP1Overlap && platformP2Overlap) || (character1.characterIsOverlap && platformP1Overlap) || (character1.characterIsOverlap && platformP2Overlap)) {
-		//平台上升
-		if (platform.GetTop() > 370) {
-			platform.SetTopLeft(platform.GetLeft(), platform.GetTop() - 3);
-			pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() - 3);
-			CheckMovable(character1.image, character1.blocks, 0, -3);
-			CheckMovable(character2.image, character2.blocks, 0, -3);
+	if ((platformP1Overlap && platformP2Overlap) || (character1.characterIsOverlap && platformP1Overlap) || (character2.characterIsOverlap && platformP2Overlap)) {
+		if (isPlatformUp) { //踩著平台上升
+			if (platform.GetTop() > highest) {
+				if (!IsJumpable(platform, box_blocks, 0, -3)) {
+					//偷用別的函式，如果平台碰到障礙物不動會回傳ture，讓旗子也不動。反之持續下降會回傳false，旗子也下降。
+					pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() - 3);
+				}
+				CheckMovable(platform, box_blocks, 0, -3);
+				CheckMovable(character1.image, character1.blocks, 0, -3);
+				CheckMovable(character2.image, character2.blocks, 0, -3);
+			}
+		}
+		else { //踩著平台下降
+			if (platform.GetTop() < lowest) {
+				if (!IsJumpable(platform, box_blocks, 0, 3)) {
+					//偷用別的函式，如果平台碰到障礙物不動會回傳ture，讓旗子也不動。反之持續下降會回傳false，旗子也下降。
+					pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() + 3);
+				}
+				CheckMovable(platform, box_blocks, 0, 3);
+				CheckMovable(character1.image, character1.blocks, 0, 3);
+				CheckMovable(character2.image, character2.blocks, 0, 3);
+			}
 		}
 		pFlag.SetFrameIndexOfBitmap(0);
 	}
 	else {
-		//平台下降
-		if (platform.GetTop() < 830) {
-			if (!IsJumpable(platform, platform_block, 0, 3)) {
-				//偷用別的函式，如果平台碰到障礙物不動會回傳ture，讓旗子也不動。反之持續下降會回傳false，旗子也下降。
-				pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() + 3);
+		if (isPlatformUp) { //沒有踩著平台的自動下降
+			if (platform.GetTop() < lowest) {
+				if (!IsJumpable(platform, box_blocks, 0, 3)) {
+					//偷用別的函式，如果平台碰到障礙物不動會回傳ture，讓旗子也不動。反之持續下降會回傳false，旗子也下降。
+					pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() + 3);
+				}
+				CheckMovable(platform, box_blocks, 0, 3);
+				CheckMovable(character1.image, character1.blocks, 0, 3);
+				CheckMovable(character2.image, character2.blocks, 0, 3);
 			}
-			CheckMovable(platform, platform_block, 0, 3);
-			CheckMovable(character1.image, character1.blocks, 0, 3);
-			CheckMovable(character2.image, character2.blocks, 0, 3);
 		}
+		else { //沒有踩著平台的自動上升
+			if (platform.GetTop() > highest) {
+				if (!IsJumpable(platform, box_blocks, 0, -3)) {
+					//偷用別的函式，如果平台碰到障礙物不動會回傳ture，讓旗子也不動。反之持續下降會回傳false，旗子也下降。
+					pFlag.SetTopLeft(pFlag.GetLeft(), pFlag.GetTop() - 3);
+				}
+				CheckMovable(platform, box_blocks, 0, -3);
+				if(platformP1Overlap)
+					CheckMovable(character1.image, character1.blocks, 0, -3);
+				if(platformP2Overlap)
+				CheckMovable(character2.image, character2.blocks, 0, -3);
+			}
+		}
+		
 		if (platformP1Overlap || platformP2Overlap) {
 			pFlag.SetFrameIndexOfBitmap(1);
 		}
@@ -656,6 +704,114 @@ void Map::RollWall(int numOfButtonPressed) {
 	}
 }
 
+void Map::MoveAutoFloor(Character &character1, Character &character2) {
+	character2.characterIsOverlap = CMovingBitmap::IsOverlap(character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(), character2.image.GetLeft(), character2.image.GetTop() - 10, character2.image.GetHeight(), character2.image.GetWidth());
+	character1.characterIsOverlap = CMovingBitmap::IsOverlap(character1.image.GetLeft(), character1.image.GetTop() - 10, character1.image.GetHeight(), character1.image.GetWidth(), character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth());
+	autoFloorP1isOverlap = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		auto_floor.GetLeft(), auto_floor.GetTop() - 8, auto_floor.GetHeight(), auto_floor.GetWidth()
+	);
+	autoFloorP2isOverlap = CMovingBitmap::IsOverlap(
+		character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth(),
+		auto_floor.GetLeft(), auto_floor.GetTop() - 8, auto_floor.GetHeight(), auto_floor.GetWidth()
+	);
+
+	// 到最高點 & 最低點
+	if (auto_floor.GetTop() < 500) {
+		isAutoFloorMoveUp = false;
+	}
+	if (auto_floor.GetTop() > 830) {
+		isAutoFloorMoveUp = true;
+	}
+	if (isAutoFloorMoveUp) {
+		if (autoFloorP1isOverlap) {
+			CheckMovable(character1.image, character1.blocks, 0, -4);
+			if (character1.characterIsOverlap) {
+				CheckMovable(character2.image, character2.blocks, 0, -4);
+			}
+		}
+		if (autoFloorP2isOverlap) {
+			CheckMovable(character2.image, character2.blocks, 0, -4);
+			if (character2.characterIsOverlap) {
+				CheckMovable(character1.image, character1.blocks, 0, -4);
+			}
+		}
+		CheckMovable(auto_floor, box_blocks, 0, -4);
+	}
+	else {
+		CheckMovable(auto_floor, box_blocks, 0, 4);
+		if (autoFloorP1isOverlap) {
+			CheckMovable(character1.image, character1.blocks, 0, 4);
+			if (character1.characterIsOverlap) {
+				CheckMovable(character2.image, character2.blocks, 0, 4);
+			}
+		}
+		if (autoFloorP2isOverlap) {
+			CheckMovable(character2.image, character2.blocks, 0, 4);
+			if (character2.characterIsOverlap) {
+				CheckMovable(character1.image, character1.blocks, 0, 4);
+			}
+		}
+	}
+}
+
+void Map::MoveAutoWall(Character &character1, Character &character2) {
+	bool P1onP2LeftIsOverlap = CMovingBitmap::IsOverlap(character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(), character2.image.GetLeft() - 8, character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth());
+	bool P2onP1LeftIsOverlap = CMovingBitmap::IsOverlap(character1.image.GetLeft() - 8, character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(), character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth());
+	autoWallP1isOverlapLeft = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft(), character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		auto_wall.GetLeft() - 8, auto_wall.GetTop(), auto_wall.GetHeight(), auto_wall.GetWidth()
+	);
+	autoWallP2isOverlapLeft = CMovingBitmap::IsOverlap(
+		character2.image.GetLeft(), character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth(),
+		auto_wall.GetLeft() - 8, auto_wall.GetTop(), auto_wall.GetHeight(), auto_wall.GetWidth()
+	);
+	autoWallP1isOverlapRight = CMovingBitmap::IsOverlap(
+		character1.image.GetLeft() - 8, character1.image.GetTop(), character1.image.GetHeight(), character1.image.GetWidth(),
+		auto_wall.GetLeft(), auto_wall.GetTop(), auto_wall.GetHeight(), auto_wall.GetWidth()
+	);
+	autoWallP2isOverlapRight = CMovingBitmap::IsOverlap(
+		character2.image.GetLeft() - 8, character2.image.GetTop(), character2.image.GetHeight(), character2.image.GetWidth(),
+		auto_wall.GetLeft(), auto_wall.GetTop(), auto_wall.GetHeight(), auto_wall.GetWidth()
+	);
+	// 最左 & 最右
+	if (auto_wall.GetLeft() < block[141].GetLeft()) {
+		isAutoWallMoveLeft = false;
+	}
+	if (auto_wall.GetLeft() > block[148].GetLeft()) {
+		isAutoWallMoveLeft = true;
+	}
+	if (isAutoWallMoveLeft) {
+		if (autoWallP1isOverlapLeft) {
+			CheckMovable(character1.image, character1.blocks, -4, 0);
+			if (P2onP1LeftIsOverlap) {
+				CheckMovable(character2.image, character2.blocks, -4, 0);
+			}
+		}
+		if (autoWallP2isOverlapLeft) {
+			CheckMovable(character2.image, character2.blocks, -4, 0);
+			if (P1onP2LeftIsOverlap) {
+				CheckMovable(character1.image, character1.blocks, -4, 0);
+			}
+		}
+		CheckMovable(auto_wall, box_blocks, -4, 0);
+	}
+	else {
+		if (autoWallP1isOverlapRight) {
+			CheckMovable(character1.image, character1.blocks, 4, 0);
+			if (P1onP2LeftIsOverlap) {
+				CheckMovable(character2.image, character2.blocks, 4, 0);
+			}
+		}
+		if (autoWallP2isOverlapRight) {
+			CheckMovable(character2.image, character2.blocks, 4, 0);
+			if (P2onP1LeftIsOverlap) {
+				CheckMovable(character1.image, character1.blocks, 4, 0);
+			}
+		}
+		CheckMovable(auto_wall, box_blocks, 4, 0);
+	}
+}
 
 //進門
 void Map::CheckDoorOverlap(Character &character1, Character &character2) {
@@ -695,6 +851,10 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		rolling_wall3.SetTopLeft(rolling_wall3.GetLeft() - 5, rolling_wall3.GetTop());
 		wall_ignore[0].SetTopLeft(wall_ignore[0].GetLeft() - 5, wall_ignore[0].GetTop());
 		wall_ignore[1].SetTopLeft(wall_ignore[1].GetLeft() - 5, wall_ignore[1].GetTop());
+		auto_floor.SetTopLeft(auto_floor.GetLeft() - 5, auto_floor.GetTop());
+		auto_wall.SetTopLeft(auto_wall.GetLeft() - 5, auto_wall.GetTop());
+		platform2.SetTopLeft(platform2.GetLeft() - 5, platform2.GetTop());
+		pFlag2.SetTopLeft(pFlag2.GetLeft() - 5, pFlag2.GetTop());
 	}
 	else if (((character1.image.GetLeft() + character2.image.GetLeft()) / 2) < 800)
 	{
@@ -725,6 +885,10 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		rolling_wall3.SetTopLeft(rolling_wall3.GetLeft() + 5, rolling_wall3.GetTop());
 		wall_ignore[0].SetTopLeft(wall_ignore[0].GetLeft() + 5, wall_ignore[0].GetTop());
 		wall_ignore[1].SetTopLeft(wall_ignore[1].GetLeft() + 5, wall_ignore[1].GetTop());
+		auto_floor.SetTopLeft(auto_floor.GetLeft() + 5, auto_floor.GetTop());
+		auto_wall.SetTopLeft(auto_wall.GetLeft() + 5, auto_wall.GetTop());
+		platform2.SetTopLeft(platform2.GetLeft() + 5, platform2.GetTop());
+		pFlag2.SetTopLeft(pFlag2.GetLeft() + 5, pFlag2.GetTop());
 	}
 }
 
@@ -761,8 +925,8 @@ bool Map::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, in
 }
 
 void Map::RefreshWall(Character &character1, Character &character2) {
-	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3, bridge3, rolling_wall3 };
-	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3, bridge3, rolling_wall3 };
+	std::vector<CMovingBitmap> player1_floor = { character2.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3, bridge3, rolling_wall3, auto_floor, auto_wall, platform2 };
+	std::vector<CMovingBitmap> player2_floor = { character1.image, bridge, platform, box1, box2, box3, box3_1, box3_2, box3_3, bridge3, rolling_wall3, auto_floor, auto_wall, platform2 };
 	box_blocks = { character1.image, character2.image, bridge3 };
 	box3_1_blocks = { character1.image, character2.image, box3_2, box3_3, bridge3 };
 	box3_2_blocks = { character1.image, character2.image, box3_1, box3_3, bridge3 };
