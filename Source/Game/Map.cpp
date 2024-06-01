@@ -8,6 +8,13 @@ Map::Map() {
 
 void Map::OnInit(Character &character1, Character &character2, int phase) {
 
+	//初始參數
+	keyIgnore = false;
+	character1.characterIgnore = false;
+	character2.characterIgnore = false;
+	staybyCharacter1 = 0;
+	staybyCharacter2 = 0;
+
 	LoadAndResetAllBitmap();
 
 	character1.OnInit();
@@ -109,6 +116,14 @@ void  Map::LoadAndResetAllBitmap() {
 		});
 	background.SetTopLeft(0, 0);
 
+	menu.LoadBitmapByString({
+	"resources/menu_1.bmp",
+	"resources/menu_2.bmp",
+	"resources/menu_3.bmp"
+		}, RGB(0, 255, 0));
+	menu.SetTopLeft(650, 200);
+	menu.SetFrameIndexOfBitmap(0);
+
 	clear.LoadBitmapByString({ "resources/clear.bmp" }, RGB(0, 255, 0));
 
 	//第一關
@@ -178,8 +193,6 @@ void  Map::LoadAndResetAllBitmap() {
 	auto_wall.LoadBitmapByString({ "resources/auto_wall.bmp" }, RGB(255, 255, 255));
 	auto_wall.SetTopLeft(-10000, -10000);
 }
-
-
 
 void Map::SetMap1Block() {
 	//起點牆壁
@@ -892,6 +905,20 @@ void Map::RollScreen(Character &character1, Character &character2) {
 	}
 }
 
+//選單
+void Map::RunMenuOptions(Character &character1, Character &character2, int &phase) {
+	if (menuShow) {
+		if (menu_options == 3) {
+			phase = 1;
+			OnInit(character1, character2, phase);
+
+		}
+		else if (menu_options == 2) {
+			OnInit(character1, character2, phase);
+		}
+		menuShow = false;
+	}
+}
 
 //把所有碰撞寫成fuction
 void Map::CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy)

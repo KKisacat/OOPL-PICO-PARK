@@ -36,6 +36,7 @@ public:
 	CMovingBitmap wall_ignore[2];
 	CMovingBitmap auto_floor;
 	CMovingBitmap auto_wall;
+	CMovingBitmap menu;
 	
 
 	std::vector<CMovingBitmap> box_blocks;
@@ -44,7 +45,9 @@ public:
 	std::vector<CMovingBitmap> box3_3_blocks;
 	std::vector<CMovingBitmap> button_blocks;
 
-
+	//選項單
+	bool menuShow = false;
+	int menu_options = 1;
 	//鑰匙
 	bool keyIgnore = false;
 	//通關
@@ -113,6 +116,7 @@ public:
 	void PressButtonBridgeThree(Character &character1, Character &character2);
 	void MoveAutoFloor(Character &character1, Character &character2);
 	void MoveAutoWall(Character &character1, Character &character2);
+	void RunMenuOptions(Character &character1, Character &character2, int &phase);
 
 
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);

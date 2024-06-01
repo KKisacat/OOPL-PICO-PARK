@@ -86,12 +86,12 @@ void CGameStateRun::OnMove()
 		
 		// 小藍死掉重生
 		if (character1.image.GetTop() > 1024) {
-			character1.image.SetTopLeft(character1.image.GetLeft() - 700, 0);
+			character1.image.SetTopLeft(character1.image.GetLeft() - 800, 0);
 		}
 
 		//小紅墜落向後重生
 		if (character2.image.GetTop() > 1024) {
-			character2.image.SetTopLeft(character2.image.GetLeft() - 700, 0);
+			character2.image.SetTopLeft(character2.image.GetLeft() - 800, 0);
 		}
 
 		//大門
@@ -235,10 +235,25 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == VK_UP) {
 		if (phase > 1 && phase <= 5) {	//關卡
-			if (character1.checkJumpble == 1 ) //沒跳過才能跳，不然會連跳
-			{
-				character1.checkJumpble = 0;
-				character1.isUpRun = 1;
+			if (!maps.menuShow) {
+				if (character1.checkJumpble == 1) //沒跳過才能跳，不然會連跳
+				{
+					character1.checkJumpble = 0;
+					character1.isUpRun = 1;
+				}
+			}
+			else {
+				if (maps.menu_options > 1) {
+					maps.menu_options -= 1;
+				}
+			}
+		}
+	}
+
+	if (nChar == VK_DOWN) {
+		if (maps.menuShow) {
+			if (maps.menu_options < 3) {
+				maps.menu_options += 1;
 			}
 		}
 	}
@@ -249,9 +264,11 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				sub_phase = sub_phase + 1;
 		}
 		if (phase > 1 && phase <= 5) {	//關卡 phase = 2~5
-			character1.isRightRun = 1;
-			character1.isCharacterLeftAnimation = false;
-			character1.image.SetAnimation(125, false);
+			if (!maps.menuShow) {
+				character1.isRightRun = 1;
+				character1.isCharacterLeftAnimation = false;
+				character1.image.SetAnimation(125, false);
+			}
 		}
 	}
 
@@ -261,18 +278,35 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				sub_phase = sub_phase - 1;
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
-			character1.isLeftRun = 1;
-			character1.isCharacterLeftAnimation = true;
-			character1.image2.SetAnimation(125, false);
+			if (!maps.menuShow) {
+				character1.isLeftRun = 1;
+				character1.isCharacterLeftAnimation = true;
+				character1.image2.SetAnimation(125, false);
+			}
 		}
 	}
 
 	if (nChar == 0x57) {  //player2 上鍵 W
 		if (phase > 1 && phase <= 5) {	//關卡
-			if (character2.checkJumpble == 1) //沒跳過才能跳，不然會連跳
-			{
-				character2.checkJumpble = 0;
-				character2.isUpRun = 1;
+			if (!maps.menuShow) { 
+				if (character2.checkJumpble == 1) //沒跳過才能跳，不然會連跳
+				{
+					character2.checkJumpble = 0;
+					character2.isUpRun = 1;
+				}
+			}
+			else { //menu 打開
+				if (maps.menu_options > 1) {
+					maps.menu_options -= 1;
+				}
+			}
+		}
+	}
+
+	if (nChar == 0x53) { //player2 下鍵 S
+		if (maps.menuShow) {
+			if (maps.menu_options < 3) {
+				maps.menu_options += 1;
 			}
 		}
 	}
@@ -284,9 +318,11 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				sub_phase = sub_phase + 1;
 		}
 		if (phase > 1 && phase <= 5) {	//關卡 phase = 2~5
-			character2.isRightRun = 1;
-			character2.isCharacterLeftAnimation = false;
-			character2.image.SetAnimation(125, false);
+			if (!maps.menuShow) {
+				character2.isRightRun = 1;
+				character2.isCharacterLeftAnimation = false;
+				character2.image.SetAnimation(125, false);
+			}
 		}
 	}
 
@@ -297,9 +333,11 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				sub_phase = sub_phase - 1;
 		}
 		if (phase > 1 && phase <= 5) {	//關卡
-			character2.isLeftRun = 1;
-			character2.isCharacterLeftAnimation = true;
-			character2.image2.SetAnimation(125, false);
+			if (!maps.menuShow) {
+				character2.isLeftRun = 1;
+				character2.isCharacterLeftAnimation = true;
+				character2.image2.SetAnimation(125, false);
+			}
 		}
 	}
 
@@ -317,6 +355,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				maps.door.SetFrameIndexOfBitmap(1);
 				maps.keyIgnore = true;
 			}
+			maps.RunMenuOptions(character1, character2, phase);
 		}
 	}
 
@@ -334,17 +373,20 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				maps.door.SetFrameIndexOfBitmap(1);
 				maps.keyIgnore = true;
 			}
+			maps.RunMenuOptions(character1, character2, phase);
 		}
 	}
 
 	if (nChar == VK_ESCAPE) {
-		phase = 1;
-		maps.keyIgnore = false;
-		character1.characterIgnore = false;
-		character2.characterIgnore = false;
-		maps.staybyCharacter1 = 0;
-		maps.staybyCharacter2 = 0;
-		OnInit();
+		if (phase > 1) { //選單開關
+			if (maps.menuShow) {
+				maps.menuShow = false;
+			}
+			else {
+				maps.menu_options = 1;
+				maps.menuShow = true;
+			}
+		}
 	}
 }
 
@@ -544,6 +586,12 @@ void CGameStateRun::show_image_by_phase() {
 			maps.staybyCharacter2 = 0;
 			OnInit();
 		}
+	}
+	
+	//選單
+	if (maps.menuShow) {
+		maps.menu.SetFrameIndexOfBitmap(maps.menu_options - 1);
+		maps.menu.ShowBitmap();
 	}
 
 }
