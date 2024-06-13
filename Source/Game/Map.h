@@ -3,6 +3,8 @@
 
 #include "../Library/gameutil.h"
 #include "Character.h"
+#include "Key.h"
+#include "Platform.h"
 
 using namespace game_framework;
 
@@ -10,15 +12,14 @@ class Map
 {
 public:
 	Map();
+	Key key = Key();
+	Platform platforms = Platform();
 	CMovingBitmap background;
 	CMovingBitmap block[500];
 	CMovingBitmap button;
 	CMovingBitmap bridge;
-	CMovingBitmap platform;
-	CMovingBitmap platform2;
-	CMovingBitmap pFlag;
-	CMovingBitmap pFlag2;
-	CMovingBitmap key;
+
+	
 	CMovingBitmap door;
 	CMovingBitmap clear;
 	CMovingBitmap crown[4];
@@ -57,12 +58,10 @@ public:
 	bool level_four_completed = 0;
 	//重疊
 	bool buttonOverlap;
-	bool keyP1Overlap;
-	bool keyP2Overlap;
+	
 	bool bridgeP1Overlap;
 	bool bridgeP2Overlap;
-	bool platformP1Overlap;
-	bool platformP2Overlap;
+	
 	bool doorP1isOverlap;
 	bool doorP2isOverlap;
 	//第二關
@@ -86,9 +85,7 @@ public:
 	bool autoWallP1isOverlapRight;
 	bool autoWallP2isOverlapRight;
 
-	//鑰匙跟隨
-	int staybyCharacter1 = 0;
-	int staybyCharacter2 = 0;
+	
 
 	//第四關自走牆
 	bool isAutoFloorMoveUp = true;
@@ -102,7 +99,7 @@ public:
 	void SetMap4Block();
 	void PressButton(Character &character1, Character &character2);
 	void GetKey(Character &character1, Character &character2);
-	void MovePlatform(CMovingBitmap &platform, CMovingBitmap &pFlag, Character &character1, Character &character2, int highest, int lowest, bool isPlatformUp);
+	void MovePlatform(CMovingBitmap &platform_image, CMovingBitmap &pFlag, Character &character1, Character &character2, int highest, int lowest, bool isPlatformUp);
 	void CheckDoorOverlap(Character &character1, Character &character2);
 	void RollScreen(Character &character1, Character &character2);
 	void TryFallBox(CMovingBitmap &box, int height);
@@ -122,10 +119,5 @@ public:
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	void RefreshWall(Character &character1, Character &character2);
-
-
-
-
-
 
 };

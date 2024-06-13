@@ -119,19 +119,11 @@ namespace game_framework {
 			"resources/player2LeftRun4.bmp" }, "Pink", 900, 810);
 		Map maps = Map();
 
-
 		void show_image_by_phase();
 		void show_text_by_phase();
 
 		//¨÷¶b
 		int _mapMove = 0;
-
-		
-		//¸I¼²
-		void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy); //³B²zª±®a¸I¼²
-		bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
-
-
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
