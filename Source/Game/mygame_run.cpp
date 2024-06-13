@@ -101,7 +101,7 @@ void CGameStateRun::OnMove()
 		maps.PressButton(character1, character2);
 
 		//енеx
-		maps.MovePlatform(maps.platform, maps.pFlag, character1, character2, 370, 830, true);
+		maps.MovePlatform(maps.platforms.image, maps.platforms.pFlag, character1, character2, 370, 830, true);
 	}
 	else if (phase == 3) 
 	{
@@ -211,8 +211,8 @@ void CGameStateRun::OnMove()
 	else if (phase == 5) {
 		maps.MoveAutoFloor(character1, character2);
 		maps.MoveAutoWall(character1, character2);
-		maps.MovePlatform(maps.platform, maps.pFlag, character1, character2, 450, 800, false);
-		maps.MovePlatform(maps.platform2, maps.pFlag2, character1, character2, 450, 800, true);
+		maps.MovePlatform(maps.platforms.image, maps.platforms.pFlag, character1, character2, 450, 800, false);
+		maps.MovePlatform(maps.platforms.image2, maps.platforms.pFlag2, character1, character2, 450, 800, true);
 		maps.CheckDoorOverlap(character1, character2);
 	}
 }
@@ -351,7 +351,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				character2.characterIgnore = true;
 				character2.image.SetTopLeft(900, 900);
 			}
-			if (maps.doorP2isOverlap && maps.staybyCharacter2 == 1) {
+			if (maps.doorP2isOverlap && maps.key.staybyCharacter2 == 1) {
 				maps.door.SetFrameIndexOfBitmap(1);
 				maps.keyIgnore = true;
 			}
@@ -369,7 +369,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				character1.characterIgnore = true;
 				character1.image.SetTopLeft(1020, 900);
 			}
-			if (maps.doorP1isOverlap && maps.staybyCharacter1 == 1) {
+			if (maps.doorP1isOverlap && maps.key.staybyCharacter1 == 1) {
 				maps.door.SetFrameIndexOfBitmap(1);
 				maps.keyIgnore = true;
 			}
@@ -476,8 +476,8 @@ void CGameStateRun::show_image_by_phase() {
 			maps.button.SetFrameIndexOfBitmap(1);
 		}
 		maps.button.ShowBitmap();
-		maps.platform.ShowBitmap();
-		maps.pFlag.ShowBitmap();
+		maps.platforms.image.ShowBitmap();
+		maps.platforms.pFlag.ShowBitmap();
 		for (int i = 0; i < 131; i++) {
 			maps.block[i].ShowBitmap();
 		}
@@ -489,7 +489,7 @@ void CGameStateRun::show_image_by_phase() {
 		maps.bridge.ShowBitmap();
 		
 		if (!maps.keyIgnore) {
-			maps.key.ShowBitmap();
+			maps.key.image.ShowBitmap();
 		}
 		if (character1.characterIgnore && character2.characterIgnore) {
 			maps.level_one_completed = true;
@@ -508,7 +508,7 @@ void CGameStateRun::show_image_by_phase() {
 		maps.box2.ShowBitmap();
 		maps.box3.ShowBitmap();
 		if (!maps.keyIgnore) {
-			maps.key.ShowBitmap();
+			maps.key.image.ShowBitmap();
 		}
 		if (character1.characterIgnore && character2.characterIgnore) {
 			maps.level_two_completed = true;
@@ -542,7 +542,7 @@ void CGameStateRun::show_image_by_phase() {
 		character2.OnShow();
 		
 		if (!maps.keyIgnore) {
-			maps.key.ShowBitmap();
+			maps.key.image.ShowBitmap();
 		}
 		if (character1.characterIgnore && character2.characterIgnore) {
 			maps.level_three_completed = true;
@@ -555,17 +555,17 @@ void CGameStateRun::show_image_by_phase() {
 			maps.block[i].ShowBitmap();
 		}
 		maps.door.ShowBitmap();
-		maps.platform.ShowBitmap();
-		maps.pFlag.ShowBitmap();
-		maps.platform2.ShowBitmap();
-		maps.pFlag2.ShowBitmap();
+		maps.platforms.image.ShowBitmap();
+		maps.platforms.pFlag.ShowBitmap();
+		maps.platforms.image2.ShowBitmap();
+		maps.platforms.pFlag2.ShowBitmap();
 		character1.OnShow();
 		character2.OnShow();
 		maps.auto_floor.ShowBitmap();
 		maps.auto_wall.ShowBitmap();
 
 		if (!maps.keyIgnore) {
-			maps.key.ShowBitmap();
+			maps.key.image.ShowBitmap();
 		}
 		if (character1.characterIgnore && character2.characterIgnore) {
 			maps.level_four_completed = true;
@@ -582,8 +582,8 @@ void CGameStateRun::show_image_by_phase() {
 			maps.keyIgnore = false;
 			character1.characterIgnore = false;
 			character2.characterIgnore = false;
-			maps.staybyCharacter1 = 0;
-			maps.staybyCharacter2 = 0;
+			maps.key.staybyCharacter1 = 0;
+			maps.key.staybyCharacter2 = 0;
 			OnInit();
 		}
 	}
