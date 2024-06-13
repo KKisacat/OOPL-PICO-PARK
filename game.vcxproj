@@ -243,6 +243,9 @@
     <ClCompile Include="Source\Core\StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\Game\AutoObject.cpp" />
+    <ClCompile Include="Source\Game\Box.cpp" />
+    <ClCompile Include="Source\Game\Button.cpp" />
     <ClCompile Include="Source\Game\Character.cpp" />
     <ClCompile Include="Source\Game\Key.cpp" />
     <ClCompile Include="Source\Game\Map.cpp" />
@@ -261,6 +264,9 @@
     <ClInclude Include="Source\Core\MainFrm.h" />
     <ClInclude Include="Source\Core\Resource.h" />
     <ClInclude Include="Source\Core\StdAfx.h" />
+    <ClInclude Include="Source\Game\AutoObject.h" />
+    <ClInclude Include="Source\Game\Box.h" />
+    <ClInclude Include="Source\Game\Button.h" />
     <ClInclude Include="Source\Game\Character.h" />
     <ClInclude Include="Source\Game\config.h" />
     <ClInclude Include="Source\Game\Key.h" />

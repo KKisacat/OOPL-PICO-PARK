@@ -5,6 +5,9 @@
 #include "Character.h"
 #include "Key.h"
 #include "Platform.h"
+#include "Box.h"
+#include "AutoObject.h"
+#include "Button.h"
 
 using namespace game_framework;
 
@@ -14,39 +17,24 @@ public:
 	Map();
 	Key key = Key();
 	Platform platforms = Platform();
+	Box boxes = Box();
+	AutoObject autoObjects = AutoObject();
+	Button buttonClass = Button();
+
 	CMovingBitmap background;
 	CMovingBitmap block[500];
-	CMovingBitmap button;
-	CMovingBitmap bridge;
-
 	
 	CMovingBitmap door;
 	CMovingBitmap clear;
-	CMovingBitmap crown[4];
-	CMovingBitmap box1;
-	CMovingBitmap box2;
-	CMovingBitmap box3;
-	std::vector<CMovingBitmap> buttons = { CMovingBitmap(), CMovingBitmap(), CMovingBitmap(), CMovingBitmap() };
-	std::vector<CMovingBitmap> rolling_walls = { CMovingBitmap(), CMovingBitmap(), CMovingBitmap(), CMovingBitmap() };
-	CMovingBitmap box3_1;
-	CMovingBitmap box3_2;
-	CMovingBitmap box3_3;
-	CMovingBitmap bridge3;
-	CMovingBitmap button3;
-	CMovingBitmap rolling_wall3;
+	CMovingBitmap crown[4];	
+	
 	CMovingBitmap wall_ignore[2];
-	CMovingBitmap auto_floor;
-	CMovingBitmap auto_wall;
 	CMovingBitmap menu;
 	
-
 	std::vector<CMovingBitmap> box_blocks;
-	std::vector<CMovingBitmap> box3_1_blocks;
-	std::vector<CMovingBitmap> box3_2_blocks;
-	std::vector<CMovingBitmap> box3_3_blocks;
 	std::vector<CMovingBitmap> button_blocks;
 
-	//選項單
+	//選單
 	bool menuShow = false;
 	int menu_options = 1;
 	//鑰匙
@@ -57,39 +45,8 @@ public:
 	bool level_three_completed = 0;
 	bool level_four_completed = 0;
 	//重疊
-	bool buttonOverlap;
-	
-	bool bridgeP1Overlap;
-	bool bridgeP2Overlap;
-	
 	bool doorP1isOverlap;
-	bool doorP2isOverlap;
-	//第二關
-	bool boxisOverlap;
-	bool boxP1isOverlap;
-	bool boxP2isOverlap;
-	bool P1P2isOverlap;
-	bool P2P1isOverlap;
-	//第三關
-	bool box3_1isOnHead;
-	bool box12isOverlap;
-	bool box23isOverlap;
-	bool playerIsOnBox;
-	int numOfButtonPressed = 0;
-	bool button3Overlap;
-	//第四關
-	bool autoFloorP1isOverlap;
-	bool autoFloorP2isOverlap;
-	bool autoWallP1isOverlapLeft;
-	bool autoWallP2isOverlapLeft;
-	bool autoWallP1isOverlapRight;
-	bool autoWallP2isOverlapRight;
-
-	
-
-	//第四關自走牆
-	bool isAutoFloorMoveUp = true;
-	bool isAutoWallMoveLeft = true;
+	bool doorP2isOverlap;	
 	
 	void OnInit(Character &character1, Character &character2, int phase);
 	void LoadAndResetAllBitmap();
@@ -115,9 +72,7 @@ public:
 	void MoveAutoWall(Character &character1, Character &character2);
 	void RunMenuOptions(Character &character1, Character &character2, int &phase);
 
-
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	void RefreshWall(Character &character1, Character &character2);
-
 };

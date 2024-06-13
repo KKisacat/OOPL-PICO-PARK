@@ -38,7 +38,7 @@ public:
 	void TryMoveRight(Character &other);
 	void TryMoveLeft(Character &other);
 	void TryMoveUp();
-	void TryFall();
+	void TryFall(bool menuShow);
 	void CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	bool IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy);
 	void SetWallAndFloor(vector<CMovingBitmap> blocks);
