@@ -69,10 +69,12 @@ void Character::TryMoveUp() {
 }
 
 //掉落
-void Character::TryFall() {
-	this->upTime = 0;
-	this->checkJumpble = IsJumpable(this->image, this->blocks, 0, 10); //不能連跳
-	CheckMovable(this->image, this->blocks, 0, 10);
+void Character::TryFall(bool menuShow) {
+	if (!menuShow) {
+		this->upTime = 0;
+		this->checkJumpble = IsJumpable(this->image, this->blocks, 0, 10); //不能連跳
+		CheckMovable(this->image, this->blocks, 0, 10);
+	}
 }
 
 

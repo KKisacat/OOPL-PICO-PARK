@@ -51,7 +51,7 @@ void CGameStateRun::OnMove()
 		}
 		else if (!character1.isUpRun) //掉落
 		{
-			character1.TryFall();
+			character1.TryFall(maps.menuShow);
 		}
 
 		//player2 move
@@ -70,7 +70,7 @@ void CGameStateRun::OnMove()
 		}
 		else if (!character2.isUpRun)
 		{
-			character2.TryFall();
+			character2.TryFall(maps.menuShow);
 		}
 
 		//鑰匙跟隨
@@ -106,37 +106,37 @@ void CGameStateRun::OnMove()
 	else if (phase == 3) 
 	{
 		//箱子2掉落
-		maps.TryFallBox(maps.box2, 810);
+		maps.TryFallBox(maps.boxes.box2, 810);
 		//確保箱子沒被推的時候保持初始
-		maps.box1.SetFrameIndexOfBitmap(1);
-		maps.box2.SetFrameIndexOfBitmap(2);
-		maps.box3.SetFrameIndexOfBitmap(1);
+		maps.boxes.box1.SetFrameIndexOfBitmap(1);
+		maps.boxes.box2.SetFrameIndexOfBitmap(2);
+		maps.boxes.box3.SetFrameIndexOfBitmap(1);
 
 		//推箱子
 		//小藍
 		if (character1.isRightRun)
 		{
-			maps.PushBox(character1, maps.box1, 8);
-			maps.PushBox(character1, maps.box3, 8);
+			maps.PushBox(character1, maps.boxes.box1, 8);
+			maps.PushBox(character1, maps.boxes.box3, 8);
 			maps.PushBox2ChangeImage(character1, character2, 8); //Box2換圖片
 		}
 		else if (character1.isLeftRun)
 		{
-			maps.PushBox(character1, maps.box1, -8); 
-			maps.PushBox(character1, maps.box3, -8);
+			maps.PushBox(character1, maps.boxes.box1, -8);
+			maps.PushBox(character1, maps.boxes.box3, -8);
 			maps.PushBox2ChangeImage(character1, character2, -8);
 		}
 		//小紅
 		if (character2.isRightRun)
 		{
-			maps.PushBox(character2, maps.box1, 8);
-			maps.PushBox(character2, maps.box3, 8);
+			maps.PushBox(character2, maps.boxes.box1, 8);
+			maps.PushBox(character2, maps.boxes.box3, 8);
 			maps.PushBox2ChangeImage(character2, character1, 8);
 		}
 		else if (character2.isLeftRun)
 		{
-			maps.PushBox(character2, maps.box1, -8);
-			maps.PushBox(character2, maps.box3, -8);
+			maps.PushBox(character2, maps.boxes.box1, -8);
+			maps.PushBox(character2, maps.boxes.box3, -8);
 			maps.PushBox2ChangeImage(character2, character1, -8);
 		}
 		//兩人推箱
@@ -153,51 +153,51 @@ void CGameStateRun::OnMove()
 	}
 	else if (phase == 4) {
 		//箱子掉落
-		maps.TryFallBox(maps.box3_1, 1024);
-		if (maps.box3_1.GetTop() > 1024) {
-			maps.box3_1.SetTopLeft(maps.block[0].GetLeft(), 0);
+		maps.TryFallBox(maps.boxes.box3_1, 1024);
+		if (maps.boxes.box3_1.GetTop() > 1024) {
+			maps.boxes.box3_1.SetTopLeft(maps.block[0].GetLeft(), 0);
 		}
 		// 小藍死掉重生
 		if (character1.image.GetTop() > 1024) {
-			character1.image.SetTopLeft(maps.block[0].GetLeft(), 0);
+			character1.image.SetTopLeft(maps.block[0].GetLeft() - 100, 0);
 		}
 		//小紅墜落向後重生
 		if (character2.image.GetTop() > 1024) {
-			character2.image.SetTopLeft(maps.block[0].GetLeft(), 0);
+			character2.image.SetTopLeft(maps.block[0].GetLeft() + 100, 0);
 		}
 		//推箱子
 		//小藍
-		maps.box3_1.SetFrameIndexOfBitmap(1);
-		maps.box3_2.SetFrameIndexOfBitmap(1);
-		maps.box3_3.SetFrameIndexOfBitmap(1);
+		maps.boxes.box3_1.SetFrameIndexOfBitmap(1);
+		maps.boxes.box3_2.SetFrameIndexOfBitmap(1);
+		maps.boxes.box3_3.SetFrameIndexOfBitmap(1);
 		if (character1.isRightRun)
 		{
 			maps.MoveHeadBox(character1, 8, character2);
-			maps.PushBoxLevelThree(character1, maps.box3_1, 8, 1);
-			maps.PushBoxLevelThree(character1, maps.box3_2, 8, 2);
-			maps.PushBoxLevelThree(character1, maps.box3_3, 8, 3);
+			maps.PushBoxLevelThree(character1, maps.boxes.box3_1, 8, 1);
+			maps.PushBoxLevelThree(character1, maps.boxes.box3_2, 8, 2);
+			maps.PushBoxLevelThree(character1, maps.boxes.box3_3, 8, 3);
 		}
 		else if (character1.isLeftRun)
 		{
 			maps.MoveHeadBox(character1, -8, character2);
-			maps.PushBoxLevelThree(character1, maps.box3_1, -8, 1);
-			maps.PushBoxLevelThree(character1, maps.box3_2, -8, 2);
-			maps.PushBoxLevelThree(character1, maps.box3_3, -8, 3);
+			maps.PushBoxLevelThree(character1, maps.boxes.box3_1, -8, 1);
+			maps.PushBoxLevelThree(character1, maps.boxes.box3_2, -8, 2);
+			maps.PushBoxLevelThree(character1, maps.boxes.box3_3, -8, 3);
 		}
 		//小紅
 		if (character2.isRightRun)
 		{
 			maps.MoveHeadBox(character2, 8, character1);
-			maps.PushBoxLevelThree(character2, maps.box3_1, 8, 1);
-			maps.PushBoxLevelThree(character2, maps.box3_2, 8, 2);
-			maps.PushBoxLevelThree(character2, maps.box3_3, 8, 3);
+			maps.PushBoxLevelThree(character2, maps.boxes.box3_1, 8, 1);
+			maps.PushBoxLevelThree(character2, maps.boxes.box3_2, 8, 2);
+			maps.PushBoxLevelThree(character2, maps.boxes.box3_3, 8, 3);
 		}
 		else if (character2.isLeftRun)
 		{
 			maps.MoveHeadBox(character2, -8, character1);
-			maps.PushBoxLevelThree(character2, maps.box3_1, -8, 1);
-			maps.PushBoxLevelThree(character2, maps.box3_2, -8, 2);
-			maps.PushBoxLevelThree(character2, maps.box3_3, -8, 3);
+			maps.PushBoxLevelThree(character2, maps.boxes.box3_1, -8, 1);
+			maps.PushBoxLevelThree(character2, maps.boxes.box3_2, -8, 2);
+			maps.PushBoxLevelThree(character2, maps.boxes.box3_3, -8, 3);
 		}
 
 		//按四個按鈕
@@ -472,10 +472,10 @@ void CGameStateRun::show_image_by_phase() {
 	else if (phase == 2) {
 		maps.background.SetFrameIndexOfBitmap(phase - 2);
 		maps.background.ShowBitmap();
-		if (maps.buttonOverlap) {
-			maps.button.SetFrameIndexOfBitmap(1);
+		if (maps.buttonClass.buttonOverlap) {
+			maps.buttonClass.button_image.SetFrameIndexOfBitmap(1);
 		}
-		maps.button.ShowBitmap();
+		maps.buttonClass.button_image.ShowBitmap();
 		maps.platforms.image.ShowBitmap();
 		maps.platforms.pFlag.ShowBitmap();
 		for (int i = 0; i < 131; i++) {
@@ -486,7 +486,7 @@ void CGameStateRun::show_image_by_phase() {
 		character1.OnShow();
 		character2.OnShow();
 		
-		maps.bridge.ShowBitmap();
+		maps.buttonClass.bridge.ShowBitmap();
 		
 		if (!maps.keyIgnore) {
 			maps.key.image.ShowBitmap();
@@ -504,9 +504,9 @@ void CGameStateRun::show_image_by_phase() {
 		maps.door.ShowBitmap();
 		character1.OnShow();
 		character2.OnShow();
-		maps.box1.ShowBitmap();
-		maps.box2.ShowBitmap();
-		maps.box3.ShowBitmap();
+		maps.boxes.box1.ShowBitmap();
+		maps.boxes.box2.ShowBitmap();
+		maps.boxes.box3.ShowBitmap();
 		if (!maps.keyIgnore) {
 			maps.key.image.ShowBitmap();
 		}
@@ -522,18 +522,18 @@ void CGameStateRun::show_image_by_phase() {
 		}
 		maps.door.ShowBitmap();
 		for (int i = 0; i < 4; i++) {
-			maps.buttons[i].ShowBitmap();
-			maps.rolling_walls[i].ShowBitmap();
+			maps.buttonClass.buttons_level3[i].ShowBitmap();
+			maps.buttonClass.rolling_walls[i].ShowBitmap();
 		}
-		maps.box3_1.ShowBitmap();
-		maps.box3_2.ShowBitmap();
-		maps.box3_3.ShowBitmap();
-		maps.bridge3.ShowBitmap();
-		maps.rolling_wall3.ShowBitmap();
-		if (maps.button3Overlap) {
-			maps.button3.SetFrameIndexOfBitmap(1);
+		maps.boxes.box3_1.ShowBitmap();
+		maps.boxes.box3_2.ShowBitmap();
+		maps.boxes.box3_3.ShowBitmap();
+		maps.buttonClass.bridge3.ShowBitmap();
+		maps.buttonClass.rolling_wall3.ShowBitmap();
+		if (maps.buttonClass.button3Overlap) {
+			maps.buttonClass.button3.SetFrameIndexOfBitmap(1);
 		}
-		maps.button3.ShowBitmap();
+		maps.buttonClass.button3.ShowBitmap();
 		for (int i = 0; i < 2; i++) {
 			maps.wall_ignore[i].ShowBitmap();
 		}
@@ -561,8 +561,8 @@ void CGameStateRun::show_image_by_phase() {
 		maps.platforms.pFlag2.ShowBitmap();
 		character1.OnShow();
 		character2.OnShow();
-		maps.auto_floor.ShowBitmap();
-		maps.auto_wall.ShowBitmap();
+		maps.autoObjects.auto_floor.ShowBitmap();
+		maps.autoObjects.auto_wall.ShowBitmap();
 
 		if (!maps.keyIgnore) {
 			maps.key.image.ShowBitmap();
