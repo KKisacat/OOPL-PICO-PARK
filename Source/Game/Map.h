@@ -19,7 +19,7 @@ public:
 	Platform platforms = Platform();
 	Box boxes = Box();
 	AutoObject autoObjects = AutoObject();
-	Button buttonClass = Button();
+	Button buttons = Button();
 
 	CMovingBitmap background;
 	CMovingBitmap block[500];

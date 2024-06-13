@@ -22,10 +22,10 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 
 	if (phase == 2)
 	{
-		buttonClass.button_image.SetTopLeft(90 * 56, 867);
-		buttonClass.button_image.SetFrameIndexOfBitmap(0);
+		buttons.button_image.SetTopLeft(90 * 56, 867);
+		buttons.button_image.SetFrameIndexOfBitmap(0);
 
-		buttonClass.bridge.SetTopLeft(90 * 54 - 30, 900);
+		buttons.bridge.SetTopLeft(90 * 54 - 30, 900);
 
 		platforms.image.SetTopLeft(90 * 73 + 80, 830);
 		platforms.pFlag.SetTopLeft(90 * 73 + 80, 688);
@@ -63,9 +63,9 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		key.image.SetAnimation(300, false);
 		character1.image.SetTopLeft(900, 720);
 		for (int i = 0; i < 4; i++) {
-			buttonClass.buttons_level3[i].SetTopLeft(90 * (35 + i) + 85 * i, 865);
-			buttonClass.buttons_level3[i].SetFrameIndexOfBitmap(0);
-			buttonClass.rolling_walls[i].SetTopLeft(90 * (35 + i), -10);
+			buttons.buttons_level3[i].SetTopLeft(90 * (35 + i) + 85 * i, 865);
+			buttons.buttons_level3[i].SetFrameIndexOfBitmap(0);
+			buttons.rolling_walls[i].SetTopLeft(90 * (35 + i), -10);
 		}
 
 		boxes.box3_1.SetTopLeft(900, 630);
@@ -75,10 +75,10 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		boxes.box3_3.SetTopLeft(3000, 810);
 		boxes.box3_3.SetFrameIndexOfBitmap(1);
 
-		buttonClass.bridge3.SetTopLeft(90 * 20, 900);
-		buttonClass.button3.SetTopLeft(90 * 22, 237);
-		buttonClass.button3.SetFrameIndexOfBitmap(0);
-		buttonClass.rolling_wall3.SetTopLeft(90 * 17 + 40, 270);
+		buttons.bridge3.SetTopLeft(90 * 20, 900);
+		buttons.button3.SetTopLeft(90 * 22, 237);
+		buttons.button3.SetFrameIndexOfBitmap(0);
+		buttons.rolling_wall3.SetTopLeft(90 * 17 + 40, 270);
 		wall_ignore[0].SetTopLeft(90 * 17 + 40, 360);
 		wall_ignore[1].SetTopLeft(90 * 35, 360);
 
@@ -127,11 +127,11 @@ void  Map::LoadAndResetAllBitmap() {
 	clear.LoadBitmapByString({ "resources/clear.bmp" }, RGB(0, 255, 0));
 
 	//第一關
-	buttonClass.button_image.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
-	buttonClass.button_image.SetTopLeft(-10000, -10000);
+	buttons.button_image.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
+	buttons.button_image.SetTopLeft(-10000, -10000);
 
-	buttonClass.bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
-	buttonClass.bridge.SetTopLeft(-10000, -10000);
+	buttons.bridge.LoadBitmapByString({ "resources/bridge13.bmp" }, RGB(255, 255, 255));
+	buttons.bridge.SetTopLeft(-10000, -10000);
 
 	platforms.image.LoadBitmapByString({ "resources/platform.bmp" }, RGB(255, 255, 255));
 	platforms.image.SetTopLeft(-10000, -10000);
@@ -167,10 +167,10 @@ void  Map::LoadAndResetAllBitmap() {
 
 	//第三關
 	for (int i = 0; i < 4; i++) {
-		buttonClass.buttons_level3[i].LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
-		buttonClass.buttons_level3[i].SetTopLeft(-10000, -10000);
-		buttonClass.rolling_walls[i].LoadBitmapByString({ "resources/rolling_wall.bmp" }, RGB(255, 255, 255));
-		buttonClass.rolling_walls[i].SetTopLeft(-10000, -10000);
+		buttons.buttons_level3[i].LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
+		buttons.buttons_level3[i].SetTopLeft(-10000, -10000);
+		buttons.rolling_walls[i].LoadBitmapByString({ "resources/rolling_wall.bmp" }, RGB(255, 255, 255));
+		buttons.rolling_walls[i].SetTopLeft(-10000, -10000);
 	}
 	boxes.box3_1.LoadBitmapByString({ "resources/box_level3_0.bmp", "resources/box_level3_1.bmp" }, RGB(0, 255, 0));
 	boxes.box3_1.SetTopLeft(-10000, -10000);
@@ -178,12 +178,12 @@ void  Map::LoadAndResetAllBitmap() {
 	boxes.box3_2.SetTopLeft(-10000, -10000);
 	boxes.box3_3.LoadBitmapByString({ "resources/box_level3_0.bmp", "resources/box_level3_1.bmp" }, RGB(0, 255, 0));
 	boxes.box3_3.SetTopLeft(-10000, -10000);
-	buttonClass.bridge3.LoadBitmapByString({ "resources/bridge3.bmp" }, RGB(255, 255, 255));
-	buttonClass.bridge3.SetTopLeft(-10000, -10000);
-	buttonClass.button3.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
-	buttonClass.button3.SetTopLeft(-10000, -10000);
-	buttonClass.rolling_wall3.LoadBitmapByString({ "resources/rolling_wall.bmp" }, RGB(255, 255, 255));
-	buttonClass.rolling_wall3.SetTopLeft(-10000, -10000);
+	buttons.bridge3.LoadBitmapByString({ "resources/bridge3.bmp" }, RGB(255, 255, 255));
+	buttons.bridge3.SetTopLeft(-10000, -10000);
+	buttons.button3.LoadBitmapByString({ "resources/button1.bmp", "resources/button2.bmp" }, RGB(255, 255, 255));
+	buttons.button3.SetTopLeft(-10000, -10000);
+	buttons.rolling_wall3.LoadBitmapByString({ "resources/rolling_wall.bmp" }, RGB(255, 255, 255));
+	buttons.rolling_wall3.SetTopLeft(-10000, -10000);
 	for (int i = 0; i < 2; i++) {
 		wall_ignore[i].LoadBitmapByString({ "resources/wall_ignore.bmp" });
 		wall_ignore[i].SetTopLeft(-10000, -10000);
@@ -418,7 +418,7 @@ void Map::SetMap4Block() {
 
 void Map::PressButton(Character &character1, Character &character2) {
 
-	buttonClass.PressButton(character1, character2, block[45].GetLeft());
+	buttons.PressButton(character1, character2, block[45].GetLeft());
 }
 
 void Map::GetKey(Character &character1, Character &character2) {
@@ -470,17 +470,17 @@ void Map::PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int
 //第三關橋跟閘門
 void Map::PressButtonBridgeThree(Character &character1, Character &character2) {
 
-	buttonClass.PressButtonBridgeThree(character1, character2, block[0].GetLeft(), button_blocks);
+	buttons.PressButtonBridgeThree(character1, character2, block[0].GetLeft(), button_blocks);
 }
 
 //第三關的四個閘門按鈕
 int Map::CheckButtonPressed(Character &character1, Character &character2) { 
-	return buttonClass.CheckButtonPressed(character1, character2, button_blocks);
+	return buttons.CheckButtonPressed(character1, character2, button_blocks);
 }
 
 //第三關的四個閘門
 void Map::RollWall(int numOfButtonPressed) {
-	buttonClass.RollWall(numOfButtonPressed, button_blocks);
+	buttons.RollWall(numOfButtonPressed, button_blocks);
 }
 
 //第四關自動平台
@@ -512,8 +512,8 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		}
 		character1.image.SetTopLeft(character1.image.GetLeft() - 5, character1.image.GetTop());
 		character2.image.SetTopLeft(character2.image.GetLeft() - 5, character2.image.GetTop());
-		buttonClass.button_image.SetTopLeft(buttonClass.button_image.GetLeft() - 5, buttonClass.button_image.GetTop());
-		buttonClass.bridge.SetTopLeft(buttonClass.bridge.GetLeft() - 5, buttonClass.bridge.GetTop());
+		buttons.button_image.SetTopLeft(buttons.button_image.GetLeft() - 5, buttons.button_image.GetTop());
+		buttons.bridge.SetTopLeft(buttons.bridge.GetLeft() - 5, buttons.bridge.GetTop());
 		key.image.SetTopLeft(key.image.GetLeft() - 5, key.image.GetTop());
 		platforms.image.SetTopLeft(platforms.image.GetLeft() - 5, platforms.image.GetTop());
 		platforms.pFlag.SetTopLeft(platforms.pFlag.GetLeft() - 5, platforms.pFlag.GetTop());
@@ -522,15 +522,15 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		boxes.box2.SetTopLeft(boxes.box2.GetLeft() - 5, boxes.box2.GetTop());
 		boxes.box3.SetTopLeft(boxes.box3.GetLeft() - 5, boxes.box3.GetTop());
 		for (int i = 0; i < 4; i++) {
-			buttonClass.buttons_level3[i].SetTopLeft(buttonClass.buttons_level3[i].GetLeft() - 5, buttonClass.buttons_level3[i].GetTop());
-			buttonClass.rolling_walls[i].SetTopLeft(buttonClass.rolling_walls[i].GetLeft() - 5, buttonClass.rolling_walls[i].GetTop());
+			buttons.buttons_level3[i].SetTopLeft(buttons.buttons_level3[i].GetLeft() - 5, buttons.buttons_level3[i].GetTop());
+			buttons.rolling_walls[i].SetTopLeft(buttons.rolling_walls[i].GetLeft() - 5, buttons.rolling_walls[i].GetTop());
 		}
 		boxes.box3_1.SetTopLeft(boxes.box3_1.GetLeft() - 5, boxes.box3_1.GetTop());
 		boxes.box3_2.SetTopLeft(boxes.box3_2.GetLeft() - 5, boxes.box3_2.GetTop());
 		boxes.box3_3.SetTopLeft(boxes.box3_3.GetLeft() - 5, boxes.box3_3.GetTop());
-		buttonClass.bridge3.SetTopLeft(buttonClass.bridge3.GetLeft() - 5, buttonClass.bridge3.GetTop());
-		buttonClass.button3.SetTopLeft(buttonClass.button3.GetLeft() - 5, buttonClass.button3.GetTop());
-		buttonClass.rolling_wall3.SetTopLeft(buttonClass.rolling_wall3.GetLeft() - 5, buttonClass.rolling_wall3.GetTop());
+		buttons.bridge3.SetTopLeft(buttons.bridge3.GetLeft() - 5, buttons.bridge3.GetTop());
+		buttons.button3.SetTopLeft(buttons.button3.GetLeft() - 5, buttons.button3.GetTop());
+		buttons.rolling_wall3.SetTopLeft(buttons.rolling_wall3.GetLeft() - 5, buttons.rolling_wall3.GetTop());
 		wall_ignore[0].SetTopLeft(wall_ignore[0].GetLeft() - 5, wall_ignore[0].GetTop());
 		wall_ignore[1].SetTopLeft(wall_ignore[1].GetLeft() - 5, wall_ignore[1].GetTop());
 		autoObjects.auto_floor.SetTopLeft(autoObjects.auto_floor.GetLeft() - 5, autoObjects.auto_floor.GetTop());
@@ -546,8 +546,8 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		}
 		character1.image.SetTopLeft(character1.image.GetLeft() + 5, character1.image.GetTop());
 		character2.image.SetTopLeft(character2.image.GetLeft() + 5, character2.image.GetTop());
-		buttonClass.button_image.SetTopLeft(buttonClass.button_image.GetLeft() + 5, buttonClass.button_image.GetTop());
-		buttonClass.bridge.SetTopLeft(buttonClass.bridge.GetLeft() + 5, buttonClass.bridge.GetTop());
+		buttons.button_image.SetTopLeft(buttons.button_image.GetLeft() + 5, buttons.button_image.GetTop());
+		buttons.bridge.SetTopLeft(buttons.bridge.GetLeft() + 5, buttons.bridge.GetTop());
 		key.image.SetTopLeft(key.image.GetLeft() + 5, key.image.GetTop());
 		platforms.image.SetTopLeft(platforms.image.GetLeft() + 5, platforms.image.GetTop());
 		platforms.pFlag.SetTopLeft(platforms.pFlag.GetLeft() + 5, platforms.pFlag.GetTop());
@@ -556,15 +556,15 @@ void Map::RollScreen(Character &character1, Character &character2) {
 		boxes.box2.SetTopLeft(boxes.box2.GetLeft() + 5, boxes.box2.GetTop());
 		boxes.box3.SetTopLeft(boxes.box3.GetLeft() + 5, boxes.box3.GetTop());
 		for (int i = 0; i < 4; i++) {
-			buttonClass.buttons_level3[i].SetTopLeft(buttonClass.buttons_level3[i].GetLeft() + 5, buttonClass.buttons_level3[i].GetTop());
-			buttonClass.rolling_walls[i].SetTopLeft(buttonClass.rolling_walls[i].GetLeft() + 5, buttonClass.rolling_walls[i].GetTop());
+			buttons.buttons_level3[i].SetTopLeft(buttons.buttons_level3[i].GetLeft() + 5, buttons.buttons_level3[i].GetTop());
+			buttons.rolling_walls[i].SetTopLeft(buttons.rolling_walls[i].GetLeft() + 5, buttons.rolling_walls[i].GetTop());
 		}
 		boxes.box3_1.SetTopLeft(boxes.box3_1.GetLeft() + 5, boxes.box3_1.GetTop());
 		boxes.box3_2.SetTopLeft(boxes.box3_2.GetLeft() + 5, boxes.box3_2.GetTop());
 		boxes.box3_3.SetTopLeft(boxes.box3_3.GetLeft() + 5, boxes.box3_3.GetTop());
-		buttonClass.bridge3.SetTopLeft(buttonClass.bridge3.GetLeft() + 5, buttonClass.bridge3.GetTop());
-		buttonClass.button3.SetTopLeft(buttonClass.button3.GetLeft() + 5, buttonClass.button3.GetTop());
-		buttonClass.rolling_wall3.SetTopLeft(buttonClass.rolling_wall3.GetLeft() + 5, buttonClass.rolling_wall3.GetTop());
+		buttons.bridge3.SetTopLeft(buttons.bridge3.GetLeft() + 5, buttons.bridge3.GetTop());
+		buttons.button3.SetTopLeft(buttons.button3.GetLeft() + 5, buttons.button3.GetTop());
+		buttons.rolling_wall3.SetTopLeft(buttons.rolling_wall3.GetLeft() + 5, buttons.rolling_wall3.GetTop());
 		wall_ignore[0].SetTopLeft(wall_ignore[0].GetLeft() + 5, wall_ignore[0].GetTop());
 		wall_ignore[1].SetTopLeft(wall_ignore[1].GetLeft() + 5, wall_ignore[1].GetTop());
 		autoObjects.auto_floor.SetTopLeft(autoObjects.auto_floor.GetLeft() + 5, autoObjects.auto_floor.GetTop());
@@ -621,12 +621,12 @@ bool Map::IsJumpable(CMovingBitmap & player, vector<CMovingBitmap> & targets, in
 }
 
 void Map::RefreshWall(Character &character1, Character &character2) {
-	std::vector<CMovingBitmap> player1_floor = { character2.image, buttonClass.bridge, platforms.image, boxes.box1, boxes.box2, boxes.box3, boxes.box3_1, boxes.box3_2, boxes.box3_3, buttonClass.bridge3, buttonClass.rolling_wall3, autoObjects.auto_floor, autoObjects.auto_wall, platforms.image2 };
-	std::vector<CMovingBitmap> player2_floor = { character1.image, buttonClass.bridge, platforms.image, boxes.box1, boxes.box2, boxes.box3, boxes.box3_1, boxes.box3_2, boxes.box3_3, buttonClass.bridge3, buttonClass.rolling_wall3, autoObjects.auto_floor, autoObjects.auto_wall, platforms.image2 };
-	box_blocks = { character1.image, character2.image, buttonClass.bridge3 };
-	boxes.box3_1_blocks = { character1.image, character2.image, boxes.box3_2, boxes.box3_3, buttonClass.bridge3 };
-	boxes.box3_2_blocks = { character1.image, character2.image, boxes.box3_1, boxes.box3_3, buttonClass.bridge3 };
-	boxes.box3_3_blocks = { character1.image, character2.image, boxes.box3_1, boxes.box3_2, buttonClass.bridge3 };
+	std::vector<CMovingBitmap> player1_floor = { character2.image, buttons.bridge, platforms.image, boxes.box1, boxes.box2, boxes.box3, boxes.box3_1, boxes.box3_2, boxes.box3_3, buttons.bridge3, buttons.rolling_wall3, autoObjects.auto_floor, autoObjects.auto_wall, platforms.image2 };
+	std::vector<CMovingBitmap> player2_floor = { character1.image, buttons.bridge, platforms.image, boxes.box1, boxes.box2, boxes.box3, boxes.box3_1, boxes.box3_2, boxes.box3_3, buttons.bridge3, buttons.rolling_wall3, autoObjects.auto_floor, autoObjects.auto_wall, platforms.image2 };
+	box_blocks = { character1.image, character2.image, buttons.bridge3 };
+	boxes.box3_1_blocks = { character1.image, character2.image, boxes.box3_2, boxes.box3_3, buttons.bridge3 };
+	boxes.box3_2_blocks = { character1.image, character2.image, boxes.box3_1, boxes.box3_3, buttons.bridge3 };
+	boxes.box3_3_blocks = { character1.image, character2.image, boxes.box3_1, boxes.box3_2, buttons.bridge3 };
 	button_blocks = { character1.image, character2.image, boxes.box3_1, boxes.box3_2, boxes.box3_3 };
 
 	for (int i = 0; i < 181; i++) {
@@ -638,8 +638,8 @@ void Map::RefreshWall(Character &character1, Character &character2) {
 		boxes.box3_3_blocks.push_back(block[i]);
 	}
 	for (int i = 0; i < 4; i++) {
-		player1_floor.push_back(buttonClass.rolling_walls[i]);
-		player2_floor.push_back(buttonClass.rolling_walls[i]);
+		player1_floor.push_back(buttons.rolling_walls[i]);
+		player2_floor.push_back(buttons.rolling_walls[i]);
 	}
 
 	character1.SetWallAndFloor(player1_floor);
