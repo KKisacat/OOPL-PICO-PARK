@@ -472,10 +472,10 @@ void CGameStateRun::show_image_by_phase() {
 	else if (phase == 2) {
 		maps.background.SetFrameIndexOfBitmap(phase - 2);
 		maps.background.ShowBitmap();
-		if (maps.buttonClass.buttonOverlap) {
-			maps.buttonClass.button_image.SetFrameIndexOfBitmap(1);
+		if (maps.buttons.buttonOverlap) {
+			maps.buttons.button_image.SetFrameIndexOfBitmap(1);
 		}
-		maps.buttonClass.button_image.ShowBitmap();
+		maps.buttons.button_image.ShowBitmap();
 		maps.platforms.image.ShowBitmap();
 		maps.platforms.pFlag.ShowBitmap();
 		for (int i = 0; i < 131; i++) {
@@ -486,7 +486,7 @@ void CGameStateRun::show_image_by_phase() {
 		character1.OnShow();
 		character2.OnShow();
 		
-		maps.buttonClass.bridge.ShowBitmap();
+		maps.buttons.bridge.ShowBitmap();
 		
 		if (!maps.keyIgnore) {
 			maps.key.image.ShowBitmap();
@@ -522,18 +522,18 @@ void CGameStateRun::show_image_by_phase() {
 		}
 		maps.door.ShowBitmap();
 		for (int i = 0; i < 4; i++) {
-			maps.buttonClass.buttons_level3[i].ShowBitmap();
-			maps.buttonClass.rolling_walls[i].ShowBitmap();
+			maps.buttons.buttons_level3[i].ShowBitmap();
+			maps.buttons.rolling_walls[i].ShowBitmap();
 		}
 		maps.boxes.box3_1.ShowBitmap();
 		maps.boxes.box3_2.ShowBitmap();
 		maps.boxes.box3_3.ShowBitmap();
-		maps.buttonClass.bridge3.ShowBitmap();
-		maps.buttonClass.rolling_wall3.ShowBitmap();
-		if (maps.buttonClass.button3Overlap) {
-			maps.buttonClass.button3.SetFrameIndexOfBitmap(1);
+		maps.buttons.bridge3.ShowBitmap();
+		maps.buttons.rolling_wall3.ShowBitmap();
+		if (maps.buttons.button3Overlap) {
+			maps.buttons.button3.SetFrameIndexOfBitmap(1);
 		}
-		maps.buttonClass.button3.ShowBitmap();
+		maps.buttons.button3.ShowBitmap();
 		for (int i = 0; i < 2; i++) {
 			maps.wall_ignore[i].ShowBitmap();
 		}
