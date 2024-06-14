@@ -88,7 +88,7 @@ void Box::PushBox(Character &character, CMovingBitmap &box, int x, std::vector<C
 
 //第三關推箱子
 void Box::PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int box_name) {
-	boxisOverlap = CMovingBitmap::IsOverlap(
+	boxLevel3isOverlap = CMovingBitmap::IsOverlap(
 		character.image.GetLeft(), character.image.GetTop(), character.image.GetHeight(), character.image.GetWidth(),
 		box.GetLeft() - x, box.GetTop(), box.GetHeight(), box.GetWidth()
 	);
@@ -100,7 +100,7 @@ void Box::PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int
 		box3_2.GetLeft(), box3_2.GetTop(), box3_2.GetHeight(), box3_2.GetWidth(),
 		box3_3.GetLeft() - 16, box3_3.GetTop(), box3_3.GetHeight(), box3_3.GetWidth()
 	);
-	if (boxisOverlap && box12isOverlap && box23isOverlap) {
+	if (boxLevel3isOverlap && box12isOverlap && box23isOverlap) {
 		CheckMovable(box3_1, box3_1_blocks, x, 0);
 		box3_1.SetFrameIndexOfBitmap(0);
 		CheckMovable(box3_2, box3_2_blocks, x, 0);
@@ -108,19 +108,19 @@ void Box::PushBoxLevelThree(Character &character, CMovingBitmap &box, int x, int
 		CheckMovable(box3_3, box3_3_blocks, x, 0);
 		box3_3.SetFrameIndexOfBitmap(0);
 	}
-	else if (boxisOverlap && box12isOverlap && box_name != 3) {
+	else if (boxLevel3isOverlap && box12isOverlap && box_name != 3) {
 		CheckMovable(box3_1, box3_1_blocks, x, 0);
 		box3_1.SetFrameIndexOfBitmap(0);
 		CheckMovable(box3_2, box3_2_blocks, x, 0);
 		box3_2.SetFrameIndexOfBitmap(0);
 	}
-	else if (boxisOverlap && box23isOverlap && box_name != 1) {
+	else if (boxLevel3isOverlap && box23isOverlap && box_name != 1) {
 		CheckMovable(box3_2, box3_2_blocks, x, 0);
 		box3_2.SetFrameIndexOfBitmap(0);
 		CheckMovable(box3_3, box3_3_blocks, x, 0);
 		box3_3.SetFrameIndexOfBitmap(0);
 	}
-	else if (boxisOverlap) {
+	else if (boxLevel3isOverlap) {
 		CheckMovable(box, box3_1_blocks, x, 0);
 		CheckMovable(box, box3_2_blocks, x, 0);
 		CheckMovable(box, box3_3_blocks, x, 0);
@@ -146,9 +146,15 @@ void Box::MoveHeadBox(Character &character, int x, Character &character2) {
 			CheckMovable(character2.image, character2.blocks, x, 0);
 		}
 	}
-	if (character.characterIsOverlap) {
+	
+	bool characterIsOnheadOverlap = CMovingBitmap::IsOverlap(
+		character.image.GetLeft() + 16, character.image.GetTop() - 30, character.image.GetHeight() - 16, character.image.GetWidth() - 16,
+		character2.image.GetLeft() + 16, character2.image.GetTop(), character2.image.GetHeight() - 16, character2.image.GetWidth() - 16
+	);
+	if (characterIsOnheadOverlap) {
 		MoveHeadBox(character2, x, character);
 	}
+	
 }
 
 void Box::CheckMovable(CMovingBitmap & player, vector<CMovingBitmap> & targets, int dx, int dy)
