@@ -23,8 +23,10 @@ CGameStateRun::~CGameStateRun()
 {
 }
 
+
 void CGameStateRun::OnBeginState()
 {
+	
 }
 
 void CGameStateRun::OnMove()							
@@ -228,6 +230,15 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	catalog.SetTopLeft(0, 0);
 
 	maps.OnInit(character1, character2, phase);
+
+	if (phase == 1) {
+		CAudio::Instance()->Pause();
+		CAudio::Instance()->Play(1, true);
+	}
+	else if (phase > 1) {
+		CAudio::Instance()->Pause();
+		CAudio::Instance()->Play(2, true);
+	}
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)

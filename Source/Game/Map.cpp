@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Map.h"
+#include "../Library/audio.h"
 
 Map::Map() {
 	
@@ -569,7 +570,8 @@ void Map::RunMenuOptions(Character &character1, Character &character2, int &phas
 		if (menu_options == 3) {
 			phase = 1;
 			OnInit(character1, character2, phase);
-
+			CAudio::Instance()->Pause();
+			CAudio::Instance()->Play(1, true);
 		}
 		else if (menu_options == 2) {
 			OnInit(character1, character2, phase);
