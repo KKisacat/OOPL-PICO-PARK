@@ -26,6 +26,7 @@ public:
 	std::vector<CMovingBitmap> box3_2_blocks;
 	std::vector<CMovingBitmap> box3_3_blocks;
 	bool box3_1isOnHead;
+	bool boxLevel3isOverlap;
 	bool box12isOverlap;
 	bool box23isOverlap;
 	bool playerIsOnBox;

@@ -61,14 +61,15 @@ void Map::OnInit(Character &character1, Character &character2, int phase) {
 		SetMap3Block();
 		key.image.SetTopLeft(90 * 25, 40);
 		key.image.SetAnimation(300, false);
-		character1.image.SetTopLeft(900, 720);
+		character2.image.SetTopLeft(900, 500);
+		character1.image.SetTopLeft(900, 700);
 		for (int i = 0; i < 4; i++) {
 			buttons.buttons_level3[i].SetTopLeft(90 * (35 + i) + 85 * i, 865);
 			buttons.buttons_level3[i].SetFrameIndexOfBitmap(0);
 			buttons.rolling_walls[i].SetTopLeft(90 * (35 + i), -10);
 		}
 
-		boxes.box3_1.SetTopLeft(900, 630);
+		boxes.box3_1.SetTopLeft(900, 300);
 		boxes.box3_1.SetFrameIndexOfBitmap(1);
 		boxes.box3_2.SetTopLeft(2700, 810);
 		boxes.box3_2.SetFrameIndexOfBitmap(1);
@@ -325,7 +326,7 @@ void Map::SetMap3Block() {
 	}
 	//障礙物
 	block[58].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-	block[58].SetTopLeft(90 * 27, 720);
+	block[58].SetTopLeft(90 * 27, 695);
 
 	//起點牆壁
 	for (int i = 59; i < 70; i++) {
@@ -352,7 +353,7 @@ void Map::SetMap4Block() {
 	//起點牆壁
 	for (int i = 0; i < 11; i++) {
 		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90, 90 * i);
+		block[i].SetTopLeft(0, 90 * i);
 	}
 
 	//地板

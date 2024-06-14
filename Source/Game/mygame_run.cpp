@@ -411,13 +411,17 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 
 	if (nChar == 0x44) { //P2¥k
-		character2.isRightRun = 0;
-		character2.image.StopAnimation();
+		if (phase > 1 && phase <= 5) {
+			character2.isRightRun = 0;
+			character2.image.StopAnimation();
+		}
 	}
 
 	if (nChar == 0x41) { //P2¥ª
-		character2.isLeftRun = 0;
-		character2.image2.StopAnimation();
+		if (phase > 1 && phase <= 5) {
+			character2.isLeftRun = 0;
+			character2.image2.StopAnimation();
+		}
 	}
 
 	if (nChar == 0x57) {  //player2 ¤WÁä W
