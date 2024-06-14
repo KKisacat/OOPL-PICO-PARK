@@ -19,6 +19,7 @@ CGameStateInit::CGameStateInit(CGame *g) : CGameState(g)
 
 void CGameStateInit::OnInit()
 {
+	
 	//
 	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
 	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
@@ -58,6 +59,10 @@ void CGameStateInit::OnShow()
 void CGameStateInit::load_background() {
 	background.LoadBitmapByString({ "resources/initialize_background.bmp" });
 	background.SetTopLeft(0, 0);
+	
+	CAudio::Instance()->Load(1, "resources/Bounds.wav");
+	CAudio::Instance()->Load(2, "resources/Doremi.wav");
+	CAudio::Instance()->Play(1, true);
 }
 
 void CGameStateInit::draw_text() {
