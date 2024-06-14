@@ -246,8 +246,6 @@ void Map::SetMap1Block() {
 		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
 		block[i].SetTopLeft(-100, -100);
 	}
-
-
 }
 
 void Map::SetMap2Block() {
@@ -304,16 +302,6 @@ void Map::SetMap2Block() {
 }
 
 void Map::SetMap3Block() {
-
-	//輔助用
-	block[130].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-	block[130].SetTopLeft(90 * 11, 900);
-	/*
-	for (int i = 121; i < 130; i++) {
-		block[i].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
-		block[i].SetTopLeft(90 * (i - 109), 900);
-	}
-	*/
 	
 	//起點地板
 	block[0].LoadBitmapByString({ "resources/block.bmp" }, RGB(255, 255, 255));
